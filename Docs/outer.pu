@@ -1,0 +1,18 @@
+@startuml
+left to right direction
+
+actor anyUser as "Незарегистрированный\nпользователь"
+actor user as "Зарегистрированный\nпользователь"
+
+rectangle Приложение {
+    (Регистрация) as reg
+    (Авторизация) as auth
+    (Просмотр\nоткрытых\nрезультатов) as lookOpen
+}
+
+anyUser -- reg
+user -- auth
+
+anyUser -- lookOpen
+
+@enduml

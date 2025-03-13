@@ -1,0 +1,59 @@
+@startuml
+left to right direction
+
+actor user as "Участник"
+
+actor registrar as "Регистратор"
+actor participant as "Соревнующийся"
+actor secretary as "Секретарь"
+actor mainSecretary as "Главный\nсекретарь"
+actor judge as "Судья"
+actor mainJudge as "Главный судья"
+
+rectangle Приложение {
+    usecase regEvent as "Регистрация\nмероприятия"
+    usecase regCompetition as "Регистрация\nсоревнования"
+    usecase regTeam as "Регистрация\nкоманды"
+    usecase regParticipant as "Регистрация\nучастника"
+    rectangle {
+        usecase regParticipantInfo as "Ввод\nличных\nданных\nучастника"
+        usecase regParticipantRole as "Ввод\nролей\nучастника"
+    }
+
+    usecase regCompetitionResult as "Регистрация\nрезультатов\nсоревнования"
+
+    usecase regEventResult as "Регистрация\nрезультатов\nмероприятия"
+
+    usecase lookResult as "Просмотр\nрезультатов"
+    usecase exit as "Выход"
+}
+
+registrar --|> authUser
+participant --|> authUser
+secretary --|> authUser
+judge --|> authUser
+
+mainSecretary --|> secretary
+
+mainJudge --|> judge
+
+
+registrar --- regEvent
+registrar --- regCompetition
+registrar --- regTeam
+registrar --- regParticipantRole
+participant --- regParticipantInfo
+
+regParticipant .> regParticipantInfo : include
+regParticipant .> regParticipantRole : include
+
+secretary --- regCompetitionResult
+judge --- regCompetitionResult
+
+secretary --- regEventResult
+judge --- regEventResult
+
+user --- lookResult
+user --- exit
+
+@enduml
