@@ -1,9 +1,9 @@
 @startuml
 left to right direction
 
-actor user as "Участник"
+actor potent as "Потенциальный\nучастник/организатор/\nсудья/секретарь"
 
-actor registrar as "Регистратор"
+actor organizer as "Организатор"
 actor participant as "Соревнующийся"
 actor secretary as "Секретарь"
 actor mainSecretary as "Главный\nсекретарь"
@@ -12,40 +12,39 @@ actor mainJudge as "Главный судья"
 
 rectangle Приложение {
     usecase regEvent as "Регистрация\nмероприятия"
-    usecase regCompetition as "Регистрация\nсоревнования"
+    usecase regCompetition as "Регистрация\nсостязания"
     usecase regTeam as "Регистрация\nкоманды"
-    usecase regParticipant as "Регистрация\nучастника"
-    rectangle {
-        usecase regParticipantInfo as "Ввод\nличных\nданных\nучастника"
-        usecase regParticipantRole as "Ввод\nролей\nучастника"
-    }
+
+    usecase sendRequest as "Подача\nзаявки"
+    usecase considerRequest as "Рассмотрение\nзаявки"
 
     usecase regCompetitionResult as "Регистрация\nрезультатов\nсоревнования"
 
     usecase regEventResult as "Регистрация\nрезультатов\nмероприятия"
 
+    usecase lookRequest as "Просмотр\nзаявок"
     usecase lookResult as "Просмотр\nрезультатов"
-    usecase exit as "Выход"
 }
 
-registrar --|> authUser
-participant --|> authUser
-secretary --|> authUser
-judge --|> authUser
+organizer --|> potent
+participant --|> potent
+secretary --|> potent
+judge --|> potent
 
 mainSecretary --|> secretary
-
 mainJudge --|> judge
 
+potent --- sendRequest
+potent --- lookRequest
+potent --- lookResult
 
-registrar --- regEvent
-registrar --- regCompetition
-registrar --- regTeam
-registrar --- regParticipantRole
-participant --- regParticipantInfo
+organizer --- regEvent
+organizer --- regCompetition
+organizer --- regTeam
+organizer --- considerRequest
 
-regParticipant .> regParticipantInfo : include
-regParticipant .> regParticipantRole : include
+
+regEvent ...> regTeam : include
 
 secretary --- regCompetitionResult
 judge --- regCompetitionResult
@@ -53,7 +52,5 @@ judge --- regCompetitionResult
 secretary --- regEventResult
 judge --- regEventResult
 
-user --- lookResult
-user --- exit
 
 @enduml
