@@ -1,12 +1,14 @@
 @startuml
 left to right direction
 
-actor potent as "Потенциальный\nучастник/организатор/\nсудья/секретарь"
+actor anyone as "Посетитель"
+
+actor potent as "Потенциальный\nучастник/организатор/\nсудья/секретарь/\nкапитан"
+actor capitan as "Капитан команды"
 
 actor organizer as "Организатор"
 actor participant as "Соревнующийся"
 actor secretary as "Секретарь"
-actor mainSecretary as "Главный\nсекретарь"
 actor judge as "Судья"
 actor mainJudge as "Главный судья"
 
@@ -15,42 +17,58 @@ rectangle Приложение {
     usecase regCompetition as "Регистрация\nсостязания"
     usecase regTeam as "Регистрация\nкоманды"
 
-    usecase sendRequest as "Подача\nзаявки"
-    usecase considerRequest as "Рассмотрение\nзаявки"
+    usecase sendParticipantRequest as "Подача\nзаявки\nучастника"
+    usecase sendJudgeRequest as "Подача\nзаявки\nсудьи"
+    usecase sendSecretaryRequest as "Подача\nзаявки\nсекретаря"
+    usecase considerRequest as "Рассмотрение\nзаявки любого типа"
+
+    usecase comandParticipantConfirmation as "Подтверждение\nтого, что участник\nчлен команды"
+    usecase actualParticipantConfirmation as "Подтверждение\nтого, что участник\nбудет участвовать"
 
     usecase regCompetitionResult as "Регистрация\nрезультатов\nсоревнования"
+    usecase fixCompetitionResult as "Фиксация\nрезультатов\nсоревнования"
 
     usecase regEventResult as "Регистрация\nрезультатов\nмероприятия"
+    usecase fixEventResult as "Фиксация\nрезультатов\nмероприятия"
 
     usecase lookRequest as "Просмотр\nзаявок"
     usecase lookResult as "Просмотр\nрезультатов"
 }
 
+capitan --|> potent
 organizer --|> potent
 participant --|> potent
 secretary --|> potent
 judge --|> potent
 
-mainSecretary --|> secretary
 mainJudge --|> judge
-
-potent --- sendRequest
-potent --- lookRequest
-potent --- lookResult
 
 organizer --- regEvent
 organizer --- regCompetition
-organizer --- regTeam
 organizer --- considerRequest
 
+potent --- sendParticipantRequest
+potent --- sendJudgeRequest
+potent --- sendSecretaryRequest
+potent --- lookRequest
+potent --- lookResult
+potent --- regTeam
 
-regEvent ...> regTeam : include
+capitan --- comandParticipantConfirmation
+
+organizer --- actualParticipantConfirmation
+judge --- actualParticipantConfirmation
+secretary --- actualParticipantConfirmation
+
 
 secretary --- regCompetitionResult
 judge --- regCompetitionResult
+judge --- fixCompetitionResult
 
 secretary --- regEventResult
 judge --- regEventResult
+mainJudge --- fixEventResult
 
+anyone --- lookResult
 
 @enduml
