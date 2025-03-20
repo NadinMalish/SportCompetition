@@ -1,0 +1,198 @@
+@startuml
+skinparam linetype ortho
+
+entity "Потенциальный\nучастник/организатор/\nсудья/секретарь/\nкапитан" as potent {
+	*potent_id : Guid | int
+	--
+	Фамилия : string
+	*Имя : string
+	Отчество : string
+	*Дата рождения : date
+	*Пол : bit
+	*Email : string
+	*Логин : string
+	*Пароль : string | хэш
+
+	*Дата регистрации: datetime
+}
+
+entity "Мероприятие" as event {
+	*event_id : Guid | int
+	--
+	*Название : string
+
+	*Дата и время начала мероприятия : datetime
+	*Дата и время окончания мероприятия : datetime
+	*Дата и время начала регистрации участников : datetime
+	*Дата и время окончания регистрации участников : datetime
+	Дата начала контроля актуальности : datetime
+	Дата окончания контроля актуальности : datetime
+
+	Обратная связь : string
+
+	*Дата регистрации: datetime	
+}
+
+entity "Состязание" as competition {
+	*competition_id : Guid | int
+	--
+	*Название : string
+	*Тип состязания: { индивидуальное | командное | смешанное }
+	Минимальное количество членов команды : int
+	Максимальное количество членов команды : int
+	
+	*Дата регистрации: datetime
+}
+
+' Подумать - возможно стоит сделать две сущности: "Документация мероприятия" и "Документация состязания"
+entity "Документация" as documentation {
+	*doc_id : Guid | int
+	--
+	*Название документа : string
+	*Документ : binary
+	--
+	event_id : Guid | int <<FK>>
+	competition_id : Guid | int <<FK>>
+}
+
+' Связь многие-ко-многим между "Мероприятием" и "Состязанием"
+entity "Состязание мероприятия" as event_competition_link {
+	*event_competition_link_id : Guid | int
+	--
+	*Дата и время начала состязания : datetime
+	*Дата и время окончания состязания : datetime
+	--
+	*event_id : Guid | int <<FK>>
+	*competition_id : Guid | int <<FK>>
+}
+
+' Скорее всего содержимое придётся генерировать, в зависимости от количества участников
+entity "Структурный элемент состязания мероприятия" as event_competition_element {
+	*event_competition_element_id : Guid | int
+	--
+	* Название : string
+	* Номер : int
+	* Круг/раунд : int
+	' Возможно потребуется ещё ряд атрибутов, в том числе для обеспечения иерархии
+	--
+	*event_competition_link_id : Guid | int <<FK>>
+}
+
+entity "Команда" as team {
+	*team_id : Guid | int
+	--
+	*Название : string
+	*Дата регистрации: datetime
+	--
+	*potent_id : Guid | int /*Капитан*/
+}
+
+entity "Команда в состязании мероприятия" as event_competition_comand_link {
+	*event_competition_comand_link_id : Guid | int
+	--
+	*team_id : Guid | int <<FK>>
+	*event_competition_link_id : Guid | int <<FK>>
+}
+
+
+' Подумать - нужны ли свойства "Принята ли заявка" и "Комментарий" на заявке целиком?
+entity "Заявка" as request {
+	*request_id : Guid | int
+	--
+	*Когда подана : datetime
+	--
+	*potent_id : Guid | int <<FK>> /*Чья заявка*/
+}
+
+' Связь многие-ко-многим между "Мероприятием" и "Потенциальным участником"
+' А заодно - строки заявки
+entity "Участник мероприятия|Строка заявки" as participant {
+	*participant_id : Guid | int
+	--
+	*Роль : { участник | организатор | судья | секретарь }
+	Главный судья : bool
+	
+	Подтверждение от капитана команды : bool
+
+	
+	*is_confirmed : bool
+	confirmed_id : Guid | int <<FK>> /*Кто принял эту строку заявки*/
+	Комментарий : string
+
+	*is_actual : bool
+	actual_id : Guid | int <<FK>> /*Кто подтвердил актуальность участия*/
+	--
+	*request_id : Guid | int /*По какой заявке подался*/
+	*event_competition_link_id : Guid | int <<FK>> /*Где участвует*/
+	team_id : Guid | int <<FK>> /*Член какой команды*/
+}
+
+' Так же играет роль привязки участника/команды мероприятия к конкретному этапу состязания
+entity "Результаты состязания" as competition_result {
+	*competition_result_id : Guid | int
+	--
+	Описание результата : string
+	
+	*Дата и время ввода : datetime	
+	*enter_id : Guid | int <<FK>> /* Кем введено */
+	
+	Дата и время последней регистрации : datetime
+	register_id : Guid | int <<FK>> /* Кем зарегистрированно */
+
+	Дата и время фиксации : datetime
+	fix_id : Guid | int <<FK>> /* Кем зафиксировано */
+	--
+	*event_competition_element_id  : Guid | int <<FK>> /* Структурный элемент состязания */
+	
+	participant_id : Guid | int <<FK>> /* Чей результат (участник) */
+	event_competition_comand_link_id : Guid | int <<FK>> /* Чей результат (команда) */
+}
+
+entity "Результаты мероприятия" as event_result {
+	*event_result_id : Guid | int
+	--
+	Описание результата : string
+
+	*Дата и время последней регистрации : datetime
+	*register_id : Guid | int <<FK>> /* Кем зарегистрированно */
+
+	Дата и время фиксации : datetime
+	fix_id : Guid | int <<FK>> /* Кем зафиксировано */
+	--
+	participant_id : Guid | int <<FK>> /* Чей результат (участник) */
+	event_competition_comand_link_id : Guid | int <<FK>> /* Чей результат (команда) */	
+}
+
+event }o..|| documentation
+competition }o..|| documentation
+
+event_competition_link }|..|| competition
+event_competition_link }|..|| event
+
+event_competition_link ||..|{ event_competition_element
+
+potent ||..|{ team
+potent ||..|{ request
+
+event_competition_comand_link }|..|| team
+event_competition_comand_link }|..|| event_competition_link
+
+participant }|..|| request
+participant }|..|| event_competition_link
+participant }o..|| team
+participant |o..|| participant : confirmed_id
+participant |o..|| participant : actual_id
+
+competition_result ||.....|| participant : enter_id
+competition_result ||.....o| participant : register_id
+competition_result ||.....o| participant : fix_id
+competition_result }|.....|| event_competition_element
+competition_result ||.....o| participant : participant_id
+competition_result ||.....o| event_competition_comand_link
+
+event_result ||.....|| participant : register_id
+event_result ||.....o| participant : fix_id
+event_result ||.....o| participant : participant_id
+event_result ||.....o| event_competition_comand_link
+
+@enduml
