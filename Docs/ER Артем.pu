@@ -1,0 +1,195 @@
+@startuml
+skinparam linetype ortho
+
+entity "Мероприятие" as event
+{
+*ID: Guid <<PK>>
+--
+*Код создателя : Guid
+*Название : string
+*Дата начала : DateTime
+*Дата окончания : DateTime
+*Дата начала регистрации участников : DateTime
+*Дата окончания регистрации участников : DateTime
+}
+
+entity "Документация мероприятия" as docEvent
+{
+    *Код документа: Guid <<PK>>
+    *Код мероприятия: Guid <<PK>>
+}
+
+entity "Нормативные документы" as doc
+{
+*ID: Guid <<PK>>
+--
+*Название документа: string
+--
+*Код категории: Guid <<FK>>
+}
+
+entity "Справочник категорий документов" as docCategorySPR
+{
+*ID: Guid <<PK>>
+--
+*Наименование: string
+}
+
+entity "Помощники мероприятия" as eventAssistants
+{
+*Код мероприятия: Guid <<PK>>
+*Код помощника: Guid <<PK>>
+}
+
+entity "Помощники" as assistants
+{
+*ID: Guid <<PK>>
+--
+*Код пользователя: Guid <<FK>>
+*код должности: Guid <<FK>>
+}
+
+entity "Справочник должностей" as jobSPR
+{
+*ID: Guid <<PK>>
+--
+*Наименование: string
+}
+
+entity "Пользователь" as user
+{
+*ID: Guid <<PK>>
+--
+*Логин: string
+*Пароль: string
+*Фамилия: string
+*Имя: string
+*Отчество: string
+*Email: string
+*Пол: bit|char
+*Дата рождения: DateTime
+}
+
+entity "Состязание" as competition
+{
+*ID: Guid <<PK>>
+--
+*Наименование : string
+*Дата и время : DateTime
+--
+*Код мероприятия: Guid <<FK>>
+*Код типа состязания: integer <<FK>>
+*Код системы провидения: integer <<FK>>
+}
+
+entity "Документация состязания" as docCompetition
+{
+*Код нормативных документов: Guid <<PK>>
+*Код состязания: Guid <<PK>>
+}
+
+entity "Участники состязания" as userCompetition
+{
+*Код состязания: Guid <<PK>>
+*Код пользователя: Guid <<PK>>
+}
+
+entity "Справочник типов состязаний" as typesOfCompetitions
+{
+*ID: Guid <<PK>>
+--
+*Наименование: string
+}
+
+entity "Справочник типов проведения состязаний" as typeOfConduct
+{
+*ID: Guid <<PK>>
+--
+*Наименование: string
+}
+
+entity "Заявка на состязание" as competitionApplication
+{
+*ID: Guid <<PK>>
+--
+*Код пользователя: Guid <<FK>>
+*Код состязания: Guid <<FK>>
+*Код статуса: intger <<FK>>
+}
+
+entity "Заявка в помощники" as assistentApplication
+{
+*ID: Guid <<PK>>
+--
+*Код мероприятия: Guid <<FK>>
+*Код пользователя: Guid <<FK>>
+*Код состязания: Guid <<FK>>
+*Код статуса: intger <<FK>>
+}
+
+entity "Заявка в команду" as teamApplication
+{
+*ID: Guid <<PK>>
+--
+*Код пользователя: Guid <<FK>>
+*Код команды: Guid <<FK>>
+*Код статуса: intger <<FK>>
+}
+
+entity "Справочник статусов заявки" as statusesSPR
+{
+*ID: Guid <<PK>>
+--
+*Наименование: string
+}
+
+entity "Команда" as team
+{
+*ID: Guid <<PK>>
+--
+*Название
+--
+*Код представителя: Guid <<FK>>
+*Код мероприятия: Guid <<FK>>
+}
+
+entity "Участники в команде" as teamUser
+{
+*Код команды: Guid <<PK>>
+*Код пользователя: Guid <<PK>>
+}
+
+docCategorySPR ||..|{ doc
+doc ||..|{ docEvent
+
+event ||..|{ docEvent
+event ||..|{ eventAssistants
+event ||..|{ team
+event ||..|{ competition
+
+assistants ||..|{ eventAssistants
+jobSPR ||..|{ assistants
+
+competition ||..|{ docCompetition
+competition ||..|{ competitionApplication
+
+userCompetition ||..|{ competition
+typeOfConduct ||..|{ competition
+typesOfCompetitions ||..|{ competition
+
+statusesSPR ||..|{ competitionApplication
+statusesSPR ||..|{ assistentApplication
+statusesSPR ||..|{ teamApplication
+
+team ||..|{ teamUser
+team ||..|{ teamApplication
+user ||..|{ event
+user ||..|{ assistants
+user ||..|{ userCompetition
+user ||..|{ competitionApplication
+user ||..|{ assistentApplication
+user ||..|{ team
+
+
+
+@enduml
