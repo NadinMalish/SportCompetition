@@ -30,7 +30,9 @@ entity "Мероприятие" as event {
 
 	Обратная связь : string
 
-	*Дата регистрации: datetime	
+	*Дата регистрации: datetime
+	--
+	*potent_id : Guid | int <FK> /*Организатор*/
 }
 
 entity "Состязание" as competition {
@@ -66,14 +68,14 @@ entity "Состязание мероприятия" as event_competition_link {
 	*competition_id : Guid | int <<FK>>
 }
 
-' Скорее всего содержимое придётся генерировать, в зависимости от количества участников
+' Скорее всего содержимое придётся генерировать, в зависимости от количества участников и результатов предыдущего этапа
 entity "Структурный элемент состязания мероприятия" as event_competition_element {
 	*event_competition_element_id : Guid | int
 	--
-	* Название : string
-	* Номер : int
-	* Круг/раунд : int
-	' Возможно потребуется ещё ряд атрибутов, в том числе для обеспечения иерархии
+	*Название : string
+	*Номер : int
+	*Круг/раунд : int
+	'Возможно потребуется ещё ряд атрибутов, в том числе для обеспечения иерархии
 	--
 	*event_competition_link_id : Guid | int <<FK>>
 }
@@ -100,6 +102,7 @@ entity "Заявка" as request {
 	*request_id : Guid | int
 	--
 	*Когда подана : datetime
+	*Главный судья : bool
 	--
 	*potent_id : Guid | int <<FK>> /*Чья заявка*/
 }
@@ -109,11 +112,9 @@ entity "Заявка" as request {
 entity "Участник мероприятия|Строка заявки" as participant {
 	*participant_id : Guid | int
 	--
-	*Роль : { участник | организатор | судья | секретарь }
-	Главный судья : bool
-	
+	*Роль : { участник | судья | секретарь }
+		
 	Подтверждение от капитана команды : bool
-
 	
 	*is_confirmed : bool
 	confirmed_id : Guid | int <<FK>> /*Кто принял эту строку заявки*/
@@ -131,7 +132,7 @@ entity "Участник мероприятия|Строка заявки" as participant {
 entity "Результаты состязания" as competition_result {
 	*competition_result_id : Guid | int
 	--
-	Описание результата : string
+	Описание результата : ICompetitionResult
 	
 	*Дата и время ввода : datetime	
 	*enter_id : Guid | int <<FK>> /* Кем введено */
@@ -173,6 +174,7 @@ event_competition_link ||..|{ event_competition_element
 
 potent ||..|{ team
 potent ||..|{ request
+potent ||..|{ event
 
 event_competition_comand_link }|..|| team
 event_competition_comand_link }|..|| event_competition_link
