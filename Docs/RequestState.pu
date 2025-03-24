@@ -1,0 +1,22 @@
+@startuml
+
+state "Создана" as created
+state "Подана на рассмотрение" as submitted
+state "Возвращена на корректировку" as returnForCorrection
+state "Подана повторно" as resubmitted
+state "Отклонена" as rejected
+state "Принята" as accepted
+
+[*] --> created
+created --> submitted
+submitted --> rejected
+submitted --> accepted
+submitted --> returnForCorrection
+
+returnForCorrection --> resubmitted
+resubmitted --> rejected
+resubmitted --> accepted
+resubmitted --> returnForCorrection
+
+
+@enduml
