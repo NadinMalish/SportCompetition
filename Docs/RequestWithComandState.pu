@@ -1,20 +1,20 @@
 @startuml
 
-state "Ñîçäàíà" as created
+state "Ğ¡Ğ¾Ğ·Ğ´Ğ°Ğ½Ğ°" as created
 
-state Ïîäà÷à {
-  state "Ïîäàíà íà ğàññìîòğåíèå" as submitted
-  state "Ïîäàíà ïîâòîğíî" as resubmitted
-  state "Âîçâğàùåíà íà êîğğåêòèğîâêó" as returnForCorrection
+state ĞŸĞ¾Ğ´Ğ°Ñ‡Ğ° {
+  state "ĞŸĞ¾Ğ´Ğ°Ğ½Ğ° Ğ½Ğ° Ñ€Ğ°ÑÑĞ¼Ğ¾Ñ‚Ñ€ĞµĞ½Ğ¸Ğµ" as submitted
+  state "ĞŸĞ¾Ğ´Ğ°Ğ½Ğ° Ğ¿Ğ¾Ğ²Ñ‚Ğ¾Ñ€Ğ½Ğ¾" as resubmitted
+  state "Ğ’Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰ĞµĞ½Ğ° Ğ½Ğ° ĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²ĞºÑƒ" as returnForCorrection
 }
 
 
-state "Îòêëîíåíà" as rejected
+state "ĞÑ‚ĞºĞ»Ğ¾Ğ½ĞµĞ½Ğ°" as rejected
 
-state Ïğèíÿòèå {
-  state "Ïğèíÿòà êàïèòàíîì" as acceptedByCaptain
-  state "Ïğèíÿòà àäìèíèñòğàöèåé" as acceptedByAdministration
-  state "Ïğèíÿòà ïîëíîñòüş" as accepted
+state ĞŸÑ€Ğ¸Ğ½ÑÑ‚Ğ¸Ğµ {
+  state "ĞŸÑ€Ğ¸Ğ½ÑÑ‚Ğ° ĞºĞ°Ğ¿Ğ¸Ñ‚Ğ°Ğ½Ğ¾Ğ¼" as acceptedByCaptain
+  state "ĞŸÑ€Ğ¸Ğ½ÑÑ‚Ğ° Ğ°Ğ´Ğ¼Ğ¸Ğ½Ğ¸ÑÑ‚Ñ€Ğ°Ñ†Ğ¸ĞµĞ¹" as acceptedByAdministration
+  state "ĞŸÑ€Ğ¸Ğ½ÑÑ‚Ğ° Ğ¿Ğ¾Ğ»Ğ½Ğ¾ÑÑ‚ÑŒÑ" as accepted
 }
 
 [*] --> created

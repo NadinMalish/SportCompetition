@@ -1,38 +1,38 @@
 @startuml
 left to right direction
 
-actor anyone as "Ïîñåòèòåëü"
+actor anyone as "ÐŸÐ¾ÑÐµÑ‚Ð¸Ñ‚ÐµÐ»ÑŒ"
 
-actor potent as "Ïîòåíöèàëüíûé\nó÷àñòíèê/îðãàíèçàòîð/\nñóäüÿ/ñåêðåòàðü/\nêàïèòàí"
-actor capitan as "Êàïèòàí êîìàíäû"
+actor potent as "ÐŸÐ¾Ñ‚ÐµÐ½Ñ†Ð¸Ð°Ð»ÑŒÐ½Ñ‹Ð¹\nÑƒÑ‡Ð°ÑÑ‚Ð½Ð¸Ðº/Ð¾Ñ€Ð³Ð°Ð½Ð¸Ð·Ð°Ñ‚Ð¾Ñ€/\nÑÑƒÐ´ÑŒÑ/ÑÐµÐºÑ€ÐµÑ‚Ð°Ñ€ÑŒ/\nÐºÐ°Ð¿Ð¸Ñ‚Ð°Ð½"
+actor capitan as "ÐšÐ°Ð¿Ð¸Ñ‚Ð°Ð½ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹"
 
-actor organizer as "Îðãàíèçàòîð"
-actor participant as "Ñîðåâíóþùèéñÿ"
-actor secretary as "Ñåêðåòàðü"
-actor judge as "Ñóäüÿ"
-actor mainJudge as "Ãëàâíûé ñóäüÿ"
+actor organizer as "ÐžÑ€Ð³Ð°Ð½Ð¸Ð·Ð°Ñ‚Ð¾Ñ€"
+actor participant as "Ð¡Ð¾Ñ€ÐµÐ²Ð½ÑƒÑŽÑ‰Ð¸Ð¹ÑÑ"
+actor secretary as "Ð¡ÐµÐºÑ€ÐµÑ‚Ð°Ñ€ÑŒ"
+actor judge as "Ð¡ÑƒÐ´ÑŒÑ"
+actor mainJudge as "Ð“Ð»Ð°Ð²Ð½Ñ‹Ð¹ ÑÑƒÐ´ÑŒÑ"
 
-rectangle Ïðèëîæåíèå {
-    usecase regEvent as "Ðåãèñòðàöèÿ\nìåðîïðèÿòèÿ"
-    usecase regCompetition as "Ðåãèñòðàöèÿ\nñîñòÿçàíèÿ"
-    usecase regTeam as "Ðåãèñòðàöèÿ\nêîìàíäû"
+rectangle ÐŸÑ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ {
+    usecase regEvent as "Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ\nÐ¼ÐµÑ€Ð¾Ð¿Ñ€Ð¸ÑÑ‚Ð¸Ñ"
+    usecase regCompetition as "Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ\nÑÐ¾ÑÑ‚ÑÐ·Ð°Ð½Ð¸Ñ"
+    usecase regTeam as "Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ\nÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹"
 
-    usecase sendParticipantRequest as "Ïîäà÷à\nçàÿâêè\nó÷àñòíèêà"
-    usecase sendJudgeRequest as "Ïîäà÷à\nçàÿâêè\nñóäüè"
-    usecase sendSecretaryRequest as "Ïîäà÷à\nçàÿâêè\nñåêðåòàðÿ"
-    usecase considerRequest as "Ðàññìîòðåíèå\nçàÿâêè ëþáîãî òèïà"
+    usecase sendParticipantRequest as "ÐŸÐ¾Ð´Ð°Ñ‡Ð°\nÐ·Ð°ÑÐ²ÐºÐ¸\nÑƒÑ‡Ð°ÑÑ‚Ð½Ð¸ÐºÐ°"
+    usecase sendJudgeRequest as "ÐŸÐ¾Ð´Ð°Ñ‡Ð°\nÐ·Ð°ÑÐ²ÐºÐ¸\nÑÑƒÐ´ÑŒÐ¸"
+    usecase sendSecretaryRequest as "ÐŸÐ¾Ð´Ð°Ñ‡Ð°\nÐ·Ð°ÑÐ²ÐºÐ¸\nÑÐµÐºÑ€ÐµÑ‚Ð°Ñ€Ñ"
+    usecase considerRequest as "Ð Ð°ÑÑÐ¼Ð¾Ñ‚Ñ€ÐµÐ½Ð¸Ðµ\nÐ·Ð°ÑÐ²ÐºÐ¸ Ð»ÑŽÐ±Ð¾Ð³Ð¾ Ñ‚Ð¸Ð¿Ð°"
 
-    usecase comandParticipantConfirmation as "Ïîäòâåðæäåíèå\nòîãî, ÷òî ó÷àñòíèê\n÷ëåí êîìàíäû"
-    usecase actualParticipantConfirmation as "Ïîäòâåðæäåíèå\nòîãî, ÷òî ó÷àñòíèê\náóäåò ó÷àñòâîâàòü"
+    usecase comandParticipantConfirmation as "ÐŸÐ¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸Ðµ\nÑ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾ ÑƒÑ‡Ð°ÑÑ‚Ð½Ð¸Ðº\nÑ‡Ð»ÐµÐ½ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹"
+    usecase actualParticipantConfirmation as "ÐŸÐ¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸Ðµ\nÑ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾ ÑƒÑ‡Ð°ÑÑ‚Ð½Ð¸Ðº\nÐ±ÑƒÐ´ÐµÑ‚ ÑƒÑ‡Ð°ÑÑ‚Ð²Ð¾Ð²Ð°Ñ‚ÑŒ"
 
-    usecase regCompetitionResult as "Ðåãèñòðàöèÿ\nðåçóëüòàòîâ\nñîðåâíîâàíèÿ"
-    usecase fixCompetitionResult as "Ôèêñàöèÿ\nðåçóëüòàòîâ\nñîðåâíîâàíèÿ"
+    usecase regCompetitionResult as "Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ\nÑ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð²\nÑÐ¾Ñ€ÐµÐ²Ð½Ð¾Ð²Ð°Ð½Ð¸Ñ"
+    usecase fixCompetitionResult as "Ð¤Ð¸ÐºÑÐ°Ñ†Ð¸Ñ\nÑ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð²\nÑÐ¾Ñ€ÐµÐ²Ð½Ð¾Ð²Ð°Ð½Ð¸Ñ"
 
-    usecase regEventResult as "Ðåãèñòðàöèÿ\nðåçóëüòàòîâ\nìåðîïðèÿòèÿ"
-    usecase fixEventResult as "Ôèêñàöèÿ\nðåçóëüòàòîâ\nìåðîïðèÿòèÿ"
+    usecase regEventResult as "Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ\nÑ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð²\nÐ¼ÐµÑ€Ð¾Ð¿Ñ€Ð¸ÑÑ‚Ð¸Ñ"
+    usecase fixEventResult as "Ð¤Ð¸ÐºÑÐ°Ñ†Ð¸Ñ\nÑ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð²\nÐ¼ÐµÑ€Ð¾Ð¿Ñ€Ð¸ÑÑ‚Ð¸Ñ"
 
-    usecase lookRequest as "Ïðîñìîòð\nçàÿâîê"
-    usecase lookResult as "Ïðîñìîòð\nðåçóëüòàòîâ"
+    usecase lookRequest as "ÐŸÑ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€\nÐ·Ð°ÑÐ²Ð¾Ðº"
+    usecase lookResult as "ÐŸÑ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€\nÑ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð²"
 }
 
 capitan --|> potent
