@@ -1,37 +1,26 @@
 @startuml
 
 state "Создана" as created
+state "Подана на рассмотрение" as submitted
 
-state Подача {
-  state "Подана на рассмотрение" as submitted
-  state "Подана повторно" as resubmitted
-  state "Возвращена на корректировку" as returnForCorrection
-}
-
-
+state "Принята капитаном" as acceptedByCaptain
+'Полностью принимает или отклоняет представитель администрации мероприятия
+state "Принята полностью" as accepted
 state "Отклонена" as rejected
-
-state Принятие {
-  state "Принята капитаном" as acceptedByCaptain
-  state "Принята администрацией" as acceptedByAdministration
-  state "Принята полностью" as accepted
-}
+'Отзывает податель заявки
+state "Отозвана" as withdrawn
 
 [*] --> created
 created --> submitted
 submitted --> rejected
 submitted --> acceptedByCaptain
-submitted --> acceptedByAdministration
-acceptedByCaptain --> accepted
-acceptedByAdministration --> accepted
+submitted --> withdrawn
 acceptedByCaptain --> rejected
-acceptedByAdministration --> rejected
-submitted --> returnForCorrection
+acceptedByCaptain --> accepted
+acceptedByCaptain --> withdrawn
 
-returnForCorrection --> resubmitted
-resubmitted --> rejected
-resubmitted --> acceptedByCaptain
-resubmitted --> acceptedByAdministration
-resubmitted --> returnForCorrection
+accepted --> [*]
+rejected --> [*]
+withdrawn --> [*]
 
 @enduml

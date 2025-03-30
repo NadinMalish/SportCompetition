@@ -1,21 +1,7 @@
 @startuml
 skinparam linetype ortho
+left to right direction
 
-
-entity "Потенциальный\nучастник/организатор/\nсудья/секретарь/\nкапитан" as potent {
-	* potent_id : Guid | int <<PK>>
-	--
-	Фамилия : string
-	* Имя : string
-	Отчество : string
-	* Дата рождения : date
-	* Пол : bit
-	* Email : string
-	* Логин : string
-	* Пароль : string | хэш
-
-	* Дата регистрации: datetime
-}
 
 together {
 
@@ -28,11 +14,12 @@ together {
 		* doc_type_id : Guid | int
 		
 		event_id : Guid | int <<FK>>
-		competition_id : Guid | int <<FK>>
-		event_competition_link_id : Guid | int <<FK>>
+		event_competition_id : Guid | int <<FK>>
+		
+		* Признак удаления : bool /* default = false */
 	}
 
-	entity "Категории документов" as documentation_type {
+	entity "Категории документов (справочник)" as documentation_type {
 		* doc_type_id : Guid | int <<PK>>
 		--
 		* Наименование: string
@@ -59,34 +46,27 @@ together {
 		* Дата регистрации: datetime
 		--
 		* potent_id : Guid | int <FK> /*Организатор*/
+		
+		* Признак удаления : bool /* default = false */
 	}
 
-	entity "Состязание" as competition {
-		* competition_id : Guid | int <<PK>>
+	entity "Состязание мероприятия" as event_competition {
+		* event_competition_id : Guid | int <<PK>>
 		--
 		* Название : string
-		* Тип состязания: { индивидуальное | командное | смешанное }
-		Минимальное количество членов команды : int
-		Максимальное количество членов команды : int
-		
-		* Публикация : bool
-		* Дата регистрации: datetime
-		--
-		* potent_id : Guid | int <FK> /*Кто ввёл*/
-	}
-
-	' Связь многие-ко-многим между "Мероприятием" и "Состязанием"
-	' Возможно схлопнется с "Состязанием". А пока состязание выступает в роли шаблона.
-	entity "Состязание мероприятия" as event_competition_link {
-		* event_competition_link_id : Guid | int <<PK>>
-		--
+		* Тип состязания: { индивидуальное | командное | смешанное }		
 		* Дата и время начала состязания : datetime
 		* Дата и время окончания состязания : datetime
 		Минимальное количество членов команды : int
 		Максимальное количество членов команды : int	
+
+		* Публикация : bool
+		* Дата регистрации: datetime
 		--
 		* event_id : Guid | int <<FK>>
-		* competition_id : Guid | int <<FK>>
+		* potent_id : Guid | int <FK> /*Кто ввёл*/
+		
+		* Признак удаления : bool /* default = false */
 	}
 
 }
@@ -97,12 +77,35 @@ entity "Команда" as team {
 	--
 	* Название : string
 	* Дата регистрации: datetime
+
+	Команда согласована администрацией мероприятия: bool
+	Комментарий (почему отклонена) : string
+	participant_id : Guid | int <<FK>> /* Кто согласовал команду */
 	--
-	* potent_id : Guid | int /*Капитан*/
-	* event_id : Guid | int
+	* potent_id : Guid | int <<FK>> /*Капитан*/
+	* event_id : Guid | int <<FK>>
+	
+	* Признак удаления : bool /* default = false */
 }
 
 together {
+
+	entity "Потенциальный\nучастник/организатор/\nсудья/секретарь/\nкапитан" as potent {
+		* potent_id : Guid | int <<PK>>
+		--
+		* Фамилия : string
+		* Имя : string
+		* Отчество : string
+		* Дата рождения : date
+		* Пол : bit
+		* Email : string
+		* Логин : string
+		* Пароль : string | хэш
+
+		* Дата регистрации: datetime
+		
+		* Признак удаления : bool /* default = false */
+	}
 
 	' Связь многие-ко-многим между "Мероприятием" и "Потенциальным участником"
 	' А заодно - заявка на участие в конкретном состязании мероприятия
@@ -123,19 +126,21 @@ together {
 		* Когда подана : datetime
 		--
 		* potent_id : Guid | int <<FK>> /*Чья заявка*/
-		* event_competition_link_id : Guid | int <<FK>> /*Где участвует*/
+		* event_competition_id : Guid | int <<FK>> /*Где участвует*/
 		team_id : Guid | int <<FK>> /*Член какой команды*/
+		
+		* Признак удаления : bool /* default = false */
 	}
 
 	' Справочник ролей. Пока только четыре: обычный участник; главный судья; судья; секретарь
-	entity "Роли участника" as roles {
+	entity "Роли участника (справочник)" as roles {
 		* id_role : Guid : int <<PK>>
 		--
 		* Наименование : string
 	}
 
 	' Справочник статусов заявок. Пока только : подана; принята на рассмотрение; одобрена; отклонена
-	entity "Статусы заявок" as request_status {
+	entity "Статусы заявок (справочник)" as request_status {
 		* request_status_id : Guid | int <<PK>>
 		--
 		* Наименование: string
@@ -145,23 +150,22 @@ together {
 
 documentation }|..|| documentation_type
 documentation ||..o| event
-documentation ||..o| competition
-documentation ||..o| event_competition_link
+documentation ||..o| event_competition
 
-event_competition_link }|..|| competition
-event_competition_link }|..|| event
+event_competition }|..|| event
 
 potent ||..|{ team
 potent ||..|{ participant
 potent ||..|{ event
-potent ||..|{ competition
+potent ||..|{ event_competition
 
 team }|..|| event
+team "participant_id" ||.up.|| participant
 
-participant }|..|| event_competition_link
+participant }|..|| event_competition
 participant }o..|| team
-participant |o.right.|| participant : set_status_id
-participant |o.left.|| participant : actual_id
+participant |o....|| participant : set_status_id
+participant |o....|| participant : actual_id
 participant ||..|| roles
 participant ||..|| request_status
 
