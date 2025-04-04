@@ -1,0 +1,6 @@
+@SportCompetition_HostAddress = http://localhost:5178
+
+GET {{SportCompetition_HostAddress}}/potent/
+Accept: application/json
+
+###
