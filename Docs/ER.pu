@@ -83,7 +83,7 @@ entity "Команда" as team {
 	participant_id : Guid | int <<FK>> /* Кто согласовал команду */
 	--
 	* potent_id : Guid | int <<FK>> /*Капитан*/
-	* event_id : Guid | int <<FK>>
+	* event_competition_id : Guid | int <<FK>>
 	
 	* Признак удаления : bool /* default = false */
 }
@@ -159,7 +159,7 @@ potent ||..|{ participant
 potent ||..|{ event
 potent ||..|{ event_competition
 
-team }|..|| event
+team }|..|| event_competition
 team "participant_id" ||.up.|| participant
 
 participant }|..|| event_competition
