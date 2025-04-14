@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WebApplication.DataAccess.Migrations
+namespace Infrastructure.EntityFramework.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init_artem_part : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,13 +41,12 @@ namespace WebApplication.DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsCaptainConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     StatusId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SetStatusId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Comment = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false),
+                    SetStatusId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Comment = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: true),
+                    IsActual = table.Column<bool>(type: "boolean", nullable: false),
                     DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PotentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    EventCompletitionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>

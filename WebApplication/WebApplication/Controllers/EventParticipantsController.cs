@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication.Core.Domain;
+﻿using Domain.Entities;
+using Infrastructure.Repositories.Implementations;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.DataAccess.Repositories;
 using WebApplication.Models;
 
@@ -57,6 +58,7 @@ namespace WebApplication.Controllers
         public async Task<ActionResult<List<EventParticipant>>> GetEventParticipantByIdAsync(Guid id)
         {
             EventParticipant? eventParticipant = await _repository.GetEventParticipantById(id, true);
+            
             if (eventParticipant is null)
                 return NotFound();
 
@@ -88,12 +90,19 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEventParticipantAsync(CreateOrEditEventParticipant createOrEditEventParticipant)
         {
+            if (!await _roleRepository.IsRoleExistsByIdAsync(createOrEditEventParticipant.RoleId)) 
+                return BadRequest("Роль не найдена");
+            if (!await _statusRepository.IsStatusExistsByIdAsync(createOrEditEventParticipant.StatusId))
+                return BadRequest("Статус не найден");
+
+            //TODO: ограничение на длину комментария?
+
             EventParticipant eventParticipant = new EventParticipant()
             {
                 Comment = createOrEditEventParticipant.Comment,
                 DateTime = createOrEditEventParticipant.DateTime,
                 Role = await _roleRepository.GetByIdAsync(createOrEditEventParticipant.RoleId),
-                Status = await _statusRepository.GetByIdAsync(createOrEditEventParticipant.StatusId) //?
+                Status = await _statusRepository.GetByIdAsync(createOrEditEventParticipant.StatusId)
             };
 
             await _repository.AddEventParticipantAsync(eventParticipant);
@@ -113,7 +122,6 @@ namespace WebApplication.Controllers
                 return NotFound();
 
             await _repository.DeleteAsync(id);
-            await _repository.SaveChangesAsync();
             return NoContent();
         }
     }

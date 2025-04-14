@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication.Core.Domain;
+﻿using Domain.Entities;
+using Infrastructure.Repositories.Implementations;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.DataAccess.Repositories;
 using WebApplication.Models;
 
@@ -55,13 +56,15 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRoleAsync([FromBody] CreateOrEditRoleRequest request)
         {
+            if (await _roleRepository.IsRoleExistsByNameAsync(request.Name))
+                return BadRequest($"Роль с названием \"{request.Name}\" уже существует");
+
             var role = new Role
             {
                 Name = request.Name
             };
 
             await _roleRepository.AddAsync(role);
-            await _roleRepository.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetRoleByIdAsync), new { id = role.Id }, null);
         }

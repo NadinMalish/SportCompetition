@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApplication.Core.Domain
+namespace Domain.Entities
 {
     public class ApplicationStatus : BaseEntity
     {

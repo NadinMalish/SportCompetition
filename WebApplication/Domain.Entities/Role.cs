@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication.Core.Domain
+namespace Domain.Entities
 {
+    /// <summary>
+    /// Роль участника
+    /// </summary>
     public class Role: BaseEntity
     {
         [MaxLength(128)]

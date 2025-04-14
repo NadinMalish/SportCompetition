@@ -1,4 +1,6 @@
-﻿namespace WebApplication.Core.Abstractions.Repositories
+﻿using Domain.Entities;
+
+namespace Services.Repositories.Abstractions
 {
     public interface IRepository<T> where T : BaseEntity
     {
@@ -28,13 +30,13 @@
         /// </summary>
         /// <param name="entity"> Cущность для удаления. </param>
         /// <returns> Была ли сущность удалена. </returns>
-        bool Delete(T entity);
+        Task<bool> Delete(T entity);
 
         /// <summary>
         /// Для сущности проставить состояние - что она изменена.
         /// </summary>
         /// <param name="entity"> Сущность для изменения. </param>
-        void Update(T entity);
+        Task Update(T entity);
 
         /// <summary>
         /// Добавить в базу одну сущность.

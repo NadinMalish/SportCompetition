@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebApplication.Core.Domain;
+﻿using Domain.Entities;
+using Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
-namespace WebApplication.DataAccess.Repositories
+namespace Infrastructure.Repositories.Implementations
 {
     public class EventParticipantRepository : EFRepository<EventParticipant>
     {

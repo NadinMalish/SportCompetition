@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebApplication.Core;
-using WebApplication.Core.Abstractions.Repositories;
+﻿using Domain.Entities;
+using Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+using Services.Repositories.Abstractions;
 
-namespace WebApplication.DataAccess.Repositories
+namespace Infrastructure.Repositories.Implementations
 {
     public abstract class EFRepository<T> : IRepository<T> where T : BaseEntity
     {
@@ -33,30 +34,36 @@ namespace WebApplication.DataAccess.Repositories
             if (entity != null)
             {
                 _data.Remove(entity);
+                await SaveChangesAsync();
                 result = true;
             }
+            
             return result;
         }
 
-        public bool Delete(T entity)
+        public async Task<bool> Delete(T entity)
         {
             bool result = false;
             if (entity != null)
             {
                 Context.Entry(entity).State = EntityState.Modified;
                 result = true;
+                await SaveChangesAsync();
             }
             return result;
         }
 
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
+            await SaveChangesAsync();
         }
 
         public async Task<T> AddAsync(T entity)
         {
-            return (await _data.AddAsync(entity)).Entity;
+            var ent = (await _data.AddAsync(entity)).Entity;
+            await SaveChangesAsync();
+            return ent;
         }
 
         public async Task SaveChangesAsync()

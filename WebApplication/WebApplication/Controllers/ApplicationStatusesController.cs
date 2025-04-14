@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication.Core.Domain;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.DataAccess.Repositories;
 using WebApplication.Models;
 
@@ -55,13 +55,16 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateStatusAsync([FromBody] CreateOrEditApplicationStatusRequest request)
         {
+
+            if (await _statusRepository.IsStatusExistsByNameAsync(request.Name))
+                return BadRequest($"Заявка с названием \"{request.Name}\" уже существует.");
+
             var status = new ApplicationStatus
             {
                 Name = request.Name
             };
 
             await _statusRepository.AddAsync(status);
-            await _statusRepository.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetStatusByIdAsync), new { id = status.Id }, null);
         }
@@ -77,7 +80,6 @@ namespace WebApplication.Controllers
                 return NotFound();
 
             await _statusRepository.DeleteAsync(id);
-            await _statusRepository.SaveChangesAsync();
 
             return NoContent();
         }
