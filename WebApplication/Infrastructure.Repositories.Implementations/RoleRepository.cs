@@ -11,12 +11,12 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<bool> IsRoleExistsByNameAsync(string name)
         {
-            return Context.Roles.AsNoTracking().SingleOrDefault(s => s.Name == name) != null;
+            return await Context.Roles.AsNoTracking().SingleOrDefaultAsync(s => s.Name == name) != null;
         }
 
-        public async Task<bool> IsRoleExistsByIdAsync(Guid id)
+        public async Task<bool> IsRoleExistsByIdAsync(int id)
         {
-            return Context.Roles.AsNoTracking().SingleOrDefault(s => s.Id == id) != null;
+            return await Context.Roles.AsNoTracking().SingleOrDefaultAsync(s => s.Id == id) != null;
         }
     }
 }

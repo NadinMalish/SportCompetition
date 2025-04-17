@@ -13,12 +13,12 @@ namespace WebApplication.DataAccess.Repositories
 
         public async Task<bool> IsStatusExistsByNameAsync(string name) 
         {
-            return Context.ApplicationStatuses.AsNoTracking().SingleOrDefault(s => s.Name == name) != null;
+            return await Context.ApplicationStatuses.AsNoTracking().SingleOrDefaultAsync(s => s.Name == name) != null;
         }
 
-        public async Task<bool> IsStatusExistsByIdAsync(Guid id)
+        public async Task<bool> IsStatusExistsByIdAsync(int id)
         {
-            return Context.ApplicationStatuses.AsNoTracking().SingleOrDefault(s => s.Id == id) != null;
+            return await Context.ApplicationStatuses.AsNoTracking().SingleOrDefaultAsync(s => s.Id == id) != null;
         }
     }
 }

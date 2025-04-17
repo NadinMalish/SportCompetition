@@ -10,7 +10,7 @@ namespace Domain.Entities
         /// <summary>
         /// Код участника
         /// </summary>
-        public Guid RoleId { get; set; }
+        public int RoleId { get; set; }
         
         /// <summary>
         /// Подтверждение от капитана команды
@@ -20,12 +20,12 @@ namespace Domain.Entities
         /// <summary>
         /// Код статуса
         /// </summary>
-        public Guid StatusId { get; set; }
+        public int StatusId { get; set; }
         
         /// <summary>
         /// Код пользователя, менявший статус последним
         /// </summary>
-        public Guid? SetStatusId { get; set; }
+        public int? SetStatusId { get; set; }
         
         /// <summary>
         /// Комментарий к заявке участника

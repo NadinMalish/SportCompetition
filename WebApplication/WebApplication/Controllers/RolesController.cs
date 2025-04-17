@@ -36,8 +36,8 @@ namespace WebApplication.Controllers
         /// <summary>
         /// Получить роль по Id
         /// </summary>
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<RoleResponse>> GetRoleByIdAsync(Guid id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<RoleResponse>> GetRoleByIdAsync(int id)
         {
             var role = await _roleRepository.GetByIdAsync(id);
             if (role is null)
@@ -66,14 +66,14 @@ namespace WebApplication.Controllers
 
             await _roleRepository.AddAsync(role);
 
-            return CreatedAtAction(nameof(GetRoleByIdAsync), new { id = role.Id }, null);
+            return Created();
         }
 
         /// <summary>
         /// Удалить роль
         /// </summary>
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteRoleAsync(Guid id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteRoleAsync(int id)
         {
             var role = await _roleRepository.GetByIdAsync(id);
             if (role is null)

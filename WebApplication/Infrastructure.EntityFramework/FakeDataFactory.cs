@@ -4,27 +4,28 @@ namespace Infrastructure.EntityFramework
 {
     public class FakeDataFactory
     {
-        // Фиксированные GUID для согласованности данных
-        private static readonly Guid _userId1 = Guid.Parse("00000001-0000-0000-0000-000000000000");
-        private static readonly Guid _userId2 = Guid.Parse("00000002-0000-0000-0000-000000000000");
-        private static readonly Guid _eventId1 = Guid.Parse("00000003-0000-0000-0000-000000000000");
-        private static readonly Guid _teamId1 = Guid.Parse("00000004-0000-0000-0000-000000000000");
+        private static Random rnd = new Random();
+        // Фиксированные int для согласованности данных
+        private static readonly int _userId1 = 1000001;
+        private static readonly int _userId2 = 2000002;
+        private static readonly int _eventId1 = 3000003;
+        private static readonly int _teamId1 = 4000004;
 
         public List<ApplicationStatus> ApplicationStatuses { get; } = new()
         {
-            new ApplicationStatus { Id = Guid.NewGuid(), Name = "Редактируется" },
-            new ApplicationStatus { Id = Guid.NewGuid(), Name = "Подтверждена капитаном команды" },
-            new ApplicationStatus { Id = Guid.NewGuid(), Name = "Подтверждена администрацией" },
-            new ApplicationStatus { Id = Guid.NewGuid(), Name = "Отклонена капитаном" },
-            new ApplicationStatus { Id = Guid.NewGuid(), Name = "Отклонена администрацией" }
+            new ApplicationStatus { Id = rnd.Next(), Name = "Редактируется" },
+            new ApplicationStatus { Id = rnd.Next(), Name = "Подтверждена капитаном команды" },
+            new ApplicationStatus { Id = rnd.Next(), Name = "Подтверждена администрацией" },
+            new ApplicationStatus { Id = rnd.Next(), Name = "Отклонена капитаном" },
+            new ApplicationStatus { Id = rnd.Next(), Name = "Отклонена администрацией" }
         };
 
         public List<Role> Roles { get; } = new()
         {
-            new Role { Id = Guid.NewGuid(), Name = "Участник" },
-            new Role { Id = Guid.NewGuid(), Name = "Судья" },
-            new Role { Id = Guid.NewGuid(), Name = "Секретарь" },
-            new Role { Id = Guid.NewGuid(), Name = "Спортсмен" }
+            new Role { Id = rnd.Next(), Name = "Участник" },
+            new Role { Id = rnd.Next(), Name = "Судья" },
+            new Role { Id = rnd.Next(), Name = "Секретарь" },
+            new Role { Id = rnd.Next(), Name = "Спортсмен" }
         };
 
         public List<EventParticipant> EventParticipants { get; }
@@ -36,7 +37,7 @@ namespace Infrastructure.EntityFramework
                 // Заявка в статусе редактирования
                 new EventParticipant
                 {
-                    Id = Guid.NewGuid(),
+                    Id = rnd.Next(),
                     RoleId = Roles[0].Id,
                     StatusId = ApplicationStatuses[0].Id,
                     IsCaptainConfirmed = false,
@@ -56,7 +57,7 @@ namespace Infrastructure.EntityFramework
                 // Заявка, подтвержденная капитаном
                 new EventParticipant
                 {
-                    Id = Guid.NewGuid(),
+                    Id = rnd.Next(),
                     RoleId = Roles[0].Id,
                     StatusId = ApplicationStatuses[1].Id,
                     IsCaptainConfirmed = true,
@@ -72,7 +73,7 @@ namespace Infrastructure.EntityFramework
                 // Заявка судьи, подтвержденная администрацией
                 new EventParticipant
                 {
-                    Id = Guid.NewGuid(),
+                    Id = rnd.Next(),
                     RoleId = Roles[1].Id,
                     StatusId = ApplicationStatuses[2].Id,
                     IsCaptainConfirmed = false,
@@ -88,7 +89,7 @@ namespace Infrastructure.EntityFramework
                 // Отклоненная заявка
                 new EventParticipant
                 {
-                    Id = Guid.NewGuid(),
+                    Id = rnd.Next(),
                     RoleId = Roles[3].Id,
                     StatusId = ApplicationStatuses[3].Id,
                     IsCaptainConfirmed = false,

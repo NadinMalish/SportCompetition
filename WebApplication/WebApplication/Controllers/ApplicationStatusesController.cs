@@ -35,8 +35,8 @@ namespace WebApplication.Controllers
         /// <summary>
         /// Получить статус по Id
         /// </summary>
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<ApplicationStatusResponse>> GetStatusByIdAsync(Guid id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ApplicationStatusResponse>> GetStatusByIdAsync(int id)
         {
             var status = await _statusRepository.GetByIdAsync(id);
             if (status is null)
@@ -66,14 +66,14 @@ namespace WebApplication.Controllers
 
             await _statusRepository.AddAsync(status);
 
-            return CreatedAtAction(nameof(GetStatusByIdAsync), new { id = status.Id }, null);
+            return Created();
         }
 
         /// <summary>
         /// Удалить статус
         /// </summary>
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteStatusAsync(Guid id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteStatusAsync(int id)
         {
             var status = await _statusRepository.GetByIdAsync(id);
             if (status is null)

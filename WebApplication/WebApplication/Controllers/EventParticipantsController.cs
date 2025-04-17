@@ -22,7 +22,7 @@ namespace WebApplication.Controllers
         }
 
         /// <summary>
-        /// Получить данные всех мероприятий
+        /// Получить данные всех заявках
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -54,8 +54,8 @@ namespace WebApplication.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<List<EventParticipant>>> GetEventParticipantByIdAsync(Guid id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<List<EventParticipant>>> GetEventParticipantByIdAsync(int id)
         {
             EventParticipant? eventParticipant = await _repository.GetEventParticipantById(id, true);
             
@@ -110,12 +110,12 @@ namespace WebApplication.Controllers
         }
 
         /// <summary>
-        /// Удалить данные о мероприятии
+        /// Удалить данные о заявке
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteEventParticipantAsync(Guid id) 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteEventParticipantAsync(int id) 
         {
             EventParticipant eventParticipant = await _repository.GetByIdAsync(id);
             if (eventParticipant is null)

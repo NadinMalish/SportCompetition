@@ -22,12 +22,12 @@ namespace Infrastructure.Repositories.Implementations
             return asNoTracking ? _data.AsNoTracking().ToListAsync() : _data.ToListAsync();
         }
 
-        public Task<T> GetByIdAsync(Guid id)
+        public Task<T> GetByIdAsync(int id)
         {
             return _data.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(int id)
         {
             T entity = await _data.FindAsync(id);
             bool result = false;

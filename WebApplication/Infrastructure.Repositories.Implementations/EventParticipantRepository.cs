@@ -18,9 +18,10 @@ namespace Infrastructure.Repositories.Implementations
             return await query.ToListAsync();
         }
 
-        public async Task<EventParticipant?> GetEventParticipantById(Guid id, bool asNoTracking = false) 
+        public async Task<EventParticipant?> GetEventParticipantById(int id, bool asNoTracking = false) 
         {
-            IQueryable<EventParticipant> query = Context.EventParticipants;
+            IQueryable<EventParticipant> query = Context.EventParticipants.Include(ep => ep.Role)
+                                                                          .Include(ep => ep.Status);
             checkAsNoTracking(ref query, asNoTracking);
             return await query.SingleOrDefaultAsync(ep => ep.Id == id);
         }
