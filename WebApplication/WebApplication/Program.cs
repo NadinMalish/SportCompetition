@@ -7,7 +7,9 @@ using WebApplication.DataAccess.Repositories;
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<Context>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    optionsBuilder => optionsBuilder.MigrationsAssembly("WebApplication"))
+    );
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<RoleRepository>();
