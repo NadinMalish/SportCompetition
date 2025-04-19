@@ -1,17 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "F:\\Vasia\\OTUS\\Project\\MyBranch\\SportCompetition\\",
+  "WorkspaceRootPath": "F:\\Vasia\\OTUS\\Project\\SportCompetition\\SportCompetition\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|f:\\vasia\\otus\\project\\mybranch\\sportcompetition\\sportcompetition\\webapi\\controllers\\teamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|f:\\vasia\\otus\\project\\sportcompetition\\sportcompetition\\sportcompetition\\webapi\\controllers\\teamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|solutionrelative:sportcompetition\\webapi\\controllers\\teamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|f:\\vasia\\otus\\project\\mybranch\\sportcompetition\\sportcompetition\\webapi\\controllers\\competitioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|f:\\vasia\\otus\\project\\sportcompetition\\sportcompetition\\sportcompetition\\webapi\\controllers\\competitioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|solutionrelative:sportcompetition\\webapi\\controllers\\competitioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|f:\\vasia\\otus\\project\\mybranch\\sportcompetition\\sportcompetition\\webapi\\controllers\\eventinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|f:\\vasia\\otus\\project\\sportcompetition\\sportcompetition\\sportcompetition\\webapi\\controllers\\eventinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C3720254-AB0C-41FC-B66D-39A72376762B}|SportCompetition\\SportCompetition.csproj|solutionrelative:sportcompetition\\webapi\\controllers\\eventinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -22,28 +22,35 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "EventInfoController.cs",
-              "DocumentMoniker": "F:\\Vasia\\OTUS\\Project\\MyBranch\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\EventInfoController.cs",
+              "DocumentMoniker": "F:\\Vasia\\OTUS\\Project\\SportCompetition\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\EventInfoController.cs",
               "RelativeDocumentMoniker": "SportCompetition\\WebApi\\Controllers\\EventInfoController.cs",
-              "ToolTip": "F:\\Vasia\\OTUS\\Project\\MyBranch\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\EventInfoController.cs",
+              "ToolTip": "F:\\Vasia\\OTUS\\Project\\SportCompetition\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\EventInfoController.cs",
               "RelativeToolTip": "SportCompetition\\WebApi\\Controllers\\EventInfoController.cs",
               "ViewState": "AgIAAIUAAAAAAAAAAAAcwBkAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-06T18:38:39.389Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-06T18:38:39.389Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "TeamController.cs",
-              "DocumentMoniker": "F:\\Vasia\\OTUS\\Project\\MyBranch\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\TeamController.cs",
+              "DocumentMoniker": "F:\\Vasia\\OTUS\\Project\\SportCompetition\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\TeamController.cs",
               "RelativeDocumentMoniker": "SportCompetition\\WebApi\\Controllers\\TeamController.cs",
-              "ToolTip": "F:\\Vasia\\OTUS\\Project\\MyBranch\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\TeamController.cs",
+              "ToolTip": "F:\\Vasia\\OTUS\\Project\\SportCompetition\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\TeamController.cs",
               "RelativeToolTip": "SportCompetition\\WebApi\\Controllers\\TeamController.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAAAwwFAAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -54,14 +61,13 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "CompetitionController.cs",
-              "DocumentMoniker": "F:\\Vasia\\OTUS\\Project\\MyBranch\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\CompetitionController.cs",
+              "DocumentMoniker": "F:\\Vasia\\OTUS\\Project\\SportCompetition\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\CompetitionController.cs",
               "RelativeDocumentMoniker": "SportCompetition\\WebApi\\Controllers\\CompetitionController.cs",
-              "ToolTip": "F:\\Vasia\\OTUS\\Project\\MyBranch\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\CompetitionController.cs",
+              "ToolTip": "F:\\Vasia\\OTUS\\Project\\SportCompetition\\SportCompetition\\SportCompetition\\WebApi\\Controllers\\CompetitionController.cs",
               "RelativeToolTip": "SportCompetition\\WebApi\\Controllers\\CompetitionController.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAqwJgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-06T18:26:25.449Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-06T18:26:25.449Z"
             }
           ]
         }
