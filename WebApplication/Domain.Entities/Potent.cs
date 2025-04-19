@@ -21,5 +21,10 @@ namespace Domain.Entities
         public string pass { get; set; } = null!;
         public DateTime dat_reg { get; set; }
         public bool deleted { get; set; }
+
+        public virtual ICollection<EventInfo> Events { get; set; } = new List<EventInfo>();
+        public virtual ICollection<Competition> Competitions { get; set; } = new List<Competition>();
+        public virtual ICollection<Team> ConsideredTeams { get; set; } = new List<Team>();
+        public virtual ICollection<Team> CreatedTeams { get; set; } = new List<Team>();
     }
 }

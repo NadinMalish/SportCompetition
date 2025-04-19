@@ -2,6 +2,7 @@ using Infrastructure.EntityFramework;
 using Infrastructure.Repositories.ImplementationInfrastructure.EntityFrameworks;
 using Infrastructure.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
+using Services.Repositories.Abstractions;
 using WebApplication.DataAccess.Repositories;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<Context>(options =>
     );
 
 builder.Services.AddControllers();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<EventParticipantRepository>();
 builder.Services.AddScoped<StatusRepository>();

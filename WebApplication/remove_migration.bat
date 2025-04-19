@@ -1,0 +1,1 @@
+dotnet ef migrations remove --startup-project WebApplication/WebApplication.csproj --project Infrastructure.EntityFramework/Infrastructure.EntityFramework.csproj --context Context

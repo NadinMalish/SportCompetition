@@ -18,6 +18,18 @@ namespace Infrastructure.EntityFramework
         public DbSet<DocType> doc_types { get; set; }
         public DbSet<Doc> docs { get; set; }
 
+        /// <summary>
+        /// Состязание мероприятия
+        /// </summary>
+        public DbSet<Competition> Competitions { get; set; }
+        /// <summary>
+        /// Мероприятие
+        /// </summary>
+        public DbSet<EventInfo> Events { get; set; }
+        /// <summary>
+        /// Команда мероприятия
+        /// </summary>
+        public DbSet<Team> Teams { get; set; }
 
 
 
@@ -65,10 +77,54 @@ namespace Infrastructure.EntityFramework
                 entity.Property(e => e.surname).HasMaxLength(20);
             });
 
+            modelBuilder.Entity<EventInfo>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("event_info_pkey");
+                entity.Property(e => e.Id)
+                    .HasDefaultValueSql("nextval('sq_events'::regclass)")
+                    .HasColumnName("id");
+
+                entity.HasOne(e => e.Organizer).WithMany(p => p.Events)
+                    .HasForeignKey(e => e.OrganizerId)
+                    .HasConstraintName("fk_entity_info_potent");
+            });
+
+            modelBuilder.Entity<Competition>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("competition_pkey");
+                entity.Property(e => e.Id)
+                    .HasDefaultValueSql("nextval('sq_competitions'::regclass)")
+                    .HasColumnName("id");
+
+                entity.HasOne(c => c.Editor).WithMany(p => p.Competitions)
+                    .HasForeignKey(c => c.EditorId)
+                    .HasConstraintName("fk_competition_potent");
+                entity.HasOne(c => c.Event).WithMany(e => e.Competitions)
+                    .HasForeignKey(c => c.EventId)
+                    .HasConstraintName("fk_competition_event_info");
+            });
+
+            modelBuilder.Entity<Team>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("team_pkey");
+                entity.Property(e => e.Id)
+                    .HasDefaultValueSql("nextval('sq_teams'::regclass)")
+                    .HasColumnName("id");
+
+                entity.HasOne(t => t.Captain).WithMany(p => p.CreatedTeams)
+                    .HasForeignKey(t => t.CaptainId)
+                    .HasConstraintName("fk_competition_potent_by_captain");
+                entity.HasOne(t => t.Considerer).WithMany(p => p.ConsideredTeams)
+                    .HasForeignKey(t => t.ConsidererId)
+                    .HasConstraintName("fk_competition_potent_by_considerer");
+            });
+
             modelBuilder.HasSequence("sq_doc_types");
             modelBuilder.HasSequence("sq_docs");
             modelBuilder.HasSequence("sq_potents");
-
+            modelBuilder.HasSequence("sq_events");
+            modelBuilder.HasSequence("sq_competitions");
+            modelBuilder.HasSequence("sq_teams");
 
             base.OnModelCreating(modelBuilder);
         }
