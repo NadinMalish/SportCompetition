@@ -75,5 +75,14 @@ namespace Infrastructure.Repositories.Implementations
             if (asNoTracking)
                 query = query.AsNoTracking();
         }
+
+        public async Task<bool> FlById(int? id)
+        {
+            T item = null;
+            if (id != null) item = await _data.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+            return (item != null);
+        }
+
     }
 }

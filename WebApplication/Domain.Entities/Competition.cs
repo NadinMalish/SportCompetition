@@ -57,5 +57,7 @@
         /// Признак удаления
         /// </summary>
         public bool IsDeleted { get; set; }
+
+        public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
     }
 }

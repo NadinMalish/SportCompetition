@@ -47,6 +47,12 @@ namespace Infrastructure.EntityFramework
                 entity.HasOne(d => d.DocType).WithMany(p => p.Docs)
                     .HasForeignKey(d => d.id_doc_type)
                     .HasConstraintName("fk_docs_doctypes");
+                entity.HasOne(d => d.EventInfo).WithMany(p => p.Docs)
+                    .HasForeignKey(d => d.id_event)
+                    .HasConstraintName("fk_docs_events");
+                entity.HasOne(d => d.Competition).WithMany(p => p.Docs)
+                    .HasForeignKey(d => d.id_competition)
+                    .HasConstraintName("fk_docs_competitions");
             });
 
             modelBuilder.Entity<DocType>(entity =>
@@ -75,6 +81,7 @@ namespace Infrastructure.EntityFramework
                 entity.Property(e => e.login).HasMaxLength(20);
                 entity.Property(e => e.pass).HasMaxLength(64);
                 entity.Property(e => e.surname).HasMaxLength(20);
+                entity.Property(e => e.gender).HasMaxLength(1);
             });
 
             modelBuilder.Entity<EventInfo>(entity =>

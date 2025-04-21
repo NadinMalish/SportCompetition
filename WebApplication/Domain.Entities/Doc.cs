@@ -17,9 +17,11 @@ namespace Domain.Entities
         public string? comment_doc { get; set; }
         public int? id_doc_type { get; set; }
         public int? id_event { get; set; }
-        public int? id_event_competition { get; set; }
+        public int? id_competition { get; set; }
         public bool deleted { get; set; }
 
         public DocType? DocType { get; set; }
+        public EventInfo? EventInfo { get; set; }
+        public Competition? Competition { get; set; }
     }
 }

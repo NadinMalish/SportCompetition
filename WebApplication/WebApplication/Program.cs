@@ -17,10 +17,14 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<EventParticipantRepository>();
 builder.Services.AddScoped<StatusRepository>();
+builder.Services.AddScoped<DocTypeRepository>();
+builder.Services.AddScoped<DocRepository>();
+builder.Services.AddScoped<PotentRepository>();
+
 
 builder.Services.AddOpenApiDocument(options =>
 {
-    options.Title = "PromoCode Factory API Doc";
+    options.Title = "Competitions Events API Doc";
     options.Version = "1.0";
 });
 

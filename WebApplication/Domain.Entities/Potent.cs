@@ -15,7 +15,7 @@ namespace Domain.Entities
         public string firstname { get; set; } = null!;
         public string? surname { get; set; }
         public DateOnly date_birth { get; set; }
-        public int gender { get; set; }
+        public string gender { get; set; } = null!;
         public string email { get; set; } = null!;
         public string login { get; set; } = null!;
         public string pass { get; set; } = null!;
