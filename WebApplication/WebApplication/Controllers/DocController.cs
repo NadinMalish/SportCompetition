@@ -34,12 +34,23 @@ namespace WebApplication.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<Doc>>> GetSpisDoc()
+        public async Task<ActionResult<List<DocShortResponse>>> GetSpisDoc()
         {
             try
             {
                 var _doc = (await _docRepository.GetSpisDoc()).ToList();
-                return Ok(_doc);
+                var docModelList = _doc.Select(x => new DocShortResponse()
+                {
+                    Id = x.Id,
+                    Name_doc = x.name_doc,
+                    File_name = x.file_name,
+                    Comment_doc = x.comment_doc,
+                    Id_doc_type = x.id_doc_type,
+                    Id_competition = x.id_competition,
+                    Id_event = x.id_event
+                }).ToList();
+
+                return Ok(docModelList);
             }
             catch (Exception ex)
             {
@@ -59,8 +70,8 @@ namespace WebApplication.Controllers
             {
                 Doc item = new Doc()
                 {
-                    name_doc = request.Name_doc,
-                    file_name = request.File_name,
+                    name_doc = request.Name_doc.Trim(),
+                    file_name = null,
                     comment_doc = request.Comment_doc,
                     id_doc_type = (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : null,
                     id_event = (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : null,
@@ -76,6 +87,42 @@ namespace WebApplication.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        ///// <summary>
+        ///// Добавить запись в список Документов
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[Route("upload")]
+        //public async Task<IActionResult> CreateDoc(DocShortResponse request, IFormFile docFile)
+        //{
+        //    try
+        //    {
+        //        if (docFile.Length==0) return BadRequest("Not File Docum");
+
+        //        byte[] fileData = null;
+        //        using (var binaryReader = new BinaryReader(docFile.OpenReadStream()))
+        //        {
+        //            fileData = binaryReader.ReadBytes((int)docFile.Length);
+        //        }
+        //        Doc item = new Doc()
+        //        {
+        //            name_doc = (request.Name_doc.Trim().Length > 0) ? request.Name_doc : docFile.FileName,
+        //            file_name = docFile.FileName,
+        //            comment_doc = request.Comment_doc,
+        //            id_doc_type = (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : null,
+        //            id_event = (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : null,
+        //            id_competition = (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : null,
+        //            docum = fileData
+        //        };
+
+        //        await _docRepository.AddDoc(item);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
 
         /// <summary>
@@ -103,7 +150,6 @@ namespace WebApplication.Controllers
                 if (doc == null) return NotFound();
 
                 doc.name_doc = request.Name_doc;
-                doc.file_name = request.File_name;
                 doc.comment_doc = request.Comment_doc;
                 doc.id_doc_type = (request.Id_doc_type==0) ? null : (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : doc.id_doc_type;
                 doc.id_event = (request.Id_event == 0) ? null : (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : doc.id_event;
@@ -133,11 +179,39 @@ namespace WebApplication.Controllers
         }
 
 
+        /// <summary>
+        /// Загрузить файл Документа по Id
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("upload")]
-        public void PostFile(IFormFile uploadedFile)
+        public async Task<IActionResult> PostFile(int id, IFormFile fileDoc)
         {
             //TODO: Save file
+            try
+            {
+                if (fileDoc.Length == 0) return BadRequest("Not File Docum");
+
+                Doc doc = await _docRepository.GetByIdAsync(id);
+                if (doc == null) return NotFound();
+
+                string fileName = fileDoc.FileName;
+                byte[] fileData = null;
+                using (var binaryReader = new BinaryReader(fileDoc.OpenReadStream()))
+                {
+                    fileData = binaryReader.ReadBytes((int)fileDoc.Length);
+                }
+
+                doc.file_name = fileName;
+                doc.docum = fileData;
+                await _docRepository.Update(doc);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
