@@ -30,13 +30,13 @@ namespace Services.Repositories.Abstractions
         /// </summary>
         /// <param name="entity"> Cущность для удаления. </param>
         /// <returns> Была ли сущность удалена. </returns>
-        Task<bool> Delete(T entity);
+        Task<bool> DeleteAsync(T entity);
 
         /// <summary>
         /// Для сущности проставить состояние - что она изменена.
         /// </summary>
         /// <param name="entity"> Сущность для изменения. </param>
-        Task Update(T entity);
+        Task UpdateAsync(T entity);
 
         /// <summary>
         /// Добавить в базу одну сущность.

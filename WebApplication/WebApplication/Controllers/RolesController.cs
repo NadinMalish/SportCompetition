@@ -1,7 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repositories.Implementations;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication.DataAccess.Repositories;
 using WebApplication.Models;
 
 namespace WebApplication.Controllers
@@ -80,7 +79,6 @@ namespace WebApplication.Controllers
                 return NotFound();
 
             await _roleRepository.DeleteAsync(id);
-            await _roleRepository.SaveChangesAsync();
 
             return NoContent();
         }

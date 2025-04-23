@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<bool> DeleteAsync(int id)
         {
-            T entity = await _data.FindAsync(id);
+            T? entity = await _data.FindAsync(id);
             bool result = false;
             if (entity != null)
             {
@@ -41,7 +41,7 @@ namespace Infrastructure.Repositories.Implementations
             return result;
         }
 
-        public async Task<bool> Delete(T entity)
+        public async Task<bool> DeleteAsync(T entity)
         {
             bool result = false;
             if (entity != null)
@@ -53,7 +53,7 @@ namespace Infrastructure.Repositories.Implementations
             return result;
         }
 
-        public async Task Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
             await SaveChangesAsync();
