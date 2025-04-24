@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<List<Doc>> GetSpisDoc()
         {
-            return Context.docs.Where(x => !x.deleted).ToList();
+            return Context.docs.Where(x => !x.Deleted).ToList();
         }
 
         public async Task<Doc> AddDoc(Doc request)
@@ -45,7 +45,7 @@ namespace Infrastructure.Repositories.Implementations
 
             if (item != null)
             {
-                item.deleted = true;
+                item.Deleted = true;
                 Context.docs.Update(item);
                 await Context.SaveChangesAsync();
                 return true;

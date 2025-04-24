@@ -13,13 +13,13 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<List<Potent>> GetSpisPotent()
         {
-            return Context.potents.Where(x => !x.deleted).OrderBy(x=>x.dat_reg).ToList();
+            return Context.potents.Where(x => !x.Deleted).OrderBy(x=>x.DatReg).ToList();
         }
 
 
         public async Task<Potent> GetPotentByEmail(string email)
         {
-            Potent item = await Context.potents.FirstOrDefaultAsync(x => !x.deleted && x.email.ToUpper() == email.ToUpper());
+            Potent item = await Context.potents.FirstOrDefaultAsync(x => !x.Deleted && x.Email.ToUpper() == email.ToUpper());
             if (item != null)
             {
                 return item;
@@ -33,7 +33,7 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<Potent> GetPotentByLogin(string login, string Hpass)
         {
-            Potent item = await Context.potents.FirstOrDefaultAsync(x => !x.deleted && x.login.ToUpper() == login.ToUpper() && x.pass == Hpass);
+            Potent item = await Context.potents.FirstOrDefaultAsync(x => !x.Deleted && x.Login.ToUpper() == login.ToUpper() && x.Pass == Hpass);
             if (item != null)
             {
                 return item;
@@ -47,9 +47,9 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<Potent> AddPotent(Potent request)
         {
-            int cEm = Context.potents.Where(x => !x.deleted && x.email.ToUpper() == request.email.ToUpper()).Count();
+            int cEm = Context.potents.Where(x => !x.Deleted && x.Email.ToUpper() == request.Email.ToUpper()).Count();
             if (cEm > 0) throw new ApplicationException("Email is not Unique");
-            int cLg = Context.potents.Where(x => !x.deleted && x.login.ToUpper() == request.login.ToUpper()).Count();
+            int cLg = Context.potents.Where(x => !x.Deleted && x.Login.ToUpper() == request.Login.ToUpper()).Count();
             if (cEm > 0) throw new ApplicationException("Login is not Unique");
 
             try
@@ -67,7 +67,7 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task UpdPotent(int id, Potent request)
         {
-            int cLg = Context.potents.Where(x => !x.deleted && x.Id != id && x.login.ToUpper() == request.login.ToUpper()).Count();
+            int cLg = Context.potents.Where(x => !x.Deleted && x.Id != id && x.Login.ToUpper() == request.Login.ToUpper()).Count();
             if (cLg > 0) throw new ApplicationException("Login is not Unique");
 
             try
@@ -88,7 +88,7 @@ namespace Infrastructure.Repositories.Implementations
 
             if (item != null)
             {
-                item.deleted = true;
+                item.Deleted = true;
                 Context.potents.Update(item);
                 await Context.SaveChangesAsync();
                 return true;

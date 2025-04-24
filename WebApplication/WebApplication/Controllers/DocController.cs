@@ -42,12 +42,12 @@ namespace WebApplication.Controllers
                 var docModelList = _doc.Select(x => new DocShortResponse()
                 {
                     Id = x.Id,
-                    Name_doc = x.name_doc,
-                    File_name = x.file_name,
-                    Comment_doc = x.comment_doc,
-                    Id_doc_type = x.id_doc_type,
-                    Id_competition = x.id_competition,
-                    Id_event = x.id_event
+                    Name_doc = x.NameDoc,
+                    File_name = x.FileName,
+                    Comment_doc = x.CommentDoc,
+                    Id_doc_type = x.IdDocType,
+                    Id_competition = x.IdCompetition,
+                    Id_event = x.IdEvent
                 }).ToList();
 
                 return Ok(docModelList);
@@ -70,13 +70,13 @@ namespace WebApplication.Controllers
             {
                 Doc item = new Doc()
                 {
-                    name_doc = request.Name_doc.Trim(),
-                    file_name = null,
-                    comment_doc = request.Comment_doc,
-                    id_doc_type = (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : null,
-                    id_event = (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : null,
-                    id_competition = (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : null,
-                    docum = null
+                    NameDoc = request.Name_doc.Trim(),
+                    FileName = null,
+                    CommentDoc = request.Comment_doc,
+                    IdDocType = (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : null,
+                    IdEvent = (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : null,
+                    IdCompetition = (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : null,
+                    Docum = null
                 };
 
                 await _docRepository.AddDoc(item);
@@ -149,11 +149,11 @@ namespace WebApplication.Controllers
                 Doc doc = await _docRepository.GetByIdAsync(id);
                 if (doc == null) return NotFound();
 
-                doc.name_doc = request.Name_doc;
-                doc.comment_doc = request.Comment_doc;
-                doc.id_doc_type = (request.Id_doc_type==0) ? null : (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : doc.id_doc_type;
-                doc.id_event = (request.Id_event == 0) ? null : (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : doc.id_event;
-                doc.id_competition = (request.Id_competition == 0) ? null : (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : doc.id_competition;
+                doc.NameDoc = request.Name_doc;
+                doc.CommentDoc = request.Comment_doc;
+                doc.IdDocType = (request.Id_doc_type==0) ? null : (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : doc.IdDocType;
+                doc.IdEvent = (request.Id_event == 0) ? null : (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : doc.IdEvent;
+                doc.IdCompetition = (request.Id_competition == 0) ? null : (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : doc.IdCompetition;
                 await _docRepository.Update(doc);
 
                 return Ok();
@@ -202,8 +202,8 @@ namespace WebApplication.Controllers
                     fileData = binaryReader.ReadBytes((int)fileDoc.Length);
                 }
 
-                doc.file_name = fileName;
-                doc.docum = fileData;
+                doc.FileName = fileName;
+                doc.Docum = fileData;
                 await _docRepository.Update(doc);
 
                 return Ok();

@@ -39,12 +39,12 @@ namespace WebApplication.Controllers
                 var potentModelList = _potent.Select(x => new PotentSpis()
                 {
                     Id = x.Id,
-                    FullName = $"{x.lastname} {x.firstname} {x.surname}",
-                    DateBirth = x.date_birth.ToString(),
-                    Gender = (x.gender.ToLower() == "w") ? "жен." : "муж.",
-                    Login = x.login,
-                    Email = x.email,
-                    DatReg = x.dat_reg
+                    FullName = $"{x.Lastname} {x.Firstname} {x.Surname}",
+                    DateBirth = x.DateBirth.ToString(),
+                    Gender = (x.Gender.ToLower() == "w") ? "жен." : "муж.",
+                    Login = x.Login,
+                    Email = x.Email,
+                    DatReg = x.DatReg
                 }).ToList();
 
                 return Ok(potentModelList);
@@ -101,14 +101,14 @@ namespace WebApplication.Controllers
             {
                 Potent item = new Potent()
                 {
-                    lastname = request.Lastname,
-                    firstname = request.Firstname,
-                    surname = request.Surname,
-                    date_birth = request.date_birth,
-                    email = request.Email,
-                    login = request.Login,
-                    pass = HashPass(request.Pass),
-                    gender = (request.gender.ToUpper() == "M") ? "m" : (request.gender.ToUpper() == "М") ? "m" : "w"
+                    Lastname = request.Lastname,
+                    Firstname = request.Firstname,
+                    Surname = request.Surname,
+                    DateBirth = request.date_birth,
+                    Email = request.Email,
+                    Login = request.Login,
+                    Pass = HashPass(request.Pass),
+                    Gender = (request.gender.ToUpper() == "M") ? "m" : (request.gender.ToUpper() == "М") ? "m" : "w"
                 };
 
                 await _potentRepository.AddPotent(item);
@@ -133,13 +133,13 @@ namespace WebApplication.Controllers
                 Potent item = await _potentRepository.GetByIdAsync(id);
                 if (item == null) return NotFound();
 
-                item.lastname = request.Lastname;
-                item.firstname = request.Firstname;
-                item.surname = request.Surname;
-                item.date_birth = request.date_birth;
-                item.gender = (request.gender.ToUpper() == "M") ? "m" : (request.gender.ToUpper() == "М") ? "m" : "w";
-                item.login = request.Login;
-                item.pass = HashPass(request.Pass);
+                item.Lastname = request.Lastname;
+                item.Firstname = request.Firstname;
+                item.Surname = request.Surname;
+                item.DateBirth = request.date_birth;
+                item.Gender = (request.gender.ToUpper() == "M") ? "m" : (request.gender.ToUpper() == "М") ? "m" : "w";
+                item.Login = request.Login;
+                item.Pass = HashPass(request.Pass);
 
                 await _potentRepository.UpdPotent(id, item);
                 return Ok();

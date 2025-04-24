@@ -11,16 +11,16 @@ namespace Domain.Entities
     /// </summary>
     public class Potent : BaseEntity
     {
-        public string lastname { get; set; } = null!;
-        public string firstname { get; set; } = null!;
-        public string? surname { get; set; }
-        public DateOnly date_birth { get; set; }
-        public string gender { get; set; } = null!;
-        public string email { get; set; } = null!;
-        public string login { get; set; } = null!;
-        public string pass { get; set; } = null!;
-        public DateTime dat_reg { get; set; }
-        public bool deleted { get; set; }
+        public string Lastname { get; set; } = null!;
+        public string Firstname { get; set; } = null!;
+        public string? Surname { get; set; }
+        public DateOnly DateBirth { get; set; }
+        public string Gender { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Login { get; set; } = null!;
+        public string Pass { get; set; } = null!;
+        public DateTime DatReg { get; set; }
+        public bool Deleted { get; set; }
 
         public virtual ICollection<EventInfo> Events { get; set; } = new List<EventInfo>();
         public virtual ICollection<Competition> Competitions { get; set; } = new List<Competition>();

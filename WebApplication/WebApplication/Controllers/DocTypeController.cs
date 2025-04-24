@@ -35,8 +35,8 @@ namespace WebApplication.Controllers
                 var doctypeModelList = _doctype.Select(x => new DocTypeShortResponse()
                 {
                     Id = x.Id,
-                    Name_doc_type = x.name_doc_type,
-                    Comment_doc = x.comment_doc
+                    Name_doc_type = x.NameDocType,
+                    Comment_doc = x.CommentDoc
                 }).ToList();
 
                 return Ok(doctypeModelList);
@@ -86,8 +86,8 @@ namespace WebApplication.Controllers
             {
                 DocType item = new DocType()
                 {
-                    name_doc_type = request.Name_doc_type,
-                    comment_doc = request.Comment_doc
+                    NameDocType = request.Name_doc_type,
+                    CommentDoc = request.Comment_doc
                 };
 
                 var _doctype = await _doctypeRepository.AddAsync(item);
@@ -111,8 +111,8 @@ namespace WebApplication.Controllers
                 DocType doctype = await _doctypeRepository.GetByIdAsync(id);
                 if (doctype == null) return NotFound();
 
-                doctype.name_doc_type = request.Name_doc_type;
-                doctype.comment_doc = request.Comment_doc;
+                doctype.NameDocType = request.Name_doc_type;
+                doctype.CommentDoc = request.Comment_doc;
                 await _doctypeRepository.Update(doctype);
 
                 return Ok();

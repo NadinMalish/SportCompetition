@@ -11,17 +11,17 @@ namespace Domain.Entities
     /// </summary>
     public class Doc : BaseEntity
     {
-        public string? name_doc { get; set; }
-        public string? file_name { get; set; }
-        public byte[]? docum { get; set; }
-        public string? comment_doc { get; set; }
-        public int? id_doc_type { get; set; }
-        public int? id_event { get; set; }
-        public int? id_competition { get; set; }
-        public bool deleted { get; set; }
+        public string? NameDoc { get; set; }
+        public string? FileName { get; set; }
+        public byte[]? Docum { get; set; }
+        public string? CommentDoc { get; set; }
+        public int? IdDocType { get; set; }
+        public int? IdEvent { get; set; }
+        public int? IdCompetition { get; set; }
+        public bool Deleted { get; set; }
 
-        public DocType? DocType { get; set; }
-        public EventInfo? EventInfo { get; set; }
-        public Competition? Competition { get; set; }
+        public virtual DocType? DocType { get; set; }
+        public virtual EventInfo? EventInfo { get; set; }
+        public virtual Competition? Competition { get; set; }
     }
 }
