@@ -57,7 +57,7 @@ namespace WebApplication.Controllers
         {
 
             if (await _statusRepository.IsStatusExistsByNameAsync(request.Name))
-                return BadRequest($"Заявка с названием \"{request.Name}\" уже существует.");
+                return BadRequest($"Статус с названием \"{request.Name}\" уже существует.");
 
             var status = new ApplicationStatus
             {
@@ -67,6 +67,24 @@ namespace WebApplication.Controllers
             await _statusRepository.AddAsync(status);
 
             return Created();
+        }
+
+        /// <summary>
+        /// Редактировать статус
+        /// </summary>
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> EditStatusAsync(int id, [FromBody]CreateOrEditApplicationStatusRequest request) 
+        {
+            if (!await _statusRepository.IsStatusExistsByIdAsync(id))
+                return NotFound();
+
+            if(await _statusRepository.IsStatusExistsByNameAsync(request.Name))
+                return BadRequest($"Статус с названием \"{request.Name}\" уже существует.");
+
+            ApplicationStatus status = await _statusRepository.GetByIdAsync(id);
+            status.Name = request.Name;
+            await _statusRepository.UpdateAsync(status);
+            return NoContent();
         }
 
         /// <summary>
