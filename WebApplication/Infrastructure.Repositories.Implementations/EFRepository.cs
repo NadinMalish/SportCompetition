@@ -5,16 +5,15 @@ using Services.Repositories.Abstractions;
 
 namespace Infrastructure.Repositories.Implementations
 {
-    public abstract class EFRepository<T> : IRepository<T> where T : BaseEntity
+    public class EFRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly Context Context;
         private readonly DbSet<T> _data;
 
-        protected EFRepository(Context context)
+        public EFRepository(Context context)
         {
             Context = context;
             _data = Context.Set<T>();
-
         }
 
         public Task<List<T>> GetAllAsync(bool asNoTracking = false)
@@ -76,5 +75,14 @@ namespace Infrastructure.Repositories.Implementations
             if (asNoTracking)
                 query = query.AsNoTracking();
         }
+
+        public async Task<bool> FlById(int? id)
+        {
+            T item = null;
+            if (id != null) item = await _data.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+            return (item != null);
+        }
+
     }
 }
