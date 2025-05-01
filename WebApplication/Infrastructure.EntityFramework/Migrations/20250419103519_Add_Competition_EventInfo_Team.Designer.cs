@@ -3,6 +3,7 @@ using System;
 using Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250419103519_Add_Competition_EventInfo_Team")]
+    partial class Add_Competition_EventInfo_Team
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,13 +128,13 @@ namespace Infrastructure.EntityFramework.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("character varying(400)");
 
-                    b.Property<int?>("id_competition")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("id_doc_type")
                         .HasColumnType("integer");
 
                     b.Property<int?>("id_event")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("id_event_competition")
                         .HasColumnType("integer");
 
                     b.Property<string>("name_doc")
@@ -141,11 +144,7 @@ namespace Infrastructure.EntityFramework.Migrations
                     b.HasKey("Id")
                         .HasName("docs_pkey");
 
-                    b.HasIndex("id_competition");
-
                     b.HasIndex("id_doc_type");
-
-                    b.HasIndex("id_event");
 
                     b.ToTable("docs");
                 });
@@ -300,10 +299,8 @@ namespace Infrastructure.EntityFramework.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.Property<string>("gender")
-                        .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("character varying(1)");
+                    b.Property<int>("gender")
+                        .HasColumnType("integer");
 
                     b.Property<string>("lastname")
                         .IsRequired()
@@ -416,26 +413,12 @@ namespace Infrastructure.EntityFramework.Migrations
 
             modelBuilder.Entity("Domain.Entities.Doc", b =>
                 {
-                    b.HasOne("Domain.Entities.Competition", "Competition")
-                        .WithMany("Docs")
-                        .HasForeignKey("id_competition")
-                        .HasConstraintName("fk_docs_competitions");
-
                     b.HasOne("Domain.Entities.DocType", "DocType")
                         .WithMany("Docs")
                         .HasForeignKey("id_doc_type")
                         .HasConstraintName("fk_docs_doctypes");
 
-                    b.HasOne("Domain.Entities.EventInfo", "EventInfo")
-                        .WithMany("Docs")
-                        .HasForeignKey("id_event")
-                        .HasConstraintName("fk_docs_events");
-
-                    b.Navigation("Competition");
-
                     b.Navigation("DocType");
-
-                    b.Navigation("EventInfo");
                 });
 
             modelBuilder.Entity("Domain.Entities.EventInfo", b =>
@@ -501,11 +484,6 @@ namespace Infrastructure.EntityFramework.Migrations
                     b.Navigation("EventParticipants");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Competition", b =>
-                {
-                    b.Navigation("Docs");
-                });
-
             modelBuilder.Entity("Domain.Entities.DocType", b =>
                 {
                     b.Navigation("Docs");
@@ -514,8 +492,6 @@ namespace Infrastructure.EntityFramework.Migrations
             modelBuilder.Entity("Domain.Entities.EventInfo", b =>
                 {
                     b.Navigation("Competitions");
-
-                    b.Navigation("Docs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Potent", b =>

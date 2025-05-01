@@ -49,5 +49,11 @@ namespace Services.Repositories.Abstractions
         /// Сохранить изменения.
         /// </summary>
         Task SaveChangesAsync();
+
+
+        /// <summary>
+        /// Проверка на наличик записи по Id
+        /// </summary>
+        Task<bool> FlById(int? id);
     }
 }
