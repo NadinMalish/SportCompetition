@@ -113,7 +113,7 @@ namespace WebApplication.Controllers
 
                 doctype.NameDocType = request.Name_doc_type;
                 doctype.CommentDoc = request.Comment_doc;
-                await _doctypeRepository.Update(doctype);
+                await _doctypeRepository.UpdateAsync(doctype);
 
                 return Ok();
             }
