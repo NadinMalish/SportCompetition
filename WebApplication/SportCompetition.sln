@@ -7,19 +7,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "WebApplic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{D16B4432-BBB1-42E5-8182-A40E960B66EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Entities", "Domain.Entities\Domain.Entities.csproj", "{CAE648A8-8F7B-4A3E-89CA-B377261021BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Entities", "Domain.Entities\Domain.Entities.csproj", "{CAE648A8-8F7B-4A3E-89CA-B377261021BE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{E14BEA5F-C145-45DB-8780-0B5C5B3A1DEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.EntityFramework", "Infrastructure.EntityFramework\Infrastructure.EntityFramework.csproj", "{2A6934BE-CE85-4DAC-AD99-149844FF9A72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EntityFramework", "Infrastructure.EntityFramework\Infrastructure.EntityFramework.csproj", "{2A6934BE-CE85-4DAC-AD99-149844FF9A72}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{287679E4-51A8-4D25-8B6D-11970FC857CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Repositories.Implementations", "Infrastructure.Repositories.Implementations\Infrastructure.Repositories.Implementations.csproj", "{655884C1-0630-4D32-BF41-87E5EEAB8C8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Repositories.Implementations", "Infrastructure.Repositories.Implementations\Infrastructure.Repositories.Implementations.csproj", "{655884C1-0630-4D32-BF41-87E5EEAB8C8B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{4CF8F3ED-2476-40DC-89B8-3C623407A61B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Repositories.Abstractions", "Services.Repositories.Abstractions\Services.Repositories.Abstractions.csproj", "{FD56ED8D-A2C2-4C6E-95DD-B91EBEF335B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Repositories.Abstractions", "Services.Repositories.Abstractions\Services.Repositories.Abstractions.csproj", "{FD56ED8D-A2C2-4C6E-95DD-B91EBEF335B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2B7D9781-A2E9-41C9-A66E-99D4EF2FF09C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerTests", "ControllerTests\ControllerTests.csproj", "{AB326974-393F-4D92-A1CC-4A473E5160F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,10 @@ Global
 		{FD56ED8D-A2C2-4C6E-95DD-B91EBEF335B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD56ED8D-A2C2-4C6E-95DD-B91EBEF335B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD56ED8D-A2C2-4C6E-95DD-B91EBEF335B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB326974-393F-4D92-A1CC-4A473E5160F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB326974-393F-4D92-A1CC-4A473E5160F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB326974-393F-4D92-A1CC-4A473E5160F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB326974-393F-4D92-A1CC-4A473E5160F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +65,7 @@ Global
 		{2A6934BE-CE85-4DAC-AD99-149844FF9A72} = {287679E4-51A8-4D25-8B6D-11970FC857CD}
 		{655884C1-0630-4D32-BF41-87E5EEAB8C8B} = {287679E4-51A8-4D25-8B6D-11970FC857CD}
 		{FD56ED8D-A2C2-4C6E-95DD-B91EBEF335B9} = {4CF8F3ED-2476-40DC-89B8-3C623407A61B}
+		{AB326974-393F-4D92-A1CC-4A473E5160F0} = {2B7D9781-A2E9-41C9-A66E-99D4EF2FF09C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22439046-F244-40B5-B87F-163449D7C4C4}

@@ -154,7 +154,7 @@ namespace WebApplication.Controllers
                 doc.IdDocType = (request.Id_doc_type==0) ? null : (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : doc.IdDocType;
                 doc.IdEvent = (request.Id_event == 0) ? null : (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : doc.IdEvent;
                 doc.IdCompetition = (request.Id_competition == 0) ? null : (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : doc.IdCompetition;
-                await _docRepository.Update(doc);
+                await _docRepository.UpdateAsync(doc);
 
                 return Ok();
             }
@@ -204,7 +204,7 @@ namespace WebApplication.Controllers
 
                 doc.FileName = fileName;
                 doc.Docum = fileData;
-                await _docRepository.Update(doc);
+                await _docRepository.UpdateAsync(doc);
 
                 return Ok();
             }

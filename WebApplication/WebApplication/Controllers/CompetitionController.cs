@@ -142,7 +142,7 @@ namespace WebApplication.Controllers
             competition.IsCompleted = false;
             competition.RegistryDate = DateTime.Now;
 
-            await _competitionRepository.Update(competition);
+            await _competitionRepository.UpdateAsync(competition);
 
             return Ok();
         }

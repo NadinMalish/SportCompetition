@@ -70,6 +70,24 @@ namespace WebApplication.Controllers
         }
 
         /// <summary>
+        /// Редактировать роль
+        /// </summary>
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> EditRoleAsync(int id, [FromBody] CreateOrEditRoleRequest request)
+        {
+            if (!await _roleRepository.IsRoleExistsByIdAsync(id))
+                return NotFound();
+
+            if (await _roleRepository.IsRoleExistsByNameAsync(request.Name))
+                return BadRequest($"Роль с названием \"{request.Name}\" уже существует.");
+
+            Role role = await _roleRepository.GetByIdAsync(id);
+            role.Name = request.Name;
+            await _roleRepository.UpdateAsync(role);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Удалить роль
         /// </summary>
         [HttpDelete("{id:int}")]
@@ -80,8 +98,6 @@ namespace WebApplication.Controllers
                 return NotFound();
 
             await _roleRepository.DeleteAsync(id);
-            await _roleRepository.SaveChangesAsync();
-
             return NoContent();
         }
     }
