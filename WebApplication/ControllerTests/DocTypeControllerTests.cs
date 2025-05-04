@@ -18,38 +18,31 @@ using WebApplication.Models;
 using Moq;
 using Services.Repositories.Abstractions;
 using YamlDotNet.Core;
+using Microsoft.AspNetCore.Http;
 
 
 namespace ControllerTests
 {
     public class DocTypeControllerTests
     {
-        private readonly DocTypeController _docTypeController;
+        private readonly DocTypeController _doctypeController;
+        IFixture _fixture;
+
         public DocTypeControllerTests()
         {
-            var fixture = new Fixture().Customize(new AutoMoqCustomization());
-            _docTypeController = fixture.Build<DocTypeController>().OmitAutoProperties().Create();
+            var _fixture = new Fixture().Customize(new AutoMoqCustomization());
+            _doctypeController = _fixture.Build<DocTypeController>().OmitAutoProperties().Create();
         }
 
-        //public DocType CreateDocType()
-        //{
-        //    DocType docType = _fixture.Build<DocType>().Without(x => x.Docs).Create();
-        //    return docType;
-        //}
-
-
         [Fact]
-        public void GetSpisDocType_Valid_ifExist_NewRecord_inAllSpis()
+        public async Task GetSpisDocType_Valid_inAllSpis()
         {
-            //// Arrange
-            //List<DocType> testDocType = new List<DocType>() { CreateDocType() };
+            // Act
+            var result = await _doctypeController.GetSpisDocType();
 
-            ////act
-            //var actionResult = _docTypeController.GetSpisDocType();
-
-            ////assert
-            //Assert.IsType<OkObjectResult>(actionResult); 
-            //Assert.NotNull(actionResult);
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<List<DocTypeShortResponse>>>(result);
+            Assert.IsType<OkObjectResult>(actionResult.Result);
         }
 
 
