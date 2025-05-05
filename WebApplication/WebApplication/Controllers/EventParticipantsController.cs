@@ -26,7 +26,7 @@ namespace WebApplication.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<EventParticipant>>> GetEventParticipantsAsync()
+        public async Task<ActionResult<List<EventParticipant>>> GetAllEventParticipantsAsync()
         {
             var eventParticipants = await _repository.GetParticipantAsync(true);
             var eventParticipantModelList = eventParticipants.Select(ep => new EventParticipantResponse
@@ -88,25 +88,46 @@ namespace WebApplication.Controllers
         /// <param name="createOrEditEventParticipant"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateEventParticipantAsync(CreateOrEditEventParticipant createOrEditEventParticipant)
+        public async Task<IActionResult> CreateEventParticipantAsync(CreateEventParticipantRequest createEventParticipantRequest)
         {
-            if (!await _roleRepository.IsRoleExistsByIdAsync(createOrEditEventParticipant.RoleId)) 
+            if (!await _roleRepository.IsRoleExistsByIdAsync(createEventParticipantRequest.RoleId)) 
                 return BadRequest("Роль не найдена");
-            if (!await _statusRepository.IsStatusExistsByIdAsync(createOrEditEventParticipant.StatusId))
+            if (!await _statusRepository.IsStatusExistsByIdAsync(createEventParticipantRequest.StatusId))
                 return BadRequest("Статус не найден");
-
-            //TODO: ограничение на длину комментария?
 
             EventParticipant eventParticipant = new EventParticipant()
             {
-                Comment = createOrEditEventParticipant.Comment,
-                DateTime = createOrEditEventParticipant.DateTime,
-                Role = await _roleRepository.GetByIdAsync(createOrEditEventParticipant.RoleId),
-                Status = await _statusRepository.GetByIdAsync(createOrEditEventParticipant.StatusId)
+                DateTime = DateTime.Now,
+                Role = await _roleRepository.GetByIdAsync(createEventParticipantRequest.RoleId),
+                Status = await _statusRepository.GetByIdAsync(createEventParticipantRequest.StatusId)
             };
 
             await _repository.AddEventParticipantAsync(eventParticipant);
             return Created();
+        }
+
+        /// <summary>
+        /// Редактировать заявку
+        /// </summary>
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> EditEventParticipantAsync(int id, [FromBody] EditEventParticipantRequest request)
+        {
+            EventParticipant? eventParticipant = await _repository.GetEventParticipantById(id);
+            if (eventParticipant is null)
+                return NotFound();
+            if (!await _statusRepository.IsStatusExistsByIdAsync(request.StatusId))
+                return BadRequest();
+
+            //TODO: ограничение на размер комментария
+
+            eventParticipant.Comment = request.Comment;
+            eventParticipant.StatusId = request.StatusId;
+            eventParticipant.SetStatusId = request.SetStatusId;
+            eventParticipant.IsActual = request.IsActual;
+            eventParticipant.IsCaptainConfirmed = request.IsCaptainConfirmed;
+            await _repository.UpdateAsync(eventParticipant);
+
+            return NoContent();
         }
 
         /// <summary>
@@ -121,7 +142,9 @@ namespace WebApplication.Controllers
             if (eventParticipant is null)
                 return NotFound();
 
-            await _repository.DeleteAsync(id);
+            eventParticipant.IsDeleted = true;
+            await _repository.UpdateAsync(eventParticipant);
+
             return NoContent();
         }
     }

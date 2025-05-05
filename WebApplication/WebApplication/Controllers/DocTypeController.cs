@@ -15,12 +15,20 @@ namespace WebApplication.Controllers
     [Route("[controller]")]
     public class DocTypeController : ControllerBase
     {
-        private readonly DocTypeRepository _doctypeRepository;
-     
-        public DocTypeController(DocTypeRepository doctypeRepository)
+        //private readonly DocTypeRepository _doctypeRepository;
+
+        //public DocTypeController(DocTypeRepository doctypeRepository)
+        //{
+        //    _doctypeRepository = doctypeRepository;
+        //}
+
+        private readonly IRepository<DocType> _doctypeRepository;
+
+        public DocTypeController(IRepository<DocType> doctypeRepository)
         {
             _doctypeRepository = doctypeRepository;
         }
+
 
         /// <summary>
         /// Получение данных из справочника Категории Документов
@@ -113,7 +121,7 @@ namespace WebApplication.Controllers
 
                 doctype.NameDocType = request.Name_doc_type;
                 doctype.CommentDoc = request.Comment_doc;
-                await _doctypeRepository.Update(doctype);
+                await _doctypeRepository.UpdateAsync(doctype);
 
                 return Ok();
             }

@@ -150,7 +150,7 @@ namespace WebApplication.Controllers
 
             eventInfo.IsDeleted = false;
 
-            await _eventInfoRepository.Update(eventInfo);
+            await _eventInfoRepository.UpdateAsync(eventInfo);
 
             return Ok();
         }
