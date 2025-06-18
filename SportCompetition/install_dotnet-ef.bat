@@ -1,1 +1,0 @@
-dotnet tool install --global dotnet-ef --version 9.0.3
