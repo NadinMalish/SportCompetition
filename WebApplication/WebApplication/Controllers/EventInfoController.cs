@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Entities;
-using WebApplication.DataAccess.Repositories;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Services.Repositories.Abstractions;
 using WebApplication.Models;
 
@@ -33,18 +32,9 @@ namespace WebApplication.Controllers
             {
                 Id = q.Id,
                 Name = q.Name,
-                Feedback = q.Feedback,
-
                 BeginDate = q.BeginDate,
                 EndDate = q.EndDate,
-                StartRegistrationDate = q.StartRegistrationDate,
-                FinishRegistrationDate = q.FinishRegistrationDate,
-                StartActualControlDate = q.StartActualControlDate,
-                FinishActualControlDate = q.FinishActualControlDate,
-
-                IsCompleted = q.IsCompleted,
                 RegistryDate = q.RegistryDate,
-
                 IsDeleted = q.IsDeleted
             }).ToList();
 
@@ -67,18 +57,9 @@ namespace WebApplication.Controllers
             {
                 Id = eventInfo.Id,
                 Name = eventInfo.Name,
-                Feedback = eventInfo.Feedback,
-
                 BeginDate = eventInfo.BeginDate,
                 EndDate = eventInfo.EndDate,
-                StartRegistrationDate = eventInfo.StartRegistrationDate,
-                FinishRegistrationDate = eventInfo.FinishRegistrationDate,
-                StartActualControlDate = eventInfo.StartActualControlDate,
-                FinishActualControlDate = eventInfo.FinishActualControlDate,
-
-                IsCompleted = eventInfo.IsCompleted,
                 RegistryDate = eventInfo.RegistryDate,
-
                 IsDeleted = eventInfo.IsDeleted
             };
 
@@ -100,20 +81,10 @@ namespace WebApplication.Controllers
             var eventInfo = new EventInfo()
             {
                 Name = request.Name,
-                Feedback = request.Feedback,
-
                 BeginDate = request.BeginDate,
                 EndDate = request.EndDate,
-                StartRegistrationDate = request.StartRegistrationDate,
-                FinishRegistrationDate = request.FinishRegistrationDate,
-                StartActualControlDate = request.StartActualControlDate,
-                FinishActualControlDate = request.FinishActualControlDate,
-
-                IsCompleted = false,
                 RegistryDate = DateTime.Now,
-
                 IsDeleted = false,
-
                 Organizer = organizer,
                 OrganizerId = request.OrganizerId
             };
@@ -136,18 +107,9 @@ namespace WebApplication.Controllers
                 return NotFound($"Event with id={id} does not exists.");
 
             eventInfo.Name = request.Name;
-            eventInfo.Feedback = request.Feedback;
-
             eventInfo.BeginDate = request.BeginDate;
             eventInfo.EndDate = request.EndDate;
-            eventInfo.StartRegistrationDate = request.StartRegistrationDate;
-            eventInfo.FinishRegistrationDate = request.FinishRegistrationDate;
-            eventInfo.StartActualControlDate = request.StartActualControlDate;
-            eventInfo.FinishActualControlDate = request.FinishActualControlDate;
-
-            eventInfo.IsCompleted = false;
             eventInfo.RegistryDate = DateTime.Now;
-
             eventInfo.IsDeleted = false;
 
             await _eventInfoRepository.UpdateAsync(eventInfo);

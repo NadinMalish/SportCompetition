@@ -1,11 +1,8 @@
 ﻿using Domain.Entities;
-using Infrastructure.EntityFramework;
 using Infrastructure.Repositories.Implementations;
 using Microsoft.AspNetCore.Mvc;
-using Services.Repositories.Abstractions;
 using System.Security.Cryptography;
 using System.Text;
-using WebApplication.DataAccess.Repositories;
 using WebApplication.Models;
 
 
@@ -164,11 +161,6 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
-
-
-
-
-
         // -- Шифрование пароля --
         string HashPass(string input)
         {
@@ -176,7 +168,5 @@ namespace WebApplication.Controllers
             byte[] hash = SHA256.HashData(inputBytes);
             return Convert.ToHexString(hash);
         }
-
-
     }
 }

@@ -1,114 +1,150 @@
-﻿using Domain.Entities;
-
-namespace Infrastructure.EntityFramework
+﻿namespace Infrastructure.EntityFramework
 {
+    using Domain.Entities;
+    using System;
+    using System.Collections.Generic;
+
     public class FakeDataFactory
     {
         private static Random rnd = new Random();
-        // Фиксированные int для согласованности данных
-        private static readonly int _userId1 = 1000001;
-        private static readonly int _userId2 = 2000002;
-        private static readonly int _eventId1 = 3000003;
-        private static readonly int _teamId1 = 4000004;
 
         public List<ApplicationStatus> ApplicationStatuses { get; } = new()
         {
             new ApplicationStatus { Id = rnd.Next(), Name = "Редактируется" },
-            new ApplicationStatus { Id = rnd.Next(), Name = "Подтверждена капитаном команды" },
             new ApplicationStatus { Id = rnd.Next(), Name = "Подтверждена администрацией" },
-            new ApplicationStatus { Id = rnd.Next(), Name = "Отклонена капитаном" },
             new ApplicationStatus { Id = rnd.Next(), Name = "Отклонена администрацией" }
         };
 
-        public List<Role> Roles { get; } = new()
-        {
-            new Role { Id = rnd.Next(), Name = "Участник" },
-            new Role { Id = rnd.Next(), Name = "Судья" },
-            new Role { Id = rnd.Next(), Name = "Секретарь" },
-            new Role { Id = rnd.Next(), Name = "Спортсмен" }
-        };
-
+        public List<Potent> Potents { get; }
+        public List<EventInfo> Events { get; }
+        public List<Competition> Competitions { get; }
+        public List<DocType> DocTypes { get; }
+        public List<Doc> Docs { get; }
         public List<EventParticipant> EventParticipants { get; }
 
         public FakeDataFactory()
         {
-            EventParticipants = new List<EventParticipant>
+            // Потенциальные пользователи (организаторы, редакторы)
+            Potents = new List<Potent>
             {
-                // Заявка в статусе редактирования
-                new EventParticipant
+                new Potent
                 {
                     Id = rnd.Next(),
-                    RoleId = Roles[0].Id,
-                    StatusId = ApplicationStatuses[0].Id,
-                    IsCaptainConfirmed = false,
-                    IsActual = false,
-                    Comment = null,
-                    DateTime = DateTime.UtcNow.AddDays(-7),
-                    IsDeleted = false,
-                    Role = Roles[0],
-                    Status = ApplicationStatuses[0],
-                    // Будущие поля (пока не используются):
-                    // PotentId = _userId1,
-                    // EventCompetitionId = _eventId1,
-                    // TeamId = _teamId1,
-                    SetStatusId = _userId1
+                    Firstname = "Иван", Lastname = "Иванов", Surname = "Иванович",
+                    DateBirth = DateOnly.FromDateTime(new DateTime(1990, 1, 1)),
+                    Gender = "М", Email = "ivanov@example.com", Login = "ivanov", Pass = "pass",
+                    DatReg = DateTime.UtcNow.AddMonths(-6), Deleted = false
                 },
-            
-                // Заявка, подтвержденная капитаном
-                new EventParticipant
+                new Potent
                 {
                     Id = rnd.Next(),
-                    RoleId = Roles[0].Id,
-                    StatusId = ApplicationStatuses[1].Id,
-                    IsCaptainConfirmed = true,
-                    IsActual = true,
-                    Comment = null,
-                    DateTime = DateTime.UtcNow.AddDays(-5),
-                    IsDeleted = false,
-                    Role = Roles[0],
-                    Status = ApplicationStatuses[1],
-                    SetStatusId = _userId2
-                },
-            
-                // Заявка судьи, подтвержденная администрацией
-                new EventParticipant
-                {
-                    Id = rnd.Next(),
-                    RoleId = Roles[1].Id,
-                    StatusId = ApplicationStatuses[2].Id,
-                    IsCaptainConfirmed = false,
-                    IsActual = true,
-                    Comment = null,
-                    DateTime = DateTime.UtcNow.AddDays(-3),
-                    IsDeleted = false,
-                    Role = Roles[1],
-                    Status = ApplicationStatuses[2],
-                    SetStatusId = _userId2
-                },
-            
-                // Отклоненная заявка
-                new EventParticipant
-                {
-                    Id = rnd.Next(),
-                    RoleId = Roles[3].Id,
-                    StatusId = ApplicationStatuses[3].Id,
-                    IsCaptainConfirmed = false,
-                    IsActual = false,
-                    Comment = "Не соответствует требованиям",
-                    DateTime = DateTime.UtcNow.AddDays(-1),
-                    IsDeleted = false,
-                    Role = Roles[3],
-                    Status = ApplicationStatuses[3],
-                    SetStatusId = _userId1
+                    Firstname = "Петр", Lastname = "Петров", Surname = "Петрович",
+                    DateBirth = DateOnly.FromDateTime(new DateTime(1985, 5, 15)),
+                    Gender = "М", Email = "petrov@example.com", Login = "petrov", Pass = "pass",
+                    DatReg = DateTime.UtcNow.AddMonths(-2), Deleted = false
                 }
             };
 
-            // Связываем участников с ролями и статусами
+            // Мероприятия
+            Events = new List<EventInfo>
+            {
+                new EventInfo
+                {
+                    Id = rnd.Next(),
+                    Name = "Весенний фестиваль",
+                    BeginDate = DateTime.UtcNow.AddDays(-30),
+                    EndDate = DateTime.UtcNow.AddDays(-20),
+                    RegistryDate = DateTime.UtcNow.AddMonths(-2),
+                    OrganizerId = Potents[0].Id,
+                    Organizer = Potents[0],
+                    IsDeleted = false
+                }
+            };
+
+            // Состязания
+            Competitions = new List<Competition>
+            {
+                new Competition
+                {
+                    Id = rnd.Next(),
+                    Name = "Бег 100м",
+                    BeginDate = DateTime.UtcNow.AddDays(-25),
+                    EndDate = DateTime.UtcNow.AddDays(-24),
+                    IsCompleted = true,
+                    RegistryDate = DateTime.UtcNow.AddMonths(-2),
+                    EventId = Events[0].Id,
+                    Event = Events[0],
+                    IsDeleted = false
+                }
+            };
+
+            // Типы документов
+            DocTypes = new List<DocType>
+            {
+                new DocType { Id = rnd.Next(), NameDocType = "Карта" },
+                new DocType { Id = rnd.Next(), NameDocType = "Регламент" }
+            };
+
+            // Документы
+            Docs = new List<Doc>
+            {
+                new Doc
+                {
+                    Id = rnd.Next(),
+                    NameDoc = "Карта трассы",
+                    FileName = "card.pdf",
+                    Docum = new byte[] { 0x01, 0x02 },
+                    IdDocType = DocTypes[0].Id,
+                    DocType = DocTypes[0],
+                    IdEvent = Events[0].Id,
+                    EventInfo = Events[0],
+                    IdCompetition = Competitions[0].Id,
+                    Competition = Competitions[0],
+                    Deleted = false
+                }
+            };
+
+            // Участники мероприятия
+            EventParticipants = new List<EventParticipant>
+            {
+                new EventParticipant
+                {
+                    Id = rnd.Next(),
+                    RoleId = 1,
+                    StatusId = ApplicationStatuses[0].Id,
+                    Status = ApplicationStatuses[0],
+                    DateTime = DateTime.UtcNow.AddDays(-10),
+                    CompetitionId = Competitions[0].Id,
+                    Competition = Competitions[0],
+                    IsDeleted = false
+                },
+                new EventParticipant
+                {
+                    Id = rnd.Next(),
+                    RoleId = 2,
+                    StatusId = ApplicationStatuses[1].Id,
+                    Status = ApplicationStatuses[1],
+                    DateTime = DateTime.UtcNow.AddDays(-5),
+                    CompetitionId = Competitions[0].Id,
+                    Competition = Competitions[0],
+                    IsDeleted = false
+                }
+            };
+
+            // Связываем статусы с участниками
             foreach (var participant in EventParticipants)
             {
-                participant.Role?.EventParticipants?.Add(participant);
                 participant.Status?.EventParticipants?.Add(participant);
             }
+
+            // Добавим связанные сущности в коллекции организаторов/редакторов
+            Potents[0].Events.Add(Events[0]);
+            Potents[1].Competitions.Add(Competitions[0]);
+
+            // Добавим состязание в мероприятие
+            Events[0].Competitions.Add(Competitions[0]);
+            Events[0].Docs.Add(Docs[0]);
         }
     }
+
 }

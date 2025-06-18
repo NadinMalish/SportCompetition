@@ -11,13 +11,11 @@ namespace WebApplication.Controllers
     public class EventParticipantsController : ControllerBase
     {
         private readonly EventParticipantRepository _repository;
-        private readonly RoleRepository _roleRepository;
         private readonly StatusRepository _statusRepository;
 
-        public EventParticipantsController(EventParticipantRepository repository, RoleRepository roleRepository, StatusRepository statusRepository)
+        public EventParticipantsController(EventParticipantRepository repository, StatusRepository statusRepository)
         {
             _repository = repository;
-            _roleRepository = roleRepository;
             _statusRepository = statusRepository;
         }
 
@@ -28,21 +26,15 @@ namespace WebApplication.Controllers
         [HttpGet]
         public async Task<ActionResult<List<EventParticipant>>> GetAllEventParticipantsAsync()
         {
-            var eventParticipants = await _repository.GetParticipantAsync(true);
+            var eventParticipants = await _repository.GetParticipantAsync(asNoTracking: true);
             var eventParticipantModelList = eventParticipants.Select(ep => new EventParticipantResponse
             {
                 Id = ep.Id,
-                Comment = ep.Comment,
                 DateTime = ep.DateTime,
                 Status = new ApplicationStatusResponse()
                 {
                     Id = ep.Status.Id,
                     Name = ep.Status.Name
-                },
-                Role = new RoleResponse()
-                {
-                    Id = ep.Role.Id,
-                    Name = ep.Role.Name
                 }
             }).ToList();
 
@@ -57,7 +49,7 @@ namespace WebApplication.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<List<EventParticipant>>> GetEventParticipantByIdAsync(int id)
         {
-            EventParticipant? eventParticipant = await _repository.GetEventParticipantById(id, true);
+            EventParticipant? eventParticipant = await _repository.GetEventParticipantById(id, asNoTracking: true);
             
             if (eventParticipant is null)
                 return NotFound();
@@ -65,13 +57,7 @@ namespace WebApplication.Controllers
             EventParticipantResponse response = new EventParticipantResponse()
             {
                 Id = eventParticipant.Id,
-                Comment = eventParticipant.Comment,
                 DateTime = eventParticipant.DateTime,
-                Role = new RoleResponse()
-                {
-                    Id = eventParticipant.Role.Id,
-                    Name = eventParticipant.Role.Name
-                },
                 Status = new ApplicationStatusResponse()
                 {
                     Id = eventParticipant.Status.Id,
@@ -90,15 +76,12 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEventParticipantAsync(CreateEventParticipantRequest createEventParticipantRequest)
         {
-            if (!await _roleRepository.IsRoleExistsByIdAsync(createEventParticipantRequest.RoleId)) 
-                return BadRequest("Роль не найдена");
             if (!await _statusRepository.IsStatusExistsByIdAsync(createEventParticipantRequest.StatusId))
                 return BadRequest("Статус не найден");
 
             EventParticipant eventParticipant = new EventParticipant()
             {
                 DateTime = DateTime.Now,
-                Role = await _roleRepository.GetByIdAsync(createEventParticipantRequest.RoleId),
                 Status = await _statusRepository.GetByIdAsync(createEventParticipantRequest.StatusId)
             };
 
@@ -118,13 +101,7 @@ namespace WebApplication.Controllers
             if (!await _statusRepository.IsStatusExistsByIdAsync(request.StatusId))
                 return BadRequest();
 
-            //TODO: ограничение на размер комментария
-
-            eventParticipant.Comment = request.Comment;
             eventParticipant.StatusId = request.StatusId;
-            eventParticipant.SetStatusId = request.SetStatusId;
-            eventParticipant.IsActual = request.IsActual;
-            eventParticipant.IsCaptainConfirmed = request.IsCaptainConfirmed;
             await _repository.UpdateAsync(eventParticipant);
 
             return NoContent();

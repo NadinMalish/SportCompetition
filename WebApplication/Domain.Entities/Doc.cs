@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     /// <summary>
     /// Документы
@@ -14,7 +8,6 @@ namespace Domain.Entities
         public string? NameDoc { get; set; }
         public string? FileName { get; set; }
         public byte[]? Docum { get; set; }
-        public string? CommentDoc { get; set; }
         public int? IdDocType { get; set; }
         public int? IdEvent { get; set; }
         public int? IdCompetition { get; set; }

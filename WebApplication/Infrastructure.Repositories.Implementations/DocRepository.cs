@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<List<Doc>> GetSpisDoc()
         {
-            return Context.docs.Where(x => !x.Deleted).ToList();
+            return Context.Docs.Where(x => !x.Deleted).ToList();
         }
 
         public async Task<Doc> AddDoc(Doc request)
@@ -41,12 +41,12 @@ namespace Infrastructure.Repositories.Implementations
 
         public async Task<bool> SetDelDoclById(int id)
         {
-            Doc item = await Context.docs.FirstOrDefaultAsync(x => x.Id == id);
+            Doc item = await Context.Docs.FirstOrDefaultAsync(x => x.Id == id);
 
             if (item != null)
             {
                 item.Deleted = true;
-                Context.docs.Update(item);
+                Context.Docs.Update(item);
                 await Context.SaveChangesAsync();
                 return true;
             }
