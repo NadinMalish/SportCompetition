@@ -1,14 +1,4 @@
-<<<<<<< HEAD
 ﻿namespace Domain.Entities
-=======
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Entities
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 {
     /// <summary>
     /// Потенциальный участник
@@ -28,10 +18,5 @@ namespace Domain.Entities
 
         public virtual ICollection<EventInfo> Events { get; set; } = new List<EventInfo>();
         public virtual ICollection<Competition> Competitions { get; set; } = new List<Competition>();
-<<<<<<< HEAD
-=======
-        public virtual ICollection<Team> ConsideredTeams { get; set; } = new List<Team>();
-        public virtual ICollection<Team> CreatedTeams { get; set; } = new List<Team>();
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
     }
 }

@@ -17,18 +17,17 @@ namespace Infrastructure.Repositories.ImplementationInfrastructure.EntityFramewo
 
             var fakeData = new FakeDataFactory();
 
-<<<<<<< HEAD
             //// Добавляем пользователей
-            //await context.Potents.AddRangeAsync(fakeData.Potents);
+            await context.Potents.AddRangeAsync(fakeData.Potents);
 
             // Добавляем статусы заявок
             await context.ApplicationStatuses.AddRangeAsync(fakeData.ApplicationStatuses);
 
             //// Добавляем мероприятия
-            //await context.Events.AddRangeAsync(fakeData.Events);
+            await context.Events.AddRangeAsync(fakeData.Events);
 
             //// Добавляем состязания
-            //await context.Competitions.AddRangeAsync(fakeData.Competitions);
+            await context.Competitions.AddRangeAsync(fakeData.Competitions);
 
             //// Добавляем типы документов
             //await context.DocTypes.AddRangeAsync(fakeData.DocTypes);
@@ -40,17 +39,6 @@ namespace Infrastructure.Repositories.ImplementationInfrastructure.EntityFramewo
             await context.EventParticipants.AddRangeAsync(fakeData.EventParticipants);
 
 
-=======
-            // Добавляем роли
-            await context.Roles.AddRangeAsync(fakeData.Roles);
-
-            // Добавляем статусы
-            await context.ApplicationStatuses.AddRangeAsync(fakeData.ApplicationStatuses);
-
-            // Добавляем участников мероприятий
-            await context.EventParticipants.AddRangeAsync(fakeData.EventParticipants);
-
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             // Сохраняем всё
             await context.SaveChangesAsync();
         }

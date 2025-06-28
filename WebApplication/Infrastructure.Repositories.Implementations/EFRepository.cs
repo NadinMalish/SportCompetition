@@ -70,21 +70,13 @@ namespace Infrastructure.Repositories.Implementations
             await Context.SaveChangesAsync();
         }
 
-<<<<<<< HEAD
         protected void CheckAsNoTracking(ref IQueryable<T> query, bool asNoTracking)
-=======
-        protected void checkAsNoTracking(ref IQueryable<T> query, bool asNoTracking)
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         {
             if (asNoTracking)
                 query = query.AsNoTracking();
         }
 
-<<<<<<< HEAD
         public async Task<bool> CheckExistsById(int? id)
-=======
-        public async Task<bool> FlById(int? id)
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         {
             T item = null;
             if (id != null) item = await _data.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);

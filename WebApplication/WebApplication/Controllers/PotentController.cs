@@ -164,14 +164,6 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         // -- Шифрование пароля --
         string HashPass(string input)
         {

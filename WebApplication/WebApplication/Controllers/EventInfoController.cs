@@ -33,21 +33,10 @@ namespace WebApplication.Controllers
             {
                 Id = q.Id,
                 Name = q.Name,
-<<<<<<< HEAD
 
                 BeginDate = q.BeginDate,
                 EndDate = q.EndDate,
                 RegistrationDate = q.RegistrationDate,
-=======
-                Feedback = q.Feedback,
-
-                BeginDate = q.BeginDate,
-                EndDate = q.EndDate,
-                StartRegistrationDate = q.StartRegistrationDate,
-                FinishRegistrationDate = q.FinishRegistrationDate,
-                StartActualControlDate = q.StartActualControlDate,
-                FinishActualControlDate = q.FinishActualControlDate,
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
                 IsCompleted = q.IsCompleted,
                 RegistryDate = q.RegistryDate,
@@ -74,21 +63,10 @@ namespace WebApplication.Controllers
             {
                 Id = eventInfo.Id,
                 Name = eventInfo.Name,
-<<<<<<< HEAD
 
                 BeginDate = eventInfo.BeginDate,
                 EndDate = eventInfo.EndDate,
                 RegistrationDate = eventInfo.RegistrationDate,
-=======
-                Feedback = eventInfo.Feedback,
-
-                BeginDate = eventInfo.BeginDate,
-                EndDate = eventInfo.EndDate,
-                StartRegistrationDate = eventInfo.StartRegistrationDate,
-                FinishRegistrationDate = eventInfo.FinishRegistrationDate,
-                StartActualControlDate = eventInfo.StartActualControlDate,
-                FinishActualControlDate = eventInfo.FinishActualControlDate,
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
                 IsCompleted = eventInfo.IsCompleted,
                 RegistryDate = eventInfo.RegistryDate,
@@ -114,21 +92,10 @@ namespace WebApplication.Controllers
             var eventInfo = new EventInfo()
             {
                 Name = request.Name,
-<<<<<<< HEAD
 
                 BeginDate = request.BeginDate.ToUniversalTime(),
                 EndDate = request.EndDate.ToUniversalTime(),
                 RegistrationDate = request.RegistrationDate.ToUniversalTime(),
-=======
-                Feedback = request.Feedback,
-
-                BeginDate = request.BeginDate,
-                EndDate = request.EndDate,
-                StartRegistrationDate = request.StartRegistrationDate,
-                FinishRegistrationDate = request.FinishRegistrationDate,
-                StartActualControlDate = request.StartActualControlDate,
-                FinishActualControlDate = request.FinishActualControlDate,
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
                 IsCompleted = false,
                 RegistryDate = DateTime.Now,
@@ -157,21 +124,10 @@ namespace WebApplication.Controllers
                 return NotFound($"Event with id={id} does not exists.");
 
             eventInfo.Name = request.Name;
-<<<<<<< HEAD
 
             eventInfo.BeginDate = request.BeginDate;
             eventInfo.EndDate = request.EndDate;
             eventInfo.RegistrationDate = request.RegistrationDate;
-=======
-            eventInfo.Feedback = request.Feedback;
-
-            eventInfo.BeginDate = request.BeginDate;
-            eventInfo.EndDate = request.EndDate;
-            eventInfo.StartRegistrationDate = request.StartRegistrationDate;
-            eventInfo.FinishRegistrationDate = request.FinishRegistrationDate;
-            eventInfo.StartActualControlDate = request.StartActualControlDate;
-            eventInfo.FinishActualControlDate = request.FinishActualControlDate;
->>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
             eventInfo.IsCompleted = false;
             eventInfo.RegistryDate = DateTime.Now;
