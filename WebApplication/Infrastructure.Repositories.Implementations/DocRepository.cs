@@ -9,9 +9,9 @@ namespace Infrastructure.Repositories.Implementations
     {
         public DocRepository(Context context) : base(context) { }
 
-        public async Task<List<Doc>> GetSpisDoc()
+        public async Task<List<Doc>> GetDocList()
         {
-            return Context.Docs.Where(x => !x.Deleted).ToList();
+            return await Context.Docs.ToListAsync();
         }
 
         public async Task<Doc> AddDoc(Doc request)
@@ -45,8 +45,9 @@ namespace Infrastructure.Repositories.Implementations
 
             if (item != null)
             {
-                item.Deleted = true;
-                Context.Docs.Update(item);
+                //item.Deleted = true;
+                //Context.Docs.Update(item);
+                Context.Docs.Remove(item);
                 await Context.SaveChangesAsync();
                 return true;
             }

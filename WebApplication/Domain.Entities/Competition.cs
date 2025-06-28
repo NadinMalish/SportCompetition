@@ -38,11 +38,6 @@
         public required EventInfo Event { get; set; }
         public required int EventId { get; set; }
 
-        /// <summary>
-        /// Признак удаления
-        /// </summary>
-        public bool IsDeleted { get; set; }
-
         public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
     }
 }

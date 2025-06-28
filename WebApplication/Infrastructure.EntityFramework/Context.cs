@@ -34,7 +34,6 @@ namespace Infrastructure.EntityFramework
                     .HasColumnName("name_doc");
                 entity.Property(e => e.Docum).HasColumnName("docum");
                 entity.Property(e => e.CommentDoc).HasColumnName("comment_doc");
-                entity.Property(e => e.Deleted).HasColumnName("deleted");
                 entity.Property(e => e.IdCompetition).HasColumnName("id_competition");
                 entity.Property(e => e.IdDocType).HasColumnName("id_doc_type");
                 entity.Property(e => e.IdEvent).HasColumnName("id_event");
@@ -88,9 +87,6 @@ namespace Infrastructure.EntityFramework
                 entity.Property(e => e.Login)
                     .HasMaxLength(20)
                     .HasColumnName("login");
-                entity.Property(e => e.Pass)
-                    .HasMaxLength(64)
-                    .HasColumnName("pass");
                 entity.Property(e => e.Surname)
                     .HasMaxLength(20)
                     .HasColumnName("surname");
@@ -98,7 +94,6 @@ namespace Infrastructure.EntityFramework
                     .HasMaxLength(1)
                     .HasColumnName("gender");
                 entity.Property(e => e.DateBirth).HasColumnName("date_birth");
-                entity.Property(e => e.Deleted).HasColumnName("deleted");
             });
 
             modelBuilder.Entity<EventInfo>(entity =>

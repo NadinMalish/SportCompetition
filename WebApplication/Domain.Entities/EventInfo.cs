@@ -37,11 +37,6 @@
         public required Potent Organizer { get; set; }
         public required int OrganizerId { get; set; }
 
-        /// <summary>
-        /// Признак удаления
-        /// </summary>
-        public bool IsDeleted { get; set; } = false;
-
         public virtual ICollection<Competition> Competitions { get; set; } = new List<Competition>();
         public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
     }

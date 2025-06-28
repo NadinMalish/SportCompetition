@@ -38,9 +38,7 @@ namespace Infrastructure.EntityFramework
                     Gender = "M",
                     Email = "",
                     Login = "Ivan",
-                    Pass = "Ivan",
-                    DatReg = DateTime.Now,
-                    Deleted = false
+                    DatReg = DateTime.Now
                 }
             };
 
@@ -56,8 +54,7 @@ namespace Infrastructure.EntityFramework
                     RegistryDate = new DateTime(),
                     IsCompleted = true,
                     Organizer = Potents.First(),
-                    OrganizerId = Potents.First().Id,
-                    IsDeleted = false
+                    OrganizerId = Potents.First().Id
                 }
             };
 
@@ -73,8 +70,7 @@ namespace Infrastructure.EntityFramework
                     RegistryDate = new DateTime(),
                     IsCompleted = true,
                     Event = Events.First(),
-                    EventId = Events.First().Id,
-                    IsDeleted = false
+                    EventId = Events.First().Id
                 }
             };
 
@@ -97,7 +93,6 @@ namespace Infrastructure.EntityFramework
                     Id = rnd.Next(),
                     ApplicationStatusId = ApplicationStatuses[1].Id,
                     DateTime = DateTime.UtcNow.AddDays(-3),
-                    IsDeleted = false,
                     Status = ApplicationStatuses[1],
                     ParticipantCompetition = Competitions.First()
                 },
@@ -108,7 +103,6 @@ namespace Infrastructure.EntityFramework
                     Id = rnd.Next(),
                     ApplicationStatusId = ApplicationStatuses[2].Id,
                     DateTime = DateTime.UtcNow.AddDays(-1),
-                    IsDeleted = false,
                     Status = ApplicationStatuses[2],
                     ParticipantCompetition = Competitions.First()
                 }

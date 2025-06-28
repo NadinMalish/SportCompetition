@@ -85,7 +85,7 @@ namespace WebApplication.Controllers
         [HttpGet("{login},{pass}")]
         public async Task<ActionResult<Potent>> GetEmployeeByLogin(string login, string pass)
         {
-            var _potent = await _potentRepository.GetPotentByLogin(login, HashPass(pass));
+            var _potent = await _potentRepository.GetPotentByLogin(login);
             return Ok(_potent);
         }
 
@@ -107,7 +107,8 @@ namespace WebApplication.Controllers
                     DateBirth = request.date_birth,
                     Email = request.Email,
                     Login = request.Login,
-                    Pass = HashPass(request.Pass),
+                    // TODO: что-то изменится, когда заработает авторизация. А пока так.
+                    //Pass = HashPass(request.Pass),
                     Gender = (request.gender.ToUpper() == "M") ? "m" : (request.gender.ToUpper() == "М") ? "m" : "w"
                 };
 
@@ -139,7 +140,6 @@ namespace WebApplication.Controllers
                 item.DateBirth = request.date_birth;
                 item.Gender = (request.gender.ToUpper() == "M") ? "m" : (request.gender.ToUpper() == "М") ? "m" : "w";
                 item.Login = request.Login;
-                item.Pass = HashPass(request.Pass);
 
                 await _potentRepository.UpdPotent(id, item);
                 return Ok();
@@ -164,13 +164,14 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
+        // TODO: что-то изменится, когда заработает авторизация. А пока так.
         // -- Шифрование пароля --
-        string HashPass(string input)
-        {
-            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
-            byte[] hash = SHA256.HashData(inputBytes);
-            return Convert.ToHexString(hash);
-        }
+        //string HashPass(string input)
+        //{
+        //    byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+        //    byte[] hash = SHA256.HashData(inputBytes);
+        //    return Convert.ToHexString(hash);
+        //}
 
 
     }

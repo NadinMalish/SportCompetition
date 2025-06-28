@@ -38,10 +38,5 @@ namespace WebApplication.Models
         /// Мероприятие
         /// </summary>
         public required EventInfo EventInfo { get; set; }
-
-        /// <summary>
-        /// Признак удаления
-        /// </summary>
-        public bool IsDeleted { get; set; }
     }
 }

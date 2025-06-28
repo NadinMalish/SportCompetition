@@ -46,8 +46,7 @@ namespace WebApplication.Controllers
                 EndDate = q.EndDate,
                 EventInfo = q.Event,
                 IsCompleted = q.IsCompleted,
-                RegistryDate = q.RegistryDate,
-                IsDeleted = q.IsDeleted
+                RegistryDate = q.RegistryDate
             }).ToList();
 
             return Ok(result);
@@ -73,8 +72,7 @@ namespace WebApplication.Controllers
                 EndDate = competition.EndDate,
                 EventInfo = competition.Event,
                 IsCompleted = competition.IsCompleted,
-                RegistryDate = competition.RegistryDate,
-                IsDeleted = competition.IsDeleted
+                RegistryDate = competition.RegistryDate
             };
 
             return competitionModel;

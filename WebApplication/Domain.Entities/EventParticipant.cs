@@ -18,8 +18,6 @@ namespace Domain.Entities
         /// </summary>
         public DateTime DateTime { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
-
         /// <summary>
         /// Соревнование, на которое была подана заявка
         /// </summary>

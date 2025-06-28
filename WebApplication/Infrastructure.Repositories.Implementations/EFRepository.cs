@@ -45,7 +45,7 @@ namespace Infrastructure.Repositories.Implementations
             bool result = false;
             if (entity != null)
             {
-                Context.Entry(entity).State = EntityState.Modified;
+                Context.Entry(entity).State = EntityState.Deleted;
                 result = true;
                 await SaveChangesAsync();
             }

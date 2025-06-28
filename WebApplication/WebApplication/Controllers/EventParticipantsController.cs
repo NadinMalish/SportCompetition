@@ -124,8 +124,7 @@ namespace WebApplication.Controllers
             if (eventParticipant is null)
                 return NotFound();
 
-            eventParticipant.IsDeleted = true;
-            await _repository.UpdateAsync(eventParticipant);
+            await _repository.DeleteAsync(eventParticipant);
 
             return NoContent();
         }

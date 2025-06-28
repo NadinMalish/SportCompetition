@@ -36,10 +36,5 @@
         ///// Кто зарегистрировал мероприятие (организатор)
         ///// </summary>
         //public required Potent Organizer { get; set; }
-
-        /// <summary>
-        /// Признак удаления
-        /// </summary>
-        public bool IsDeleted { get; set; }
     }
 }

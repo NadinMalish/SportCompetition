@@ -38,7 +38,7 @@ namespace WebApplication.Controllers
         {
             try
             {
-                var _doc = (await _docRepository.GetSpisDoc()).ToList();
+                var _doc = (await _docRepository.GetDocList()).ToList();
                 var docModelList = _doc.Select(x => new DocShortResponse()
                 {
                     Id = x.Id,

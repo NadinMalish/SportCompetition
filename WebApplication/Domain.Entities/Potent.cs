@@ -12,9 +12,7 @@
         public string Gender { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Login { get; set; } = null!;
-        public string Pass { get; set; } = null!;
         public DateTime DatReg { get; set; }
-        public bool Deleted { get; set; }
 
         public virtual ICollection<EventInfo> Events { get; set; } = new List<EventInfo>();
         public virtual ICollection<Competition> Competitions { get; set; } = new List<Competition>();

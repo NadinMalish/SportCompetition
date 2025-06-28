@@ -39,9 +39,7 @@ namespace WebApplication.Controllers
                 RegistrationDate = q.RegistrationDate,
 
                 IsCompleted = q.IsCompleted,
-                RegistryDate = q.RegistryDate,
-
-                IsDeleted = q.IsDeleted
+                RegistryDate = q.RegistryDate
             }).ToList();
 
             return Ok(result);
@@ -69,9 +67,7 @@ namespace WebApplication.Controllers
                 RegistrationDate = eventInfo.RegistrationDate,
 
                 IsCompleted = eventInfo.IsCompleted,
-                RegistryDate = eventInfo.RegistryDate,
-
-                IsDeleted = eventInfo.IsDeleted
+                RegistryDate = eventInfo.RegistryDate
             };
 
             return eventInfoModel;
@@ -99,8 +95,6 @@ namespace WebApplication.Controllers
 
                 IsCompleted = false,
                 RegistryDate = DateTime.Now,
-
-                IsDeleted = false,
 
                 Organizer = organizer,
                 OrganizerId = request.OrganizerId
@@ -131,8 +125,6 @@ namespace WebApplication.Controllers
 
             eventInfo.IsCompleted = false;
             eventInfo.RegistryDate = DateTime.Now;
-
-            eventInfo.IsDeleted = false;
 
             await _eventInfoRepository.UpdateAsync(eventInfo);
 

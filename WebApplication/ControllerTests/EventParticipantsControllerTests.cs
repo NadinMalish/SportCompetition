@@ -116,6 +116,7 @@ namespace ControllerTests
         [Theory, AutoData]
         public async Task CreateEventParticipantAsync_RoleNotExists_ReturnsBadRequest(int roleId)
         {
+            throw new NotImplementedException();
             ////arrange
             //ApplicationStatus status = GetStatus();
             //CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = status.Id, RoleId = roleId };
@@ -182,15 +183,16 @@ namespace ControllerTests
         [Fact]
         public async Task DeleteEventParticipantAsync_EntityIsExists_ShouldBeSetFieldDeletedInTrue()
         {
-            //arrange
-            EventParticipant eventParticipant = GetEventParticipant();
+            throw new NotImplementedException();
+            ////arrange
+            //EventParticipant eventParticipant = GetEventParticipant();
 
-            //act
-            var actionResult = await _eventParticipantsController.DeleteEventParticipantAsync(eventParticipant.Id);
+            ////act
+            //var actionResult = await _eventParticipantsController.DeleteEventParticipantAsync(eventParticipant.Id);
 
-            //assert
-            actionResult.Should().BeAssignableTo<NoContentResult>();
-            Assert.True(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsDeleted);
+            ////assert
+            //actionResult.Should().BeAssignableTo<NoContentResult>();
+            //Assert.True(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsDeleted);
         }
 
         [Theory, AutoData]
