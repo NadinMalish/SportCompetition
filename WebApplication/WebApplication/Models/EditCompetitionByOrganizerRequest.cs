@@ -20,6 +20,8 @@ namespace WebApplication.Models
         /// Дата и время окончания состязания
         /// </summary>
         public DateTime EndDate { get; set; }
+<<<<<<< HEAD
+=======
 
         /// <summary>
         /// Минимальное количество членов команды
@@ -29,5 +31,6 @@ namespace WebApplication.Models
         /// Максимальное количество членов команды
         /// </summary>
         public int? MaxComandSize { get; set; }
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
     }
 }

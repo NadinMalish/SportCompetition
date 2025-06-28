@@ -11,7 +11,11 @@ namespace WebApplication.Models
         /// <summary>
         /// Тип состязания
         /// </summary>
+<<<<<<< HEAD
+        public required CompetitionTypes CompetitionType { get; set; } = CompetitionTypes.Single;
+=======
         public required CompetitionTypes CompetitionType { get; set; }
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         /// <summary>
         /// Дата и время начала состязания
         /// </summary>
@@ -22,6 +26,11 @@ namespace WebApplication.Models
         public DateTime EndDate { get; set; }
 
         /// <summary>
+<<<<<<< HEAD
+        /// Идентификатор мероприятия, в рамках которого проходит состязание
+        /// </summary>
+        public int EventId { get; set; }
+=======
         /// Минимальное количество членов команды
         /// </summary>
         public int? MinComandSize { get; set; }
@@ -39,5 +48,6 @@ namespace WebApplication.Models
         /// Идентификатор того, кто создал состязание
         /// </summary>
         public int EditorId { get; set; }
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
     }
 }

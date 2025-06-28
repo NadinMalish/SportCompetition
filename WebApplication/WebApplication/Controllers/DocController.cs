@@ -73,9 +73,15 @@ namespace WebApplication.Controllers
                     NameDoc = request.Name_doc.Trim(),
                     FileName = null,
                     CommentDoc = request.Comment_doc,
+<<<<<<< HEAD
+                    IdDocType = (await _doctypeRepository.CheckExistsById(request.Id_doc_type)) ? request.Id_doc_type : null,
+                    IdEvent = (await _eventRepository.CheckExistsById(request.Id_event)) ? request.Id_event : null,
+                    IdCompetition = (await _competitionRepository.CheckExistsById(request.Id_competition)) ? request.Id_competition : null,
+=======
                     IdDocType = (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : null,
                     IdEvent = (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : null,
                     IdCompetition = (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : null,
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
                     Docum = null
                 };
 
@@ -151,9 +157,15 @@ namespace WebApplication.Controllers
 
                 doc.NameDoc = request.Name_doc;
                 doc.CommentDoc = request.Comment_doc;
+<<<<<<< HEAD
+                doc.IdDocType = (request.Id_doc_type==0) ? null : (await _doctypeRepository.CheckExistsById(request.Id_doc_type)) ? request.Id_doc_type : doc.IdDocType;
+                doc.IdEvent = (request.Id_event == 0) ? null : (await _eventRepository.CheckExistsById(request.Id_event)) ? request.Id_event : doc.IdEvent;
+                doc.IdCompetition = (request.Id_competition == 0) ? null : (await _competitionRepository.CheckExistsById(request.Id_competition)) ? request.Id_competition : doc.IdCompetition;
+=======
                 doc.IdDocType = (request.Id_doc_type==0) ? null : (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : doc.IdDocType;
                 doc.IdEvent = (request.Id_event == 0) ? null : (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : doc.IdEvent;
                 doc.IdCompetition = (request.Id_competition == 0) ? null : (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : doc.IdCompetition;
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
                 await _docRepository.UpdateAsync(doc);
 
                 return Ok();
@@ -166,7 +178,11 @@ namespace WebApplication.Controllers
 
 
         /// <summary>
+<<<<<<< HEAD
+        /// Отметить записть удаленной в списке Документов по Id
+=======
         /// Ометить записть удаленной в списке Документов по Id
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         /// </summary>
         /// <returns></returns>
         [HttpDelete("{id}")]

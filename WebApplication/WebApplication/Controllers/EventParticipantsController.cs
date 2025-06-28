@@ -11,6 +11,18 @@ namespace WebApplication.Controllers
     public class EventParticipantsController : ControllerBase
     {
         private readonly EventParticipantRepository _repository;
+<<<<<<< HEAD
+        private readonly StatusRepository _statusRepository;
+        private readonly CompetitionRepository _competitionRepository;
+
+        public EventParticipantsController(EventParticipantRepository repository,
+            StatusRepository statusRepository,
+            CompetitionRepository competitionRepository)
+        {
+            _repository = repository;
+            _statusRepository = statusRepository;
+            _competitionRepository = competitionRepository;
+=======
         private readonly RoleRepository _roleRepository;
         private readonly StatusRepository _statusRepository;
 
@@ -19,6 +31,7 @@ namespace WebApplication.Controllers
             _repository = repository;
             _roleRepository = roleRepository;
             _statusRepository = statusRepository;
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         }
 
         /// <summary>
@@ -32,18 +45,24 @@ namespace WebApplication.Controllers
             var eventParticipantModelList = eventParticipants.Select(ep => new EventParticipantResponse
             {
                 Id = ep.Id,
+<<<<<<< HEAD
+=======
                 Comment = ep.Comment,
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
                 DateTime = ep.DateTime,
                 Status = new ApplicationStatusResponse()
                 {
                     Id = ep.Status.Id,
                     Name = ep.Status.Name
                 },
+<<<<<<< HEAD
+=======
                 Role = new RoleResponse()
                 {
                     Id = ep.Role.Id,
                     Name = ep.Role.Name
                 }
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             }).ToList();
 
             return Ok(eventParticipantModelList);
@@ -57,7 +76,11 @@ namespace WebApplication.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<List<EventParticipant>>> GetEventParticipantByIdAsync(int id)
         {
+<<<<<<< HEAD
+            var eventParticipant = await _repository.GetEventParticipantById(id, true);
+=======
             EventParticipant? eventParticipant = await _repository.GetEventParticipantById(id, true);
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             
             if (eventParticipant is null)
                 return NotFound();
@@ -65,6 +88,9 @@ namespace WebApplication.Controllers
             EventParticipantResponse response = new EventParticipantResponse()
             {
                 Id = eventParticipant.Id,
+<<<<<<< HEAD
+                DateTime = eventParticipant.DateTime,
+=======
                 Comment = eventParticipant.Comment,
                 DateTime = eventParticipant.DateTime,
                 Role = new RoleResponse()
@@ -72,6 +98,7 @@ namespace WebApplication.Controllers
                     Id = eventParticipant.Role.Id,
                     Name = eventParticipant.Role.Name
                 },
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
                 Status = new ApplicationStatusResponse()
                 {
                     Id = eventParticipant.Status.Id,
@@ -85,21 +112,36 @@ namespace WebApplication.Controllers
         /// <summary>
         /// Создать заявку
         /// </summary>
+<<<<<<< HEAD
+        /// <param name="createEventParticipantRequest"></param>
+=======
         /// <param name="createOrEditEventParticipant"></param>
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateEventParticipantAsync(CreateEventParticipantRequest createEventParticipantRequest)
         {
+<<<<<<< HEAD
+            var competition = await _competitionRepository.GetByIdAsync(createEventParticipantRequest.CompetitionId);
+            if (competition is null)
+                return NotFound();
+=======
             if (!await _roleRepository.IsRoleExistsByIdAsync(createEventParticipantRequest.RoleId)) 
                 return BadRequest("Роль не найдена");
             if (!await _statusRepository.IsStatusExistsByIdAsync(createEventParticipantRequest.StatusId))
                 return BadRequest("Статус не найден");
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
             EventParticipant eventParticipant = new EventParticipant()
             {
                 DateTime = DateTime.Now,
+<<<<<<< HEAD
+                Status = await _statusRepository.GetByIdAsync(createEventParticipantRequest.StatusId),
+                ParticipantCompetition = competition
+=======
                 Role = await _roleRepository.GetByIdAsync(createEventParticipantRequest.RoleId),
                 Status = await _statusRepository.GetByIdAsync(createEventParticipantRequest.StatusId)
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             };
 
             await _repository.AddEventParticipantAsync(eventParticipant);
@@ -112,11 +154,18 @@ namespace WebApplication.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> EditEventParticipantAsync(int id, [FromBody] EditEventParticipantRequest request)
         {
+<<<<<<< HEAD
+            var eventParticipant = await _repository.GetEventParticipantById(id);
+=======
             EventParticipant? eventParticipant = await _repository.GetEventParticipantById(id);
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             if (eventParticipant is null)
                 return NotFound();
             if (!await _statusRepository.IsStatusExistsByIdAsync(request.StatusId))
                 return BadRequest();
+<<<<<<< HEAD
+            eventParticipant.ApplicationStatusId = request.StatusId;
+=======
 
             //TODO: ограничение на размер комментария
 
@@ -125,6 +174,7 @@ namespace WebApplication.Controllers
             eventParticipant.SetStatusId = request.SetStatusId;
             eventParticipant.IsActual = request.IsActual;
             eventParticipant.IsCaptainConfirmed = request.IsCaptainConfirmed;
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             await _repository.UpdateAsync(eventParticipant);
 
             return NoContent();
@@ -138,7 +188,11 @@ namespace WebApplication.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteEventParticipantAsync(int id) 
         {
+<<<<<<< HEAD
+            var eventParticipant = await _repository.GetByIdAsync(id);
+=======
             EventParticipant eventParticipant = await _repository.GetByIdAsync(id);
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             if (eventParticipant is null)
                 return NotFound();
 

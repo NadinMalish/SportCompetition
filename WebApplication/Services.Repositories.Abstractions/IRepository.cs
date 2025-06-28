@@ -54,6 +54,10 @@ namespace Services.Repositories.Abstractions
         /// <summary>
         /// Проверка на наличик записи по Id
         /// </summary>
+<<<<<<< HEAD
+        Task<bool> CheckExistsById(int? id);
+=======
         Task<bool> FlById(int? id);
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
     }
 }

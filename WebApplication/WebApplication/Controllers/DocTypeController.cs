@@ -9,7 +9,11 @@ using WebApplication.Models;
 namespace WebApplication.Controllers
 {
     /// <summary>
+<<<<<<< HEAD
+    /// Справочник "Категории Документов"
+=======
     /// справочник Категории Документов
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -23,7 +27,11 @@ namespace WebApplication.Controllers
         }
 
         /// <summary>
+<<<<<<< HEAD
+        /// Получение данных из справочника "Категории Документов"
+=======
         /// Получение данных из справочника Категории Документов
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -50,7 +58,11 @@ namespace WebApplication.Controllers
 
 
         /// <summary>
+<<<<<<< HEAD
+        /// Получить данные из справочника "Категории Документов" по Id
+=======
         /// Получить данные из справочника Категори Документа по Id
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id:int}")]
@@ -62,7 +74,11 @@ namespace WebApplication.Controllers
 
 
         /// <summary>
+<<<<<<< HEAD
+        /// Удаление записть из справочника "Категории Документов" по Id
+=======
         /// Удаление записть из справочника Категори Документа по Id
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         /// </summary>
         /// <returns></returns>
         [HttpDelete]
@@ -76,7 +92,11 @@ namespace WebApplication.Controllers
 
 
         /// <summary>
+<<<<<<< HEAD
+        /// Добавить запись в справочник "Категории Документов"
+=======
         /// Добавить запись в справочник Категори Документа
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         /// </summary>
         /// <returns></returns>
         [HttpPost]

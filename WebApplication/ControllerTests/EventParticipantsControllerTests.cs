@@ -29,11 +29,17 @@ namespace ControllerTests
 
             _context = new Context(_options);
             _fixture.Register(() => new EventParticipantRepository(_context));
+<<<<<<< HEAD
+            _fixture.Register(() => new StatusRepository(_context));
+
+            _eventParticipantsController = _fixture.Build<EventParticipantsController>().OmitAutoProperties().Create();
+=======
             _fixture.Register(() => new RoleRepository(_context));
             _fixture.Register(() => new StatusRepository(_context));
 
             _eventParticipantsController = _fixture.Build<EventParticipantsController>().OmitAutoProperties().Create();
             _fixture.Customize<Role>(b => b.Without(r => r.EventParticipants));
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
             _fixture.Customize<ApplicationStatus>(b => b.Without(s => s.EventParticipants));
         }
 
@@ -46,6 +52,8 @@ namespace ControllerTests
             return eventParticipant;
         }
 
+<<<<<<< HEAD
+=======
         //Создает и заносит Role в бд
         public Role GetRole()
         {
@@ -54,6 +62,7 @@ namespace ControllerTests
             return role;
         }
 
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         //Создает и заносит ApplicationStatus в бд
         public ApplicationStatus GetStatus()
         {
@@ -113,8 +122,12 @@ namespace ControllerTests
         {
             //arrange
             ApplicationStatus status = GetStatus();
+<<<<<<< HEAD
+            CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = status.Id };
+=======
             Role role = GetRole();
             CreateEventParticipantRequest request = new CreateEventParticipantRequest() { RoleId = role.Id, StatusId = status.Id };
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
             //act
             var actionResult = await _eventParticipantsController.CreateEventParticipantAsync(request);
@@ -127,6 +140,17 @@ namespace ControllerTests
         [Theory, AutoData]
         public async Task CreateEventParticipantAsync_RoleNotExists_ReturnsBadRequest(int roleId)
         {
+<<<<<<< HEAD
+            ////arrange
+            //ApplicationStatus status = GetStatus();
+            //CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = status.Id, RoleId = roleId };
+
+            ////act
+            //var actionResult = await _eventParticipantsController.CreateEventParticipantAsync(request);
+
+            ////assert
+            //actionResult.Should().BeAssignableTo<BadRequestObjectResult>();
+=======
             //arrange
             ApplicationStatus status = GetStatus();
             CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = status.Id, RoleId = roleId };
@@ -136,14 +160,19 @@ namespace ControllerTests
 
             //assert
             actionResult.Should().BeAssignableTo<BadRequestObjectResult>();
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         }
 
         [Theory, AutoData]
         public async Task CreateEventParticipantAsync_StatusNotExists_ReturnsBadRequest(int statusId)
         {
             //arrange
+<<<<<<< HEAD
+            CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = statusId };
+=======
             Role role = GetRole();
             CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = statusId, RoleId = role.Id };
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
             //act
             var actionResult = await _eventParticipantsController.CreateEventParticipantAsync(request);
@@ -165,11 +194,15 @@ namespace ControllerTests
 
             //assert
             actionResult.Should().BeAssignableTo<NoContentResult>();
+<<<<<<< HEAD
+            Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).ApplicationStatusId, request.StatusId);
+=======
             Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).StatusId, request.StatusId);
             Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).Comment, request.Comment);
             Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).SetStatusId, request.SetStatusId);
             Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsActual, request.IsActual);
             Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsCaptainConfirmed, request.IsCaptainConfirmed);
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
         }
 
         [Theory, AutoData]

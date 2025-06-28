@@ -8,6 +8,12 @@ namespace Domain.Entities
     public class EventParticipant : BaseEntity
     {
         /// <summary>
+<<<<<<< HEAD
+        /// Статус заявки участника
+        /// </summary>
+        public required ApplicationStatus Status { get; set; }
+        public int ApplicationStatusId { get; set; }
+=======
         /// Код участника
         /// </summary>
         public int RoleId { get; set; }
@@ -37,12 +43,22 @@ namespace Domain.Entities
         /// Участие подтверждено
         /// </summary>
         public bool IsActual { get; set; }
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
 
         /// <summary>
         /// Дата подачи заявки
         /// </summary>
         public DateTime DateTime { get; set; }
 
+<<<<<<< HEAD
+        public bool IsDeleted { get; set; } = false;
+
+        /// <summary>
+        /// Соревнование, на которое была подана заявка
+        /// </summary>
+        public required Competition ParticipantCompetition { get; set; }
+        public int ParticipantCompetitionId { get; set; }
+=======
         /// <summary>
         /// Код пользователя, подавшего заявку
         /// </summary>
@@ -68,5 +84,6 @@ namespace Domain.Entities
         /// Статус заявки участника
         /// </summary>
         public ApplicationStatus Status { get; set; }
+>>>>>>> 58758fae546987d020c423c087ef4ea0f96087c3
     }
 }
