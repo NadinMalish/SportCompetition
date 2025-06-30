@@ -20,14 +20,5 @@ namespace WebApplication.Models
         /// Дата и время окончания состязания
         /// </summary>
         public DateTime EndDate { get; set; }
-
-        /// <summary>
-        /// Минимальное количество членов команды
-        /// </summary>
-        public int? MinComandSize { get; set; }
-        /// <summary>
-        /// Максимальное количество членов команды
-        /// </summary>
-        public int? MaxComandSize { get; set; }
     }
 }

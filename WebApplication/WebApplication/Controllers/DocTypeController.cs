@@ -9,7 +9,7 @@ using WebApplication.Models;
 namespace WebApplication.Controllers
 {
     /// <summary>
-    /// справочник Категории Документов
+    /// Справочник "Категории Документов"
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
         }
 
         /// <summary>
-        /// Получение данных из справочника Категории Документов
+        /// Получение данных из справочника "Категории Документов"
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -50,7 +50,7 @@ namespace WebApplication.Controllers
 
 
         /// <summary>
-        /// Получить данные из справочника Категори Документа по Id
+        /// Получить данные из справочника "Категории Документов" по Id
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id:int}")]
@@ -62,7 +62,7 @@ namespace WebApplication.Controllers
 
 
         /// <summary>
-        /// Удаление записть из справочника Категори Документа по Id
+        /// Удаление записть из справочника "Категории Документов" по Id
         /// </summary>
         /// <returns></returns>
         [HttpDelete]
@@ -76,7 +76,7 @@ namespace WebApplication.Controllers
 
 
         /// <summary>
-        /// Добавить запись в справочник Категори Документа
+        /// Добавить запись в справочник "Категории Документов"
         /// </summary>
         /// <returns></returns>
         [HttpPost]

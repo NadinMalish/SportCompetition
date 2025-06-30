@@ -12,7 +12,7 @@
         /// <summary>
         /// Тип состязания
         /// </summary>
-        public required CompetitionTypes CompetitionType { get; set; }
+        public required CompetitionTypes CompetitionType { get; set; } = CompetitionTypes.Single;
         /// <summary>
         /// Дата и время начала состязания
         /// </summary>
@@ -21,15 +21,6 @@
         /// Дата и время окончания состязания
         /// </summary>
         public DateTime EndDate { get; set; }
-
-        /// <summary>
-        /// Минимальное количество членов команды
-        /// </summary>
-        public int? MinComandSize { get; set; }
-        /// <summary>
-        /// Максимальное количество членов команды
-        /// </summary>
-        public int? MaxComandSize { get; set; }
 
         /// <summary>
         /// Завершён ли ввод данных о состязании
@@ -46,17 +37,6 @@
         /// </summary>
         public required EventInfo Event { get; set; }
         public required int EventId { get; set; }
-
-        /// <summary>
-        /// Кто зарегистрировал состязание
-        /// </summary>
-        public required Potent Editor { get; set; }
-        public required int EditorId { get; set; }
-
-        /// <summary>
-        /// Признак удаления
-        /// </summary>
-        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
     }

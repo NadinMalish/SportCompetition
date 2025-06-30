@@ -3,9 +3,7 @@
     public class EventParticipantResponse
     {
         public int Id { get; set; }
-        public string Comment { get; set; }
         public DateTime DateTime { get; set; }
-        public RoleResponse Role { get; set; }
-        public ApplicationStatusResponse Status { get; set; }
+        public required ApplicationStatusResponse Status { get; set; }
     }
 }

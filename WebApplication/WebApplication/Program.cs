@@ -6,20 +6,21 @@ using Services.Repositories.Abstractions;
 using WebApplication.DataAccess.Repositories;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddDbContext<Context>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-    optionsBuilder => optionsBuilder.MigrationsAssembly("WebApplication"))
-    );
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        optionsBuilder => optionsBuilder.MigrationsAssembly("WebApplication")
+    ));
 
 builder.Services.AddControllers();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
-builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<EventParticipantRepository>();
 builder.Services.AddScoped<StatusRepository>();
 builder.Services.AddScoped<DocTypeRepository>();
 builder.Services.AddScoped<DocRepository>();
 builder.Services.AddScoped<PotentRepository>();
+builder.Services.AddScoped<CompetitionRepository>();
 
 
 builder.Services.AddOpenApiDocument(options =>
@@ -56,9 +57,11 @@ app.UseEndpoints(endpoints =>
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<Context>();
-    //await db.Database.EnsureDeletedAsync();
+    await db.Database.EnsureDeletedAsync();
+    await db.Database.EnsureCreatedAsync();
     //await db.Database.MigrateAsync(); //TODO: Метод не работает :(
-    //await DbInitializer.InitializeAsync(db);
+    await DbInitializer.InitializeAsync(db);
 }
+
 
 await app.RunAsync();

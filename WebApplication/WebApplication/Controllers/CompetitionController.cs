@@ -44,12 +44,9 @@ namespace WebApplication.Controllers
                 CompetitionType = q.CompetitionType,
                 BeginDate = q.BeginDate,
                 EndDate = q.EndDate,
-                MinComandSize = q.MinComandSize,
-                MaxComandSize = q.MaxComandSize,
-                Event = q.Event,
+                EventInfo = q.Event,
                 IsCompleted = q.IsCompleted,
-                RegistryDate = q.RegistryDate,
-                IsDeleted = q.IsDeleted
+                RegistryDate = q.RegistryDate
             }).ToList();
 
             return Ok(result);
@@ -73,12 +70,9 @@ namespace WebApplication.Controllers
                 CompetitionType = competition.CompetitionType,
                 BeginDate = competition.BeginDate,
                 EndDate = competition.EndDate,
-                MinComandSize = competition.MinComandSize,
-                MaxComandSize = competition.MaxComandSize,
-                Event = competition.Event,
+                EventInfo = competition.Event,
                 IsCompleted = competition.IsCompleted,
-                RegistryDate = competition.RegistryDate,
-                IsDeleted = competition.IsDeleted
+                RegistryDate = competition.RegistryDate
             };
 
             return competitionModel;
@@ -95,10 +89,6 @@ namespace WebApplication.Controllers
             var eventIfo = await _eventRepository.GetByIdAsync(request.EventId);
             if (eventIfo == null)
                 return NotFound($"Event with id={request.EventId} does not exists.");
-            //Получаем того, кто создал
-            var editor = await _potentRepository.GetByIdAsync(request.EditorId);
-            if (editor == null)
-                return NotFound($"Potent with id={request.EditorId} does not exists.");
 
             var competition = new Competition()
             {
@@ -106,14 +96,10 @@ namespace WebApplication.Controllers
                 CompetitionType = request.CompetitionType,
                 BeginDate = request.BeginDate,
                 EndDate = request.EndDate,
-                MinComandSize = request.MinComandSize,
-                MaxComandSize = request.MaxComandSize,
                 IsCompleted = false,
                 RegistryDate = DateTime.Now,
                 Event = eventIfo,
-                EventId = request.EventId,
-                Editor = editor,
-                EditorId = request.EditorId
+                EventId = request.EventId
             };
 
             await _competitionRepository.AddAsync(competition);
@@ -137,8 +123,6 @@ namespace WebApplication.Controllers
             competition.CompetitionType = request.CompetitionType;
             competition.BeginDate = request.BeginDate;
             competition.EndDate = request.EndDate;
-            competition.MinComandSize = request.MinComandSize;
-            competition.MaxComandSize = request.MaxComandSize;
             competition.IsCompleted = false;
             competition.RegistryDate = DateTime.Now;
 

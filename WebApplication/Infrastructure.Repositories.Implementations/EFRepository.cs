@@ -45,7 +45,7 @@ namespace Infrastructure.Repositories.Implementations
             bool result = false;
             if (entity != null)
             {
-                Context.Entry(entity).State = EntityState.Modified;
+                Context.Entry(entity).State = EntityState.Deleted;
                 result = true;
                 await SaveChangesAsync();
             }
@@ -70,13 +70,13 @@ namespace Infrastructure.Repositories.Implementations
             await Context.SaveChangesAsync();
         }
 
-        protected void checkAsNoTracking(ref IQueryable<T> query, bool asNoTracking)
+        protected void CheckAsNoTracking(ref IQueryable<T> query, bool asNoTracking)
         {
             if (asNoTracking)
                 query = query.AsNoTracking();
         }
 
-        public async Task<bool> FlById(int? id)
+        public async Task<bool> CheckExistsById(int? id)
         {
             T item = null;
             if (id != null) item = await _data.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);

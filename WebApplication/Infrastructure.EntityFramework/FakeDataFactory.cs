@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using System.Reflection;
 
 namespace Infrastructure.EntityFramework
 {
@@ -13,100 +14,103 @@ namespace Infrastructure.EntityFramework
 
         public List<ApplicationStatus> ApplicationStatuses { get; } = new()
         {
-            new ApplicationStatus { Id = rnd.Next(), Name = "Редактируется" },
-            new ApplicationStatus { Id = rnd.Next(), Name = "Подтверждена капитаном команды" },
-            new ApplicationStatus { Id = rnd.Next(), Name = "Подтверждена администрацией" },
-            new ApplicationStatus { Id = rnd.Next(), Name = "Отклонена капитаном" },
-            new ApplicationStatus { Id = rnd.Next(), Name = "Отклонена администрацией" }
+            new ApplicationStatus { Id = 1, Name = "Редактируется" },
+            new ApplicationStatus { Id = 2, Name = "Подтверждена администрацией" },
+            new ApplicationStatus { Id = 3, Name = "Отклонена администрацией" }
         };
 
-        public List<Role> Roles { get; } = new()
-        {
-            new Role { Id = rnd.Next(), Name = "Участник" },
-            new Role { Id = rnd.Next(), Name = "Судья" },
-            new Role { Id = rnd.Next(), Name = "Секретарь" },
-            new Role { Id = rnd.Next(), Name = "Спортсмен" }
-        };
-
-        public List<EventParticipant> EventParticipants { get; }
+        public List<Potent> Potents { get; } = new();
+        public List<Domain.Entities.EventInfo> Events { get; } = new();
+        public List<Competition> Competitions { get; } = new();
+        public List<EventParticipant> EventParticipants { get; } = new();
 
         public FakeDataFactory()
         {
+            Potents = new List<Potent>
+            {
+                new Potent
+                {
+                    Id = rnd.Next(),
+                    Lastname = "Иванов",
+                    Firstname = "Иван",
+                    Surname = "Иванович",
+                    DateBirth = new DateOnly(2000,1,1),
+                    Gender = "M",
+                    Email = "",
+                    Login = "Ivan",
+                    DatReg = DateTime.Now
+                }
+            };
+
+            Events = new List<Domain.Entities.EventInfo>
+            {
+                new Domain.Entities.EventInfo
+                {
+                    Id = rnd.Next(),
+                    Name = "Весёлые старты",
+                    BeginDate = new DateTime(2025,6,28),
+                    EndDate = new DateTime(2025,6,28),
+                    RegistrationDate = new DateTime(2025,6,28),
+                    RegistryDate = new DateTime(),
+                    IsCompleted = true,
+                    Organizer = Potents.First(),
+                    OrganizerId = Potents.First().Id
+                }
+            };
+
+            Competitions = new List<Competition>
+            {
+                new Competition
+                {
+                    Id = rnd.Next(),
+                    Name = "Забег в мешках",
+                    CompetitionType = CompetitionTypes.Single,
+                    BeginDate = new DateTime(2025,6,28),
+                    EndDate = new DateTime(2025,6,28),
+                    RegistryDate = new DateTime(),
+                    IsCompleted = true,
+                    Event = Events.First(),
+                    EventId = Events.First().Id
+                }
+            };
+
+
             EventParticipants = new List<EventParticipant>
             {
                 // Заявка в статусе редактирования
                 new EventParticipant
                 {
                     Id = rnd.Next(),
-                    RoleId = Roles[0].Id,
-                    StatusId = ApplicationStatuses[0].Id,
-                    IsCaptainConfirmed = false,
-                    IsActual = false,
-                    Comment = null,
+                    ApplicationStatusId = ApplicationStatuses[0].Id,
                     DateTime = DateTime.UtcNow.AddDays(-7),
-                    IsDeleted = false,
-                    Role = Roles[0],
                     Status = ApplicationStatuses[0],
-                    // Будущие поля (пока не используются):
-                    // PotentId = _userId1,
-                    // EventCompetitionId = _eventId1,
-                    // TeamId = _teamId1,
-                    SetStatusId = _userId1
+                    ParticipantCompetition = Competitions.First()
                 },
             
-                // Заявка, подтвержденная капитаном
+                // Заявка, подтвержденная администрацией
                 new EventParticipant
                 {
                     Id = rnd.Next(),
-                    RoleId = Roles[0].Id,
-                    StatusId = ApplicationStatuses[1].Id,
-                    IsCaptainConfirmed = true,
-                    IsActual = true,
-                    Comment = null,
-                    DateTime = DateTime.UtcNow.AddDays(-5),
-                    IsDeleted = false,
-                    Role = Roles[0],
-                    Status = ApplicationStatuses[1],
-                    SetStatusId = _userId2
-                },
-            
-                // Заявка судьи, подтвержденная администрацией
-                new EventParticipant
-                {
-                    Id = rnd.Next(),
-                    RoleId = Roles[1].Id,
-                    StatusId = ApplicationStatuses[2].Id,
-                    IsCaptainConfirmed = false,
-                    IsActual = true,
-                    Comment = null,
+                    ApplicationStatusId = ApplicationStatuses[1].Id,
                     DateTime = DateTime.UtcNow.AddDays(-3),
-                    IsDeleted = false,
-                    Role = Roles[1],
-                    Status = ApplicationStatuses[2],
-                    SetStatusId = _userId2
+                    Status = ApplicationStatuses[1],
+                    ParticipantCompetition = Competitions.First()
                 },
             
                 // Отклоненная заявка
                 new EventParticipant
                 {
                     Id = rnd.Next(),
-                    RoleId = Roles[3].Id,
-                    StatusId = ApplicationStatuses[3].Id,
-                    IsCaptainConfirmed = false,
-                    IsActual = false,
-                    Comment = "Не соответствует требованиям",
+                    ApplicationStatusId = ApplicationStatuses[2].Id,
                     DateTime = DateTime.UtcNow.AddDays(-1),
-                    IsDeleted = false,
-                    Role = Roles[3],
-                    Status = ApplicationStatuses[3],
-                    SetStatusId = _userId1
+                    Status = ApplicationStatuses[2],
+                    ParticipantCompetition = Competitions.First()
                 }
             };
 
             // Связываем участников с ролями и статусами
             foreach (var participant in EventParticipants)
             {
-                participant.Role?.EventParticipants?.Add(participant);
                 participant.Status?.EventParticipants?.Add(participant);
             }
         }

@@ -33,19 +33,13 @@ namespace WebApplication.Controllers
             {
                 Id = q.Id,
                 Name = q.Name,
-                Feedback = q.Feedback,
 
                 BeginDate = q.BeginDate,
                 EndDate = q.EndDate,
-                StartRegistrationDate = q.StartRegistrationDate,
-                FinishRegistrationDate = q.FinishRegistrationDate,
-                StartActualControlDate = q.StartActualControlDate,
-                FinishActualControlDate = q.FinishActualControlDate,
+                RegistrationDate = q.RegistrationDate,
 
                 IsCompleted = q.IsCompleted,
-                RegistryDate = q.RegistryDate,
-
-                IsDeleted = q.IsDeleted
+                RegistryDate = q.RegistryDate
             }).ToList();
 
             return Ok(result);
@@ -67,19 +61,13 @@ namespace WebApplication.Controllers
             {
                 Id = eventInfo.Id,
                 Name = eventInfo.Name,
-                Feedback = eventInfo.Feedback,
 
                 BeginDate = eventInfo.BeginDate,
                 EndDate = eventInfo.EndDate,
-                StartRegistrationDate = eventInfo.StartRegistrationDate,
-                FinishRegistrationDate = eventInfo.FinishRegistrationDate,
-                StartActualControlDate = eventInfo.StartActualControlDate,
-                FinishActualControlDate = eventInfo.FinishActualControlDate,
+                RegistrationDate = eventInfo.RegistrationDate,
 
                 IsCompleted = eventInfo.IsCompleted,
-                RegistryDate = eventInfo.RegistryDate,
-
-                IsDeleted = eventInfo.IsDeleted
+                RegistryDate = eventInfo.RegistryDate
             };
 
             return eventInfoModel;
@@ -100,19 +88,13 @@ namespace WebApplication.Controllers
             var eventInfo = new EventInfo()
             {
                 Name = request.Name,
-                Feedback = request.Feedback,
 
-                BeginDate = request.BeginDate,
-                EndDate = request.EndDate,
-                StartRegistrationDate = request.StartRegistrationDate,
-                FinishRegistrationDate = request.FinishRegistrationDate,
-                StartActualControlDate = request.StartActualControlDate,
-                FinishActualControlDate = request.FinishActualControlDate,
+                BeginDate = request.BeginDate.ToUniversalTime(),
+                EndDate = request.EndDate.ToUniversalTime(),
+                RegistrationDate = request.RegistrationDate.ToUniversalTime(),
 
                 IsCompleted = false,
                 RegistryDate = DateTime.Now,
-
-                IsDeleted = false,
 
                 Organizer = organizer,
                 OrganizerId = request.OrganizerId
@@ -136,19 +118,13 @@ namespace WebApplication.Controllers
                 return NotFound($"Event with id={id} does not exists.");
 
             eventInfo.Name = request.Name;
-            eventInfo.Feedback = request.Feedback;
 
             eventInfo.BeginDate = request.BeginDate;
             eventInfo.EndDate = request.EndDate;
-            eventInfo.StartRegistrationDate = request.StartRegistrationDate;
-            eventInfo.FinishRegistrationDate = request.FinishRegistrationDate;
-            eventInfo.StartActualControlDate = request.StartActualControlDate;
-            eventInfo.FinishActualControlDate = request.FinishActualControlDate;
+            eventInfo.RegistrationDate = request.RegistrationDate;
 
             eventInfo.IsCompleted = false;
             eventInfo.RegistryDate = DateTime.Now;
-
-            eventInfo.IsDeleted = false;
 
             await _eventInfoRepository.UpdateAsync(eventInfo);
 

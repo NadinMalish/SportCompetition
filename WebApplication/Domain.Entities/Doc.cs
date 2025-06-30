@@ -18,7 +18,6 @@ namespace Domain.Entities
         public int? IdDocType { get; set; }
         public int? IdEvent { get; set; }
         public int? IdCompetition { get; set; }
-        public bool Deleted { get; set; }
 
         public virtual DocType? DocType { get; set; }
         public virtual EventInfo? EventInfo { get; set; }

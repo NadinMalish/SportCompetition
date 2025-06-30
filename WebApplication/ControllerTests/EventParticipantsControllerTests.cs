@@ -29,11 +29,9 @@ namespace ControllerTests
 
             _context = new Context(_options);
             _fixture.Register(() => new EventParticipantRepository(_context));
-            _fixture.Register(() => new RoleRepository(_context));
             _fixture.Register(() => new StatusRepository(_context));
 
             _eventParticipantsController = _fixture.Build<EventParticipantsController>().OmitAutoProperties().Create();
-            _fixture.Customize<Role>(b => b.Without(r => r.EventParticipants));
             _fixture.Customize<ApplicationStatus>(b => b.Without(s => s.EventParticipants));
         }
 
@@ -44,14 +42,6 @@ namespace ControllerTests
                                                         .Create();
             addToDb(eventParticipant);
             return eventParticipant;
-        }
-
-        //Создает и заносит Role в бд
-        public Role GetRole()
-        {
-            Role role = _fixture.Build<Role>().Without(s => s.EventParticipants).Create();
-            addToDb(role);
-            return role;
         }
 
         //Создает и заносит ApplicationStatus в бд
@@ -113,8 +103,7 @@ namespace ControllerTests
         {
             //arrange
             ApplicationStatus status = GetStatus();
-            Role role = GetRole();
-            CreateEventParticipantRequest request = new CreateEventParticipantRequest() { RoleId = role.Id, StatusId = status.Id };
+            CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = status.Id };
 
             //act
             var actionResult = await _eventParticipantsController.CreateEventParticipantAsync(request);
@@ -127,23 +116,23 @@ namespace ControllerTests
         [Theory, AutoData]
         public async Task CreateEventParticipantAsync_RoleNotExists_ReturnsBadRequest(int roleId)
         {
-            //arrange
-            ApplicationStatus status = GetStatus();
-            CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = status.Id, RoleId = roleId };
+            throw new NotImplementedException();
+            ////arrange
+            //ApplicationStatus status = GetStatus();
+            //CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = status.Id, RoleId = roleId };
 
-            //act
-            var actionResult = await _eventParticipantsController.CreateEventParticipantAsync(request);
+            ////act
+            //var actionResult = await _eventParticipantsController.CreateEventParticipantAsync(request);
 
-            //assert
-            actionResult.Should().BeAssignableTo<BadRequestObjectResult>();
+            ////assert
+            //actionResult.Should().BeAssignableTo<BadRequestObjectResult>();
         }
 
         [Theory, AutoData]
         public async Task CreateEventParticipantAsync_StatusNotExists_ReturnsBadRequest(int statusId)
         {
             //arrange
-            Role role = GetRole();
-            CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = statusId, RoleId = role.Id };
+            CreateEventParticipantRequest request = new CreateEventParticipantRequest() { StatusId = statusId };
 
             //act
             var actionResult = await _eventParticipantsController.CreateEventParticipantAsync(request);
@@ -165,11 +154,7 @@ namespace ControllerTests
 
             //assert
             actionResult.Should().BeAssignableTo<NoContentResult>();
-            Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).StatusId, request.StatusId);
-            Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).Comment, request.Comment);
-            Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).SetStatusId, request.SetStatusId);
-            Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsActual, request.IsActual);
-            Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsCaptainConfirmed, request.IsCaptainConfirmed);
+            Assert.Equal(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).ApplicationStatusId, request.StatusId);
         }
 
         [Theory, AutoData]
@@ -198,15 +183,16 @@ namespace ControllerTests
         [Fact]
         public async Task DeleteEventParticipantAsync_EntityIsExists_ShouldBeSetFieldDeletedInTrue()
         {
-            //arrange
-            EventParticipant eventParticipant = GetEventParticipant();
+            throw new NotImplementedException();
+            ////arrange
+            //EventParticipant eventParticipant = GetEventParticipant();
 
-            //act
-            var actionResult = await _eventParticipantsController.DeleteEventParticipantAsync(eventParticipant.Id);
+            ////act
+            //var actionResult = await _eventParticipantsController.DeleteEventParticipantAsync(eventParticipant.Id);
 
-            //assert
-            actionResult.Should().BeAssignableTo<NoContentResult>();
-            Assert.True(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsDeleted);
+            ////assert
+            //actionResult.Should().BeAssignableTo<NoContentResult>();
+            //Assert.True(_context.EventParticipants.Single(s => s.Id == eventParticipant.Id).IsDeleted);
         }
 
         [Theory, AutoData]

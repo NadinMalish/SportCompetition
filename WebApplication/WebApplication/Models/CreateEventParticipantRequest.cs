@@ -2,7 +2,7 @@
 {
     public class CreateEventParticipantRequest
     {
-        public int RoleId { get; set; }
         public int StatusId { get; set; }
+        public int CompetitionId {  get; set; }
     }
 }
