@@ -1,0 +1,1 @@
+docker build -f Dockerfile -t sportcompetition:v0.1 .

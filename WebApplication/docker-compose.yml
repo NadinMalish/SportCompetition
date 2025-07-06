@@ -1,15 +1,22 @@
 services:
   webapplication:
-    image: ${DOCKER_REGISTRY-}webapplication
-    #platform: windows
+    # container_name: WebApplication
+    image: sportcompetition:v0.1
     build:
       context: .
-      dockerfile: WebApplication\Dockerfile
-    # depends_on:
-    #   - postgres
+      dockerfile: Dockerfile
+    ports:
+      - "55002:8080"
+      - "55003:8080"
+    networks:
+      - inner_network
+    depends_on:
+      - postgres_db
+#    environment:
+#      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=OTUS;Username=postgres;Password=just_for_test;Database=OTUS
 
-  postgres: 
-    #image: "stellirin/postgres-windows:12-1909"
+  postgres_db:
+    # container_name: postgres_db
     image: "postgres:15"
     restart: always
     ports:
@@ -18,8 +25,14 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "just_for_test"
       POSTGRES_DB: "OTUS"
+    networks:
+      - inner_network
 #     volumes:
-#       - data:C:\Program Files\PostgreSQL\15\data
+#       - data:/C/Program Files/PostgreSQL/15/data
 
 # volumes:
 #   data:
+
+networks:
+  inner_network:
+    driver: bridge    

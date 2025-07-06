@@ -1,0 +1,1 @@
+docker run -it -p 55003:8081 -p 55002:8080 sportcompetition:v0.1
