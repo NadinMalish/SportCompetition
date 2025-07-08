@@ -1,37 +1,85 @@
 services:
   webapplication:
-    # container_name: WebApplication
+    container_name: SportCompetition
     image: sportcompetition:v0.1
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+# Set "Development" for developer certificate
+      - ASPNETCORE_ENVIRONMENT=Development
+# 
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+# for redirect
+      - ASPNETCORE_HTTP_PORT=8080
+# for redirect
+      - ASPNETCORE_HTTPS_PORT=8081
+# Override connection string in app
+      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=OTUS;Username=postgres;Password=just_for_test
     ports:
       - "55002:8080"
-      - "55003:8080"
+      - "55003:8081"
     networks:
       - inner_network
     depends_on:
-      - postgres_db
-#    environment:
-#      - ConnectionStrings__DefaultConnection=Host=postgres_db;Port=5432;Database=OTUS;Username=postgres;Password=just_for_test;Database=OTUS
+      postgres_db:
+        condition: service_healthy
+    volumes:
+# Mount read-only directory with pfx-sertificate
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+# Mount read-only directory with UserSecrets (with password)
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
   postgres_db:
-    # container_name: postgres_db
+    container_name: Postgres
     image: "postgres:15"
     restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "just_for_test"
       POSTGRES_DB: "OTUS"
+      
     networks:
       - inner_network
-#     volumes:
-#       - data:/C/Program Files/PostgreSQL/15/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"] # test connect with db
+      interval: 5s
+      timeout: 5s
+      retries: 5      
+    volumes:
+# Use volume
+      - pg_data:/var/lib/postgresql/data
+# I am trying to bind to external directory, but I get the error under windows:
+# FATAL:  data directory "/var/lib/postgresql/data" has invalid permissions
+# DETAIL:  Permissions should be u=rwx (0700) or u=rwx,g=rx (0750).
+#      - G:\ForDocker\PostgreSQL\:/var/lib/postgresql/data 0700
 
-# volumes:
-#   data:
+
+  pgadmin:
+    container_name: pgAdmin
+    image: dpage/pgadmin4:7.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pgadmin4@pgadmin.org"
+      PGADMIN_DEFAULT_PASSWORD: "just_for_test"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - inner_network
+
+volumes:
+  pg_data:
+  pgadmin-data:
 
 networks:
   inner_network:
