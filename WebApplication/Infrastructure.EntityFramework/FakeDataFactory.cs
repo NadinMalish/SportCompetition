@@ -1,17 +1,13 @@
 ﻿using Domain.Entities;
-using System.Reflection;
+using EventInfo = Domain.Entities.EventInfo;
 
 namespace Infrastructure.EntityFramework
 {
     public class FakeDataFactory
     {
-        private static Random rnd = new Random();
-        // Фиксированные int для согласованности данных
-        private static readonly int _userId1 = 1000001;
-        private static readonly int _userId2 = 2000002;
-        private static readonly int _eventId1 = 3000003;
-        private static readonly int _teamId1 = 4000004;
+        private static readonly Random rnd = new();
 
+        #region Collections
         public List<ApplicationStatus> ApplicationStatuses { get; } = new()
         {
             new ApplicationStatus { Id = 1, Name = "Редактируется" },
@@ -20,64 +16,104 @@ namespace Infrastructure.EntityFramework
         };
 
         public List<Potent> Potents { get; } = new();
-        public List<Domain.Entities.EventInfo> Events { get; } = new();
+        public List<EventInfo> Events { get; } = new();
         public List<Competition> Competitions { get; } = new();
         public List<EventParticipant> EventParticipants { get; } = new();
+        #endregion
 
         public FakeDataFactory()
         {
-            Potents = new List<Potent>
+            // 1. Организаторы
+            Potents.AddRange(GeneratePotents());
+
+            // 2. Мероприятия (75 штук, реалистичные названия + даты)
+            Events.AddRange(GenerateEvents(Potents.First(), 75));
+
+            // 3. Одно соревнование, связанное с самым первым мероприятием
+            Competitions.AddRange(GenerateCompetitions(Events.First()));
+
+            // 4. Несколько тестовых заявок
+            EventParticipants.AddRange(GenerateParticipants());
+        }
+
+        #region Generators
+        private static IEnumerable<Potent> GeneratePotents()
+        {
+            yield return new Potent
             {
-                new Potent
-                {
-                    Id = rnd.Next(),
-                    Lastname = "Иванов",
-                    Firstname = "Иван",
-                    Surname = "Иванович",
-                    DateBirth = new DateOnly(2000,1,1),
-                    Gender = "M",
-                    Email = "",
-                    Login = "Ivan",
-                    DatReg = DateTime.Now
-                }
+                Id = rnd.Next(),
+                Lastname = "Иванов",
+                Firstname = "Иван",
+                Surname = "Иванович",
+                DateBirth = new DateOnly(2000, 1, 1),
+                Gender = "M",
+                Email = "ivan@example.com",
+                Login = "Ivan",
+                DatReg = DateTime.Now
+            };
+        }
+
+        private static IEnumerable<EventInfo> GenerateEvents(Potent organizer, int count)
+        {
+            string[] baseNames =
+            {
+                "Шахматный турнир",
+                "Турнир по волейболу",
+                "Кросс нации",
+                "Летний заплыв",
+                "Математический конкурс",
+                "Олимпийские надежды (легкая атлетика)",
+                "Фестиваль настольных игр",
+                "Велоралли",
+                "Соревнования по стрельбе",
+                "Турнир по киберспорту"
             };
 
-            Events = new List<Domain.Entities.EventInfo>
+            var start = new DateTime(2025, 7, 1);
+            var list = new List<EventInfo>(count);
+
+            for (int i = 0; i < count; i++)
             {
-                new Domain.Entities.EventInfo
+                var date = start.AddDays(rnd.Next(0, 90)); // интервал 90 дней
+                var name = baseNames[rnd.Next(baseNames.Length)];
+
+                list.Add(new EventInfo
                 {
                     Id = rnd.Next(),
-                    Name = "Весёлые старты",
-                    BeginDate = new DateTime(2025,6,28),
-                    EndDate = new DateTime(2025,6,28),
-                    RegistrationDate = new DateTime(2025,6,28),
-                    RegistryDate = new DateTime(),
-                    IsCompleted = true,
-                    Organizer = Potents.First(),
-                    OrganizerId = Potents.First().Id
-                }
-            };
+                    Name = name,
+                    BeginDate = date,
+                    EndDate = date,
+                    RegistrationDate = date.AddDays(-rnd.Next(15, 60)), // окно регистрации 15‑60 дней до начала
+                    RegistryDate = DateTime.Now,
+                    IsCompleted = date < DateTime.Today,
+                    Organizer = organizer,
+                    OrganizerId = organizer.Id
+                });
+            }
 
-            Competitions = new List<Competition>
+            return list.OrderBy(e => e.BeginDate);
+        }
+
+        private static IEnumerable<Competition> GenerateCompetitions(EventInfo relatedEvent)
+        {
+            yield return new Competition
             {
-                new Competition
-                {
-                    Id = rnd.Next(),
-                    Name = "Забег в мешках",
-                    CompetitionType = CompetitionTypes.Single,
-                    BeginDate = new DateTime(2025,6,28),
-                    EndDate = new DateTime(2025,6,28),
-                    RegistryDate = new DateTime(),
-                    IsCompleted = true,
-                    Event = Events.First(),
-                    EventId = Events.First().Id
-                }
+                Id = rnd.Next(),
+                Name = "Забег в мешках",
+                CompetitionType = CompetitionTypes.Single,
+                BeginDate = relatedEvent.BeginDate,
+                EndDate = relatedEvent.EndDate,
+                RegistryDate = DateTime.Now,
+                IsCompleted = false,
+                Event = relatedEvent,
+                EventId = relatedEvent.Id
             };
+        }
 
-
-            EventParticipants = new List<EventParticipant>
+        private IEnumerable<EventParticipant> GenerateParticipants()
+        {
+            return new List<EventParticipant>
             {
-                // Заявка в статусе редактирования
                 new EventParticipant
                 {
                     Id = rnd.Next(),
@@ -86,8 +122,6 @@ namespace Infrastructure.EntityFramework
                     Status = ApplicationStatuses[0],
                     ParticipantCompetition = Competitions.First()
                 },
-            
-                // Заявка, подтвержденная администрацией
                 new EventParticipant
                 {
                     Id = rnd.Next(),
@@ -96,8 +130,6 @@ namespace Infrastructure.EntityFramework
                     Status = ApplicationStatuses[1],
                     ParticipantCompetition = Competitions.First()
                 },
-            
-                // Отклоненная заявка
                 new EventParticipant
                 {
                     Id = rnd.Next(),
@@ -107,12 +139,7 @@ namespace Infrastructure.EntityFramework
                     ParticipantCompetition = Competitions.First()
                 }
             };
-
-            // Связываем участников с ролями и статусами
-            foreach (var participant in EventParticipants)
-            {
-                participant.Status?.EventParticipants?.Add(participant);
-            }
         }
+        #endregion
     }
 }
