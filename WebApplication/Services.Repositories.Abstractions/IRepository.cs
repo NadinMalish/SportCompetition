@@ -9,7 +9,7 @@ namespace Services.Repositories.Abstractions
         /// </summary>
         /// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
         /// <returns> Список сущностей. </returns>
-        Task<List<T>> GetAllAsync(bool asNoTracking = false);
+        Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false);
 
         /// <summary>
         /// Получить сущность по Id.
@@ -50,10 +50,11 @@ namespace Services.Repositories.Abstractions
         /// </summary>
         Task SaveChangesAsync();
 
-
         /// <summary>
         /// Проверка на наличик записи по Id
         /// </summary>
         Task<bool> CheckExistsById(int? id);
+
+        Task<int> CountAsync();
     }
 }

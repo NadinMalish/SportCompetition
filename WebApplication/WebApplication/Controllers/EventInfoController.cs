@@ -26,21 +26,32 @@ namespace WebApplication.Controllers
         /// Получение полного списка мероприятий
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<EventInfoResponse>> GetEventsAsync()
+        public async Task<ActionResult<PagedResult>> GetEventsAsync([FromQuery]int page = 1, [FromQuery]int pageSize = 20)
         {
-            var eventInfoSet = await _eventInfoRepository.GetAllAsync();
-            var result = eventInfoSet.Select(q => new EventInfoResponse
+            if (page < 1 || pageSize < 1)
+                throw new Exception("Номер страницы и размер страницы должны быть больше нуля.");
+
+            int totalCount = await _eventInfoRepository.CountAsync();
+            var eventInfoSet = await _eventInfoRepository.GetAllAsync(pageSize, pageSize * (page - 1), true);
+
+            var result = new PagedResult()
             {
-                Id = q.Id,
-                Name = q.Name,
+                Events = eventInfoSet.Select(q => new EventInfoResponse
+                {
+                    Id = q.Id,
+                    Name = q.Name,
 
-                BeginDate = q.BeginDate,
-                EndDate = q.EndDate,
-                RegistrationDate = q.RegistrationDate,
+                    BeginDate = q.BeginDate,
+                    EndDate = q.EndDate,
+                    RegistrationDate = q.RegistrationDate,
 
-                IsCompleted = q.IsCompleted,
-                RegistryDate = q.RegistryDate
-            }).ToList();
+                    IsCompleted = q.IsCompleted,
+                    RegistryDate = q.RegistryDate
+                }).ToList(),
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
 
             return Ok(result);
         }

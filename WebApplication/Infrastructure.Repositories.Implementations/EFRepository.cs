@@ -16,9 +16,10 @@ namespace Infrastructure.Repositories.Implementations
             _data = Context.Set<T>();
         }
 
-        public Task<List<T>> GetAllAsync(bool asNoTracking = false)
+        public Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false)
         {
-            return asNoTracking ? _data.AsNoTracking().ToListAsync() : _data.ToListAsync();
+            var query = _data.Skip(offset).Take(count);
+            return asNoTracking ? query.AsNoTracking().ToListAsync() : query.ToListAsync();
         }
 
         public Task<T> GetByIdAsync(int id)
@@ -36,7 +37,7 @@ namespace Infrastructure.Repositories.Implementations
                 await SaveChangesAsync();
                 result = true;
             }
-            
+
             return result;
         }
 
@@ -84,5 +85,9 @@ namespace Infrastructure.Repositories.Implementations
             return (item != null);
         }
 
-    }
+        public async Task<int> CountAsync() 
+        {
+            return await _data.CountAsync();
+        }
+    }   
 }
