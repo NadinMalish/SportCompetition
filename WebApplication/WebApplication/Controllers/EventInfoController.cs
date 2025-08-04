@@ -3,6 +3,10 @@ using Domain.Entities;
 using WebApplication.DataAccess.Repositories;
 using Services.Repositories.Abstractions;
 using WebApplication.Models;
+using System.Linq.Expressions;
+using System;
+using Infrastructure.Repositories.Implementations;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication.Controllers
 {
@@ -26,14 +30,22 @@ namespace WebApplication.Controllers
         /// Получение полного списка мероприятий
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<PagedResult>> GetEventsAsync([FromQuery]int page = 1, [FromQuery]int pageSize = 20)
+        public async Task<ActionResult<PagedResult>> GetEventsAsync([FromQuery]int page = 1, [FromQuery]int pageSize = 20, [FromQuery]string search = "")
         {
             if (page < 1 || pageSize < 1)
                 throw new Exception("Номер страницы и размер страницы должны быть больше нуля.");
 
-            int totalCount = await _eventInfoRepository.CountAsync();
-            var eventInfoSet = await _eventInfoRepository.GetAllAsync(pageSize, pageSize * (page - 1), true);
+            Expression<Func<EventInfo, bool>> expression = null;
+            if (search != string.Empty)
+                expression = e => e.Name.ToLower().Contains(search.ToLower()) ||
+                e.BeginDate.ToString().Contains(search) ||
+                e.EndDate.ToString().Contains(search) ||
+                e.RegistrationDate.ToString().Contains(search);
 
+            var count = await _eventInfoRepository.CountAsync(expression);
+
+            var eventInfoSet = await _eventInfoRepository.GetAllAsync(pageSize, pageSize * (page - 1), true, expression);
+            
             var result = new PagedResult()
             {
                 Events = eventInfoSet.Select(q => new EventInfoResponse
@@ -50,7 +62,7 @@ namespace WebApplication.Controllers
                 }).ToList(),
                 Page = page,
                 PageSize = pageSize,
-                TotalCount = totalCount
+                TotalCount = count
             };
 
             return Ok(result);

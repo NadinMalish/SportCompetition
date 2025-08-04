@@ -2,13 +2,14 @@
 using Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Services.Repositories.Abstractions;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories.Implementations
 {
     public class EFRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly Context Context;
-        private readonly DbSet<T> _data;
+        public readonly DbSet<T> _data;
 
         public EFRepository(Context context)
         {
@@ -16,11 +17,18 @@ namespace Infrastructure.Repositories.Implementations
             _data = Context.Set<T>();
         }
 
-        public Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false)
+        public Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false, Expression<Func<T, bool>>? filter = null)
         {
-            var query = _data.Skip(offset).Take(count);
+            var query = _data.AsQueryable();
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            query = query.Skip(offset).Take(count);
+
             return asNoTracking ? query.AsNoTracking().ToListAsync() : query.ToListAsync();
         }
+
 
         public Task<T> GetByIdAsync(int id)
         {
@@ -85,9 +93,12 @@ namespace Infrastructure.Repositories.Implementations
             return (item != null);
         }
 
-        public async Task<int> CountAsync() 
+        public async Task<int> CountAsync(Expression<Func<T, bool>>? filter = null) 
         {
-            return await _data.CountAsync();
+            if (filter != null)
+                return await _data.Where(filter).CountAsync();
+            else
+                return await _data.CountAsync();
         }
     }   
 }

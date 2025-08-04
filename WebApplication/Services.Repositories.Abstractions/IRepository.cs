@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Services.Repositories.Abstractions
 {
@@ -9,7 +10,7 @@ namespace Services.Repositories.Abstractions
         /// </summary>
         /// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
         /// <returns> Список сущностей. </returns>
-        Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false);
+        Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false, Expression<Func<T, bool>>? filter = null);
 
         /// <summary>
         /// Получить сущность по Id.
@@ -55,6 +56,6 @@ namespace Services.Repositories.Abstractions
         /// </summary>
         Task<bool> CheckExistsById(int? id);
 
-        Task<int> CountAsync();
+        Task<int> CountAsync(Expression<Func<T, bool>>? filter = null);
     }
 }
