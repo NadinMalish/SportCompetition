@@ -30,17 +30,16 @@ namespace WebApplication.Controllers
         /// Получение полного списка мероприятий
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<PagedResult>> GetEventsAsync([FromQuery]int page = 1, [FromQuery]int pageSize = 20, [FromQuery]string search = "")
+        public async Task<ActionResult<PagedResult>> GetEventsAsync([FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20, [FromQuery] string search = "", [FromQuery] DateTime? startDate = null, [FromQuery] DateTime? endDate = null, [FromQuery] bool? isOpen = null)
         {
             if (page < 1 || pageSize < 1)
                 throw new Exception("Номер страницы и размер страницы должны быть больше нуля.");
 
-            Expression<Func<EventInfo, bool>> expression = null;
-            if (search != string.Empty)
-                expression = e => e.Name.ToLower().Contains(search.ToLower()) ||
-                e.BeginDate.ToString().Contains(search) ||
-                e.EndDate.ToString().Contains(search) ||
-                e.RegistrationDate.ToString().Contains(search);
+            Expression<Func<EventInfo, bool>> expression = e =>
+                (string.IsNullOrEmpty(search) || e.Name.ToLower().Contains(search.ToLower())) &&
+                (!startDate.HasValue || e.BeginDate >= startDate.Value) &&
+                (!endDate.HasValue || e.EndDate <= endDate.Value);
 
             var count = await _eventInfoRepository.CountAsync(expression);
 
