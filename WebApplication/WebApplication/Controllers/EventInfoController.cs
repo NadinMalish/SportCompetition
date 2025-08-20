@@ -14,11 +14,11 @@ namespace WebApplication.Controllers
     [Route("api/v1/[controller]")]
     public class EventInfoController : Controller
     {
-        private readonly IRepository<EventInfo> _eventInfoRepository;
+        private readonly EventRepository _eventInfoRepository;
         private readonly IRepository<Potent> _potentRepository;
 
         public EventInfoController(
-            IRepository<EventInfo> eventInfoRepository,
+            EventRepository eventInfoRepository,
             IRepository<Potent> potentRepository
             )
         {
@@ -31,7 +31,7 @@ namespace WebApplication.Controllers
         /// </summary>
         [HttpGet]
         public async Task<ActionResult<PagedResult>> GetEventsAsync([FromQuery] int page = 1,
-            [FromQuery] int pageSize = 20, [FromQuery] string search = "", [FromQuery] DateTime? startDate = null, [FromQuery] DateTime? endDate = null, [FromQuery] bool? isOpen = null)
+            [FromQuery] int pageSize = 20, [FromQuery] string search = "", [FromQuery] DateTime? startDate = null, [FromQuery] DateTime? endDate = null, [FromQuery] bool? orderByDesc = false)
         {
             if (page < 1 || pageSize < 1)
                 throw new Exception("Номер страницы и размер страницы должны быть больше нуля.");
@@ -43,7 +43,7 @@ namespace WebApplication.Controllers
 
             var count = await _eventInfoRepository.CountAsync(expression);
 
-            var eventInfoSet = await _eventInfoRepository.GetAllAsync(pageSize, pageSize * (page - 1), true, expression);
+            var eventInfoSet = await _eventInfoRepository.GetAllAsync(pageSize, pageSize * (page - 1), true, expression, x => x.BeginDate, orderByDesc.Value);
             
             var result = new PagedResult()
             {

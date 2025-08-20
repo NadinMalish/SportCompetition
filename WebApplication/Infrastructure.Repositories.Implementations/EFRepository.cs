@@ -17,16 +17,26 @@ namespace Infrastructure.Repositories.Implementations
             _data = Context.Set<T>();
         }
 
-        public Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false, Expression<Func<T, bool>>? filter = null)
+
+        // Обычный, упрощённый метод (без сортировки)
+        public Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false)
         {
-            var query = _data.AsQueryable();
+            // Нормализуем параметры
+            if (count < 0) count = 0;
+            if (offset < 0) offset = 0;
 
-            if (filter != null)
-                query = query.Where(filter);
+            IQueryable<T> query = _data;
 
-            query = query.Skip(offset).Take(count);
+            if (asNoTracking)
+                query = query.AsNoTracking();
 
-            return asNoTracking ? query.AsNoTracking().ToListAsync() : query.ToListAsync();
+            if (offset > 0)
+                query = query.Skip(offset);
+
+            if (count > 0)
+                query = query.Take(count);
+
+            return query.ToListAsync();
         }
 
 

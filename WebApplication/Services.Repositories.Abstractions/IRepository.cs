@@ -10,7 +10,8 @@ namespace Services.Repositories.Abstractions
         /// </summary>
         /// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
         /// <returns> Список сущностей. </returns>
-        Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false, Expression<Func<T, bool>>? filter = null);
+        public Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false);
+
 
         /// <summary>
         /// Получить сущность по Id.

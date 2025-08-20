@@ -21,6 +21,7 @@ builder.Services.AddScoped<DocTypeRepository>();
 builder.Services.AddScoped<DocRepository>();
 builder.Services.AddScoped<PotentRepository>();
 builder.Services.AddScoped<CompetitionRepository>();
+builder.Services.AddScoped<EventRepository>();
 
 builder.Services.AddCors(options =>
 {

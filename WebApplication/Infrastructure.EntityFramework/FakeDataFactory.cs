@@ -26,7 +26,7 @@ namespace Infrastructure.EntityFramework
             // 1. Организаторы
             Potents.AddRange(GeneratePotents());
 
-            // 2. Мероприятия (75 штук, реалистичные названия + даты)
+            // 2. Мероприятия (100 штук, реалистичные названия + даты)
             Events.AddRange(GenerateEvents(Potents.First(), 100));
 
             // 3. Одно соревнование, связанное с самым первым мероприятием
@@ -111,7 +111,7 @@ namespace Infrastructure.EntityFramework
 
             for (int i = 0; i < count; i++)
             {
-                var date = start.AddDays(rnd.Next(0, 15)); // интервал 90 дней
+                var date = start.AddDays(rnd.Next(0, 90)); // интервал 90 дней
                 var name = baseNames[rnd.Next(baseNames.Length)];
 
                 list.Add(new EventInfo
