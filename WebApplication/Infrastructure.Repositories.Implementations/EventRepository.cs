@@ -36,5 +36,10 @@ namespace Infrastructure.Repositories.Implementations
                 ? query.AsNoTracking().ToListAsync()
                 : query.ToListAsync();
         }
+
+        public Task<EventInfo?> GetEventInfoById(int id) 
+        {
+            return _data.Include(x => x.Competitions).Include(x => x.Organizer).FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

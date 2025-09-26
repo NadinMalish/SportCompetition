@@ -1,4 +1,6 @@
-﻿namespace WebApplication.Models
+﻿using Domain.Entities;
+
+namespace WebApplication.Models
 {
     public class EventInfoResponse
     {
@@ -10,7 +12,10 @@
         /// Название
         /// </summary>
         public required string Name { get; set; }
-
+        /// <summary>
+        /// Описание
+        /// </summary>
+        public string Description { get; set; }
         /// <summary>
         /// Дата и время начала мероприятия
         /// </summary>
@@ -32,9 +37,12 @@
         /// Когда создано
         /// </summary>
         public DateTime RegistryDate { get; set; }
+
         ///// <summary>
         ///// Кто зарегистрировал мероприятие (организатор)
         ///// </summary>
-        //public required Potent Organizer { get; set; }
+        public PotentShortResponse Organizer { get; set; }
+        public int OrganizerId { get; set; }
+        public ICollection<CompetitionResponse> competitions { get; set; }
     }
 }

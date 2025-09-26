@@ -12,6 +12,11 @@ namespace WebApplication.Models
         /// Название
         /// </summary>
         public required string Name { get; set; }
+
+        /// <summary>
+        /// Описание состязания
+        /// </summary>
+        public string Description { get; set; }
         /// <summary>
         /// Тип состязания
         /// </summary>
@@ -37,6 +42,6 @@ namespace WebApplication.Models
         /// <summary>
         /// Мероприятие
         /// </summary>
-        public required EventInfo EventInfo { get; set; }
+        public EventInfo EventInfo { get; set; }
     }
 }

@@ -9,6 +9,11 @@
         /// Название
         /// </summary>
         public required string Name { get; set; }
+
+        /// <summary>
+        /// Описание состязания
+        /// </summary>
+        public string? Description { get; set; }
         /// <summary>
         /// Тип состязания
         /// </summary>

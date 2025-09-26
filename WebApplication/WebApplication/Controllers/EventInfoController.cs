@@ -47,15 +47,13 @@ namespace WebApplication.Controllers
             
             var result = new PagedResult()
             {
-                Events = eventInfoSet.Select(q => new EventInfoResponse
+                Events = eventInfoSet.Select(q => new EventInfoShortResponse
                 {
                     Id = q.Id,
                     Name = q.Name,
-
                     BeginDate = q.BeginDate,
                     EndDate = q.EndDate,
                     RegistrationDate = q.RegistrationDate,
-
                     IsCompleted = q.IsCompleted,
                     RegistryDate = q.RegistryDate
                 }).ToList(),
@@ -74,8 +72,8 @@ namespace WebApplication.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<EventInfoResponse>> GetEventAsync(int id)
         {
-            var eventInfo = await _eventInfoRepository.GetByIdAsync(id);
-
+            var eventInfo = await _eventInfoRepository.GetEventInfoById(id);
+            
             if (eventInfo == null)
                 return NotFound($"Event with id={id} does not exists.");
 
@@ -83,13 +81,34 @@ namespace WebApplication.Controllers
             {
                 Id = eventInfo.Id,
                 Name = eventInfo.Name,
-
+                Description = eventInfo.Description,
                 BeginDate = eventInfo.BeginDate,
                 EndDate = eventInfo.EndDate,
                 RegistrationDate = eventInfo.RegistrationDate,
-
+                Organizer = new PotentShortResponse() 
+                {
+                    Id = eventInfo.Organizer.Id,
+                    Firstname = eventInfo.Organizer.Firstname,
+                    Lastname = eventInfo.Organizer.Lastname,
+                    Surname = eventInfo.Organizer.Surname,
+                    Email = eventInfo.Organizer.Email,
+                    date_birth = eventInfo.Organizer.DateBirth,
+                    gender = eventInfo.Organizer.Gender,
+                    Login = eventInfo.Organizer.Login
+                },
                 IsCompleted = eventInfo.IsCompleted,
-                RegistryDate = eventInfo.RegistryDate
+                RegistryDate = eventInfo.RegistryDate,
+                competitions = eventInfo.Competitions.Select(x => new CompetitionResponse()
+                {
+                    Id = x.Id,
+                    Description = x.Description,
+                    BeginDate = x.BeginDate,
+                    EndDate = x.EndDate, 
+                    CompetitionType = x.CompetitionType,    
+                    IsCompleted = x.IsCompleted,
+                    Name = x.Name,
+                    RegistryDate = x.RegistryDate
+                }).ToList(),
             };
 
             return eventInfoModel;
