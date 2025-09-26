@@ -1,15 +1,16 @@
-﻿namespace Domain.Entities
+﻿namespace WebApplication.Models
 {
-    /// <summary>
-    /// Мероприятие (информация о нём)
-    /// </summary>
-    public class EventInfo : BaseEntity
+    public class EventInfoShortResponse
     {
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
+        public int Id { get; set; }
         /// <summary>
         /// Название
         /// </summary>
         public required string Name { get; set; }
-        public string? Description { get; set; }
+
         /// <summary>
         /// Дата и время начала мероприятия
         /// </summary>
@@ -31,13 +32,9 @@
         /// Когда создано
         /// </summary>
         public DateTime RegistryDate { get; set; }
-        /// <summary>
-        /// Кто зарегистрировал мероприятие (организатор)
-        /// </summary>
-        public required Potent Organizer { get; set; }
-        public required int OrganizerId { get; set; }
-
-        public virtual ICollection<Competition> Competitions { get; set; } = new List<Competition>();
-        public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
+        ///// <summary>
+        ///// Кто зарегистрировал мероприятие (организатор)
+        ///// </summary>
+        //public required Potent Organizer { get; set; }
     }
 }
