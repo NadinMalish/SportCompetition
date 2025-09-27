@@ -21,12 +21,12 @@ namespace FileServerHost.Services
 
             var meta = new BsonDocument
             {
-            {"owner", owner ?? string.Empty},
-            {"description", description ?? string.Empty},
-            {"tags", new BsonArray((tags ?? new List<string>()).Where(t => !string.IsNullOrWhiteSpace(t)))},
-            {"contentType", file.ContentType ?? "application/octet-stream"},
-            {"originalName", file.FileName ?? string.Empty},
-            {"uploadedAt", DateTime.UtcNow},
+                {"owner", owner ?? string.Empty},
+                {"description", description ?? string.Empty},
+                {"tags", new BsonArray((tags ?? new List<string>()).Where(t => !string.IsNullOrWhiteSpace(t)))},
+                {"contentType", file.ContentType ?? "application/octet-stream"},
+                {"originalName", file.FileName ?? string.Empty},
+                {"uploadedAt", DateTime.UtcNow},
             };
 
 
@@ -51,8 +51,6 @@ namespace FileServerHost.Services
                 fileId = uploadStream.Id;
             }
 
-
-            // Patch checksum + size
             var filesColl = _bucket.Database.GetCollection<BsonDocument>($"{_bucket.Options.BucketName}.files");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", fileId);
             var update = Builders<BsonDocument>.Update
