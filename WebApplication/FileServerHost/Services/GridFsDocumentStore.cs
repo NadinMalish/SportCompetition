@@ -14,7 +14,7 @@ namespace FileServerHost.Services
             _bucket = bucket;
         }
 
-        public async Task<(ObjectId id, string sha256)> UploadAsync(IFormFile file, string? owner, string? description, List<string>? tags, CancellationToken ct)
+        public async Task<(ObjectId id, string sha256)> UploadAsync(IFormFile file, string? owner, CancellationToken ct)
         {
             if (file == null || file.Length == 0) throw new ArgumentException("File is required");
 
@@ -22,8 +22,6 @@ namespace FileServerHost.Services
             var meta = new BsonDocument
             {
                 {"owner", owner ?? string.Empty},
-                {"description", description ?? string.Empty},
-                {"tags", new BsonArray((tags ?? new List<string>()).Where(t => !string.IsNullOrWhiteSpace(t)))},
                 {"contentType", file.ContentType ?? "application/octet-stream"},
                 {"originalName", file.FileName ?? string.Empty},
                 {"uploadedAt", DateTime.UtcNow},
@@ -95,13 +93,11 @@ namespace FileServerHost.Services
             };
         }
 
-        public async Task<bool> UpdateMetadataAsync(ObjectId id, string? owner, string? description, List<string>? tags, CancellationToken ct)
+        public async Task<bool> UpdateMetadataAsync(ObjectId id, string? owner, CancellationToken ct)
         {
             var files = _bucket.Database.GetCollection<BsonDocument>($"{_bucket.Options.BucketName}.files");
             var updates = new List<UpdateDefinition<BsonDocument>>();
             if (owner is not null) updates.Add(Builders<BsonDocument>.Update.Set("metadata.owner", owner));
-            if (description is not null) updates.Add(Builders<BsonDocument>.Update.Set("metadata.description", description));
-            if (tags is not null) updates.Add(Builders<BsonDocument>.Update.Set("metadata.tags", new BsonArray(tags)));
             if (updates.Count == 0) return false;
             var result = await files.UpdateOneAsync(Builders<BsonDocument>.Filter.Eq("_id", id), Builders<BsonDocument>.Update.Combine(updates), cancellationToken: ct);
             return result.MatchedCount > 0;

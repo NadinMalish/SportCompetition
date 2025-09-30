@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Repositories.Abstractions;
 using WebApplication.DataAccess.Repositories;
 using WebApplication.Models;
+using WebApplication.Services;
 
 
 namespace WebApplication.Controllers
@@ -16,205 +17,133 @@ namespace WebApplication.Controllers
     public class DocController: ControllerBase
     {
         private readonly DocRepository _docRepository;
-        private readonly IRepository<DocType> _doctypeRepository;
-        private readonly IRepository<EventInfo> _eventRepository;
-        private readonly IRepository<Competition> _competitionRepository;
+        private readonly DocumentGateway _documentGateway;
 
-        public DocController(DocRepository docRepository, IRepository<DocType> doctypeRepository, IRepository<EventInfo> eventRepository, IRepository<Competition> competitionRepository)
+        public DocController(DocRepository docRepository, DocumentGateway documentGateway)
         { 
             _docRepository = docRepository;
-            _doctypeRepository = doctypeRepository;
-            _eventRepository = eventRepository;
-            _competitionRepository = competitionRepository;
+            _documentGateway = documentGateway;
         }
 
-
         /// <summary>
-        /// Получение данных из списка Документов
+        /// Загружает файл в микросервис и создаёт запись Doc в Postgres.
         /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult<List<DocShortResponse>>> GetSpisDoc()
+        [HttpPost("upload")]
+        [RequestSizeLimit(1_000_000_000)]
+        public async Task<ActionResult<DocResponse>> Upload([FromForm] CreateDocRequest request, CancellationToken ct)
         {
-            try
-            {
-                var _doc = (await _docRepository.GetDocList()).ToList();
-                var docModelList = _doc.Select(x => new DocShortResponse()
-                {
-                    Id = x.Id,
-                    Name_doc = x.NameDoc,
-                    File_name = x.FileName,
-                    Comment_doc = x.CommentDoc,
-                    Id_doc_type = x.IdDocType,
-                    Id_competition = x.IdCompetition,
-                    Id_event = x.IdEvent
-                }).ToList();
+            if (request.File is null || request.File.Length == 0) return BadRequest("File is required");
 
-                return Ok(docModelList);
-            }
-            catch (Exception ex)
+
+            var (docId, checksum) = await _documentGateway.UploadAsync(request.File, request.Owner, request.Description, ct);
+
+
+            var entity = new Doc
             {
-                return BadRequest(ex.Message);
-            }
+                DocId = docId,
+                FileName = request.File.FileName,
+                CommentDoc = request.CommentDoc,
+                IdDocType = request.IdDocType,
+                IdEvent = request.IdEvent,
+                IdCompetition = request.IdCompetition
+            };
+
+
+            await _docRepository.AddAsync(entity);
+
+            return NoContent();
         }
 
-
         /// <summary>
-        /// Добавить запись в список Документов
+        /// Возвращает Doc по Id (Postgres запись).
         /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> CreateDoc(DocShortResponse request)
-        {
-            try
-            {
-                Doc item = new Doc()
-                {
-                    NameDoc = request.Name_doc.Trim(),
-                    FileName = null,
-                    CommentDoc = request.Comment_doc,
-                    IdDocType = (await _doctypeRepository.CheckExistsById(request.Id_doc_type)) ? request.Id_doc_type : null,
-                    IdEvent = (await _eventRepository.CheckExistsById(request.Id_event)) ? request.Id_event : null,
-                    IdCompetition = (await _competitionRepository.CheckExistsById(request.Id_competition)) ? request.Id_competition : null,
-                    Docum = null
-                };
-
-                await _docRepository.AddDoc(item);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        ///// <summary>
-        ///// Добавить запись в список Документов
-        ///// </summary>
-        ///// <returns></returns>
-        //[HttpPost]
-        //[Route("upload")]
-        //public async Task<IActionResult> CreateDoc(DocShortResponse request, IFormFile docFile)
-        //{
-        //    try
-        //    {
-        //        if (docFile.Length==0) return BadRequest("Not File Docum");
-
-        //        byte[] fileData = null;
-        //        using (var binaryReader = new BinaryReader(docFile.OpenReadStream()))
-        //        {
-        //            fileData = binaryReader.ReadBytes((int)docFile.Length);
-        //        }
-        //        Doc item = new Doc()
-        //        {
-        //            name_doc = (request.Name_doc.Trim().Length > 0) ? request.Name_doc : docFile.FileName,
-        //            file_name = docFile.FileName,
-        //            comment_doc = request.Comment_doc,
-        //            id_doc_type = (await _doctypeRepository.FlById(request.Id_doc_type)) ? request.Id_doc_type : null,
-        //            id_event = (await _eventRepository.FlById(request.Id_event)) ? request.Id_event : null,
-        //            id_competition = (await _competitionRepository.FlById(request.Id_competition)) ? request.Id_competition : null,
-        //            docum = fileData
-        //        };
-
-        //        await _docRepository.AddDoc(item);
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-
-        /// <summary>
-        /// Получить данные из списка Документов по Id
-        /// </summary>
-        /// <returns></returns>
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Doc>> GetDocById(int id)
+        public async Task<ActionResult<DocResponse>> Get(int id)
         {
-            var _doc = await _docRepository.GetByIdAsync(id);
-            return Ok(_doc);
+            var doc = await _docRepository.GetByIdAsync(id);
+            if (doc == null) return NotFound();
+            return new DocResponse
+            {
+                Id = doc.Id,
+                FileName = doc.FileName,
+                CommentDoc = doc.CommentDoc,
+                IdDocType = doc.IdDocType,
+                IdEvent = doc.IdEvent,
+                IdCompetition = doc.IdCompetition
+            };
         }
-
 
         /// <summary>
-        /// Редактировать запись в списке Документов
+        /// Скачивание файла из микросервиса
         /// </summary>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDoc(int id, DocShortResponse request)
+        [HttpGet("{id:int}/download")]
+        public async Task<IActionResult> Download(int id, CancellationToken ct)
         {
-            try
-            {
-                Doc doc = await _docRepository.GetByIdAsync(id);
-                if (doc == null) return NotFound();
+            var doc = await _docRepository.GetByIdAsync(id);
+            if (doc == null) return NotFound();
 
-                doc.NameDoc = request.Name_doc;
-                doc.CommentDoc = request.Comment_doc;
-                doc.IdDocType = (request.Id_doc_type==0) ? null : (await _doctypeRepository.CheckExistsById(request.Id_doc_type)) ? request.Id_doc_type : doc.IdDocType;
-                doc.IdEvent = (request.Id_event == 0) ? null : (await _eventRepository.CheckExistsById(request.Id_event)) ? request.Id_event : doc.IdEvent;
-                doc.IdCompetition = (request.Id_competition == 0) ? null : (await _competitionRepository.CheckExistsById(request.Id_competition)) ? request.Id_competition : doc.IdCompetition;
-                await _docRepository.UpdateAsync(doc);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var stream = await _documentGateway.DownloadAsync(doc.DocId, ct);
+            var fileName = doc.FileName ?? doc.DocId;
+            return File(stream, "application/octet-stream", fileName);
         }
-
 
         /// <summary>
-        /// Отметить записть удаленной в списке Документов по Id
+        /// Удаление
         /// </summary>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> SetDeleteDoc(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
-            bool fl = await _docRepository.SetDelDoclById(id);
-            if (!fl) return BadRequest("Not Found");
+            var doc = await _docRepository.GetByIdAsync(id);
+            if (doc == null) return NotFound();
 
-            return Ok();
+
+            var ok = await _documentGateway.DeleteAsync(doc.DocId, ct);
+            if (!ok) return NotFound("Remote document not found");
+
+
+            await _docRepository.DeleteAsync(doc);
+            return NoContent();
         }
-
 
         /// <summary>
-        /// Загрузить файл Документа по Id
+        /// Список документов по мероприятию.
         /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("upload")]
-        public async Task<IActionResult> PostFile(int id, IFormFile fileDoc)
+        [HttpGet("by-event")]
+        public async Task<ActionResult<IEnumerable<DocResponse>>> EventDocumentsList([FromQuery] int eventId)
         {
-            //TODO: Save file
-            try
+            var docs = (await _docRepository.GetDocsByEventId(eventId)).Select(d => new DocResponse
             {
-                if (fileDoc.Length == 0) return BadRequest("Not File Docum");
+                Id = d.Id,
+                FileName = d.FileName,
+                CommentDoc = d.CommentDoc,
+                IdDocType = d.IdDocType,
+                IdEvent = d.IdEvent,
+                IdCompetition = d.IdCompetition
+            })
+            .ToList();
 
-                Doc doc = await _docRepository.GetByIdAsync(id);
-                if (doc == null) return NotFound();
-
-                string fileName = fileDoc.FileName;
-                byte[] fileData = null;
-                using (var binaryReader = new BinaryReader(fileDoc.OpenReadStream()))
-                {
-                    fileData = binaryReader.ReadBytes((int)fileDoc.Length);
-                }
-
-                doc.FileName = fileName;
-                doc.Docum = fileData;
-                await _docRepository.UpdateAsync(doc);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return docs;
         }
 
+        /// <summary>
+        /// Список документов по состязанию.
+        /// </summary>
+        [HttpGet("by-competition")]
+        public async Task<ActionResult<IEnumerable<DocResponse>>> CompetitionDocumentsList([FromQuery] int competitionId)
+        {
+            var docs = (await _docRepository.GetDocsByCompetitionId(competitionId)).Select(d => new DocResponse
+            {
+                Id = d.Id,
+                FileName = d.FileName,
+                CommentDoc = d.CommentDoc,
+                IdDocType = d.IdDocType,
+                IdEvent = d.IdEvent,
+                IdCompetition = d.IdCompetition
+            })
+            .ToList();
 
-
+            return docs;
+        }
     }
 }

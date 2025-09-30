@@ -4,6 +4,7 @@ using Infrastructure.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Services.Repositories.Abstractions;
 using WebApplication.DataAccess.Repositories;
+using WebApplication.Services;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -23,12 +24,20 @@ builder.Services.AddScoped<PotentRepository>();
 builder.Services.AddScoped<CompetitionRepository>();
 builder.Services.AddScoped<EventRepository>();
 
+builder.Services.AddHttpClient<DocumentGateway>(client =>
+{
+    var baseUrl = builder.Configuration["DocumentStorage:BaseUrl"];
+    if (string.IsNullOrWhiteSpace(baseUrl))
+        throw new InvalidOperationException("DocumentStorage:BaseUrl is not configured");
+
+    client.BaseAddress = new Uri(baseUrl);
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
         policy
-            //  ✅ Разрешаем любой localhost / 127.0.0.1 на любых портах
             .SetIsOriginAllowed(origin => new Uri(origin).IsLoopback)
             .AllowAnyHeader()
             .AllowAnyMethod()

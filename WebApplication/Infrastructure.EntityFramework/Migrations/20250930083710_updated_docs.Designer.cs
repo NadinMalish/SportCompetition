@@ -3,6 +3,7 @@ using System;
 using Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250930083710_updated_docs")]
+    partial class updated_docs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace Infrastructure.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationStatuses", (string)null);
+                    b.ToTable("ApplicationStatuses");
                 });
 
             modelBuilder.Entity("Domain.Entities.Competition", b =>
@@ -95,7 +98,7 @@ namespace Infrastructure.EntityFramework.Migrations
 
                     b.HasIndex("PotentId");
 
-                    b.ToTable("Competitions", (string)null);
+                    b.ToTable("Competitions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Doc", b =>
@@ -140,7 +143,7 @@ namespace Infrastructure.EntityFramework.Migrations
 
                     b.HasIndex("IdEvent");
 
-                    b.ToTable("Docs", (string)null);
+                    b.ToTable("Docs");
                 });
 
             modelBuilder.Entity("Domain.Entities.DocType", b =>
@@ -168,7 +171,7 @@ namespace Infrastructure.EntityFramework.Migrations
                     b.HasIndex(new[] { "NameDocType" }, "ukdoctypes_namedoctype")
                         .IsUnique();
 
-                    b.ToTable("DocTypes", (string)null);
+                    b.ToTable("DocTypes");
                 });
 
             modelBuilder.Entity("Domain.Entities.EventInfo", b =>
@@ -209,7 +212,7 @@ namespace Infrastructure.EntityFramework.Migrations
 
                     b.HasIndex("OrganizerId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Domain.Entities.EventParticipant", b =>
@@ -235,7 +238,7 @@ namespace Infrastructure.EntityFramework.Migrations
 
                     b.HasIndex("ParticipantCompetitionId");
 
-                    b.ToTable("EventParticipants", (string)null);
+                    b.ToTable("EventParticipants");
                 });
 
             modelBuilder.Entity("Domain.Entities.Potent", b =>
@@ -294,7 +297,7 @@ namespace Infrastructure.EntityFramework.Migrations
                     b.HasKey("Id")
                         .HasName("potents_pkey");
 
-                    b.ToTable("Potents", (string)null);
+                    b.ToTable("Potents");
                 });
 
             modelBuilder.Entity("Domain.Entities.Competition", b =>

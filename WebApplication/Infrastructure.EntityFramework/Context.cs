@@ -29,10 +29,6 @@ namespace Infrastructure.EntityFramework
                 entity.Property(e => e.FileName)
                     .HasMaxLength(400)
                     .HasColumnName("file_name");
-                entity.Property(e => e.NameDoc)
-                    .HasMaxLength(2000)
-                    .HasColumnName("name_doc");
-                entity.Property(e => e.Docum).HasColumnName("docum");
                 entity.Property(e => e.CommentDoc).HasColumnName("comment_doc");
                 entity.Property(e => e.IdCompetition).HasColumnName("id_competition");
                 entity.Property(e => e.IdDocType).HasColumnName("id_doc_type");
@@ -41,13 +37,16 @@ namespace Infrastructure.EntityFramework
 
                 entity.HasOne(d => d.DocType).WithMany(p => p.Docs)
                     .HasForeignKey(d => d.IdDocType)
-                    .HasConstraintName("fk_docs_doctypes");
+                    .HasConstraintName("fk_docs_doctypes")
+                    .IsRequired(false);
                 entity.HasOne(d => d.EventInfo).WithMany(p => p.Docs)
                     .HasForeignKey(d => d.IdEvent)
-                    .HasConstraintName("fk_docs_events");
+                    .HasConstraintName("fk_docs_events")
+                    .IsRequired(false);
                 entity.HasOne(d => d.Competition).WithMany(p => p.Docs)
                     .HasForeignKey(d => d.IdCompetition)
-                    .HasConstraintName("fk_docs_competitions");
+                    .HasConstraintName("fk_docs_competitions")
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<DocType>(entity =>

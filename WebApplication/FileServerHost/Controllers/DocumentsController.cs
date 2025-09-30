@@ -20,7 +20,7 @@ namespace FileServerHost.Controllers
         public async Task<IActionResult> Upload([FromForm] UploadRequest req, CancellationToken ct)
         {
             if (req.File is null || req.File.Length == 0) return BadRequest("File is required");
-            var (id, sha) = await _store.UploadAsync(req.File, req.Owner, req.Description, req.Tags, ct);
+            var (id, sha) = await _store.UploadAsync(req.File, req.Owner, ct);
             return Ok(new { id = id.ToString(), checksum = sha });
         }
 
@@ -46,7 +46,7 @@ namespace FileServerHost.Controllers
         public async Task<IActionResult> UpdateMetadata(string id, [FromBody] UpdateMetadataRequest body, CancellationToken ct)
         {
             if (!ObjectId.TryParse(id, out var oid)) return BadRequest("Invalid id");
-            var updated = await _store.UpdateMetadataAsync(oid, body.Owner, body.Description, body.Tags, ct);
+            var updated = await _store.UpdateMetadataAsync(oid, body.Owner, ct);
             return updated ? NoContent() : NotFound();
         }
 
