@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllerTests", "Controll
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileServerHost", "FileServerHost\FileServerHost.csproj", "{2FFBCD13-B895-479D-8A3E-841D9DFB360A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Redis", "Redis", "{A1FB18A7-F4C9-4618-8980-FFD144580B98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisService", "RedisService\RedisService.csproj", "{1A24BB73-7DC9-4421-9950-BA715B6B2F21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,10 @@ Global
 		{2FFBCD13-B895-479D-8A3E-841D9DFB360A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FFBCD13-B895-479D-8A3E-841D9DFB360A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FFBCD13-B895-479D-8A3E-841D9DFB360A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A24BB73-7DC9-4421-9950-BA715B6B2F21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A24BB73-7DC9-4421-9950-BA715B6B2F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A24BB73-7DC9-4421-9950-BA715B6B2F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A24BB73-7DC9-4421-9950-BA715B6B2F21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +81,7 @@ Global
 		{FD56ED8D-A2C2-4C6E-95DD-B91EBEF335B9} = {4CF8F3ED-2476-40DC-89B8-3C623407A61B}
 		{AB326974-393F-4D92-A1CC-4A473E5160F0} = {2B7D9781-A2E9-41C9-A66E-99D4EF2FF09C}
 		{2FFBCD13-B895-479D-8A3E-841D9DFB360A} = {E14BEA5F-C145-45DB-8780-0B5C5B3A1DEB}
+		{1A24BB73-7DC9-4421-9950-BA715B6B2F21} = {A1FB18A7-F4C9-4618-8980-FFD144580B98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22439046-F244-40B5-B87F-163449D7C4C4}

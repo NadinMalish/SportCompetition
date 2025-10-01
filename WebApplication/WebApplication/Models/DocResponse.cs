@@ -1,6 +1,6 @@
 ﻿namespace WebApplication.Models
 {
-    public sealed class DocResponse
+    public class DocResponse
     {
         public int Id { get; set; }
         public string? FileName { get; set; }

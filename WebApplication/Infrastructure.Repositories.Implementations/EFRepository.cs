@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using RedisService;
 using Services.Repositories.Abstractions;
 using System.Linq.Expressions;
 
@@ -11,17 +12,18 @@ namespace Infrastructure.Repositories.Implementations
         protected readonly Context Context;
         public readonly DbSet<T> _data;
 
-        public EFRepository(Context context)
+        protected readonly ICacheService? Cache;
+        protected string CachePrefix => typeof(T).Name + ":";
+
+        public EFRepository(Context context, ICacheService? cache = null)
         {
             Context = context;
             _data = Context.Set<T>();
+            Cache = cache;
         }
 
-
-        // Обычный, упрощённый метод (без сортировки)
         public Task<List<T>> GetAllAsync(int count = 100, int offset = 0, bool asNoTracking = false)
         {
-            // Нормализуем параметры
             if (count < 0) count = 0;
             if (offset < 0) offset = 0;
 
@@ -53,9 +55,11 @@ namespace Infrastructure.Repositories.Implementations
             {
                 _data.Remove(entity);
                 await SaveChangesAsync();
+
+                if (Cache != null)
+                    await Cache.RemoveByPrefixAsync(CachePrefix);
                 result = true;
             }
-
             return result;
         }
 
@@ -65,8 +69,11 @@ namespace Infrastructure.Repositories.Implementations
             if (entity != null)
             {
                 Context.Entry(entity).State = EntityState.Deleted;
-                result = true;
                 await SaveChangesAsync();
+
+                if (Cache != null)
+                    await Cache.RemoveByPrefixAsync(CachePrefix);
+                result = true;
             }
             return result;
         }
@@ -75,12 +82,19 @@ namespace Infrastructure.Repositories.Implementations
         {
             Context.Entry(entity).State = EntityState.Modified;
             await SaveChangesAsync();
+
+            if (Cache != null)
+                await Cache.RemoveByPrefixAsync(CachePrefix);
         }
 
         public async Task<T> AddAsync(T entity)
         {
             var ent = (await _data.AddAsync(entity)).Entity;
             await SaveChangesAsync();
+
+            if (Cache != null)
+                await Cache.RemoveByPrefixAsync(CachePrefix);
+
             return ent;
         }
 

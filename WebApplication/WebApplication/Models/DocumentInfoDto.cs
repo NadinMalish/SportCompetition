@@ -1,6 +1,6 @@
 ﻿namespace WebApplication.Models
 {
-    public sealed class DocumentInfoDto
+    public class DocumentInfoDto
     {
         public string Id { get; set; } = default!;
         public string? Filename { get; set; }

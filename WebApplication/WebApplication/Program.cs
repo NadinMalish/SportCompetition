@@ -2,7 +2,10 @@
 using Infrastructure.Repositories.ImplementationInfrastructure.EntityFrameworks;
 using Infrastructure.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using RedisService;
 using Services.Repositories.Abstractions;
+using StackExchange.Redis;
 using WebApplication.DataAccess.Repositories;
 using WebApplication.Services;
 
@@ -32,6 +35,18 @@ builder.Services.AddHttpClient<DocumentGateway>(client =>
 
     client.BaseAddress = new Uri(baseUrl);
 });
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var cfg = builder.Configuration.GetSection("Redis")["ConnectionString"];
+    return ConnectionMultiplexer.Connect(cfg);
+});
+
+// Options
+builder.Services.Configure<RedisService.RedisCacheOptions>(builder.Configuration.GetSection("Redis"));
+
+// Наш сервис кэша
+builder.Services.AddSingleton<ICacheService, RedisCacheService>();
 
 builder.Services.AddCors(options =>
 {
